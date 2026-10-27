@@ -1,0 +1,3033 @@
+<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Track F methods review, v2batch_26</title><style>
+:root{
+--primary:#533afd; --primary-deep:#4434d4; --primary-press:#2e2b8c;
+--primary-soft:#665efd; --primary-subdued:#b9b9f9; --brand-dark-900:#1c1e54;
+--canvas:#ffffff; --canvas-soft:#f6f9fc; --canvas-cream:#f5e9d4;
+--hairline:#e3e8ee; --hairline-input:#a8c3de;
+--ink:#0d253d; --ink-secondary:#273951; --ink-mute:#64748d; --on-primary:#ffffff;
+--r-xs:4px; --r-sm:6px; --r-md:8px; --r-lg:12px; --r-xl:16px; --r-pill:9999px;
+--sh1:rgba(0,55,112,.08) 0 1px 3px;
+--sh2:rgba(0,55,112,.08) 0 8px 24px, rgba(0,55,112,.04) 0 2px 6px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--canvas);color:var(--ink);
+font-family:Inter,"SF Pro Display",system-ui,-apple-system,"Segoe UI",sans-serif;
+font-weight:300;font-size:15px;line-height:1.4;
+font-feature-settings:"ss01";-webkit-font-smoothing:antialiased}
+.mesh{position:absolute;inset:0 0 auto;height:280px;z-index:0;pointer-events:none;
+background:
+ radial-gradient(60% 120% at 8% 40%, #f5e9d4 0%, rgba(245,233,212,0) 60%),
+ radial-gradient(50% 120% at 30% 30%, #ffd9b0 0%, rgba(255,217,176,0) 62%),
+ radial-gradient(55% 130% at 55% 45%, #cdc4fb 0%, rgba(205,196,251,0) 62%),
+ radial-gradient(50% 120% at 76% 30%, #533afd 0%, rgba(83,58,253,0) 60%),
+ radial-gradient(55% 120% at 96% 55%, #ea2261 0%, rgba(234,34,97,0) 62%);
+opacity:.30;filter:blur(18px)}
+.wrap{max-width:1200px;margin:0 auto;padding:40px 24px 104px;position:relative;z-index:1}
+h1{font-size:32px;font-weight:300;letter-spacing:-.64px;line-height:1.1;margin:0 0 6px}
+h2{font-size:10px;font-weight:400;letter-spacing:.1px;text-transform:uppercase;
+color:var(--ink-mute);margin:0}
+.sub{color:var(--ink-secondary);font-size:15px;margin:0 0 24px;max-width:62ch}
+.card{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-lg);
+padding:24px;margin-bottom:14px;box-shadow:var(--sh1)}
+.card.cream{background:var(--canvas-cream);border-color:transparent;box-shadow:none}
+.card h3{font-size:18px;font-weight:300;letter-spacing:0;margin:0 0 10px}
+.note{color:var(--ink-secondary);font-size:15px}
+.note b{font-weight:400}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px}
+.num{font-feature-settings:"tnum","ss01";letter-spacing:-.42px}
+.pill{display:inline-block;background:var(--primary-subdued);color:var(--primary-deep);
+font-size:10px;font-weight:400;letter-spacing:.1px;text-transform:uppercase;
+padding:4px 8px;border-radius:var(--r-pill)}
+.paper-h{display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+flex-wrap:wrap;margin-bottom:4px}
+.split{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:24px;
+align-items:start}
+/* clears the sticky action bar, which is about 60px tall */
+.col-text{position:sticky;top:80px}
+@media (max-width:1023px){.split{grid-template-columns:1fr}.col-text{position:static}}
+.methods{background:var(--canvas-soft);border:1px solid var(--hairline);
+border-radius:var(--r-md);padding:18px 20px;min-height:320px;
+overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;
+font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;line-height:1.7;
+color:var(--ink-secondary);margin:10px 0 0;user-select:text;cursor:text;
+height:calc(100vh - 296px)}
+@media (max-width:1023px){.methods{height:46vh}}
+.methods mark{background:var(--canvas-cream);color:inherit;border-radius:var(--r-xs);
+padding:1px 0}
+.methods mark.cur{background:var(--primary-subdued)}
+.methods .sec{background:rgba(83,58,253,.07);border-radius:var(--r-xs)}
+.methods .sec.cursec{background:rgba(83,58,253,.14)}
+.methods ::selection{background:var(--primary-soft);color:#fff}
+.tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:12px;
+font-size:13px;color:var(--ink-mute);letter-spacing:-.39px}
+.tools .aid{margin-left:auto;font-size:11px;font-weight:300}
+button{font-family:inherit;font-size:14px;font-weight:400;line-height:1;
+padding:8px 16px;border-radius:var(--r-pill);border:1px solid var(--primary);
+background:var(--primary);color:var(--on-primary);cursor:pointer}
+button:hover{background:var(--primary-deep);border-color:var(--primary-deep)}
+button:active{background:var(--primary-press);border-color:var(--primary-press)}
+button.sec{background:var(--canvas);color:var(--primary);border-color:var(--primary)}
+button.sec:hover{background:var(--canvas-soft)}
+button.quiet{background:transparent;color:var(--ink-mute);border-color:var(--hairline)}
+button.quiet:hover{background:var(--canvas-soft);color:var(--ink)}
+button:disabled{opacity:.4;cursor:not-allowed}
+input[type=text]{width:100%;background:var(--canvas);color:var(--ink);
+font-family:inherit;font-size:15px;font-weight:300;padding:8px 12px;
+border-radius:var(--r-sm);border:1px solid var(--hairline-input)}
+input[type=text]:focus{outline:none;border-color:var(--primary)}
+.q{border:1px solid var(--hairline);border-radius:var(--r-lg);padding:18px 20px;
+margin-bottom:10px;background:var(--canvas)}
+.q.active{border-color:var(--primary);box-shadow:var(--sh1)}
+.q.done{padding:12px 16px;background:var(--canvas-soft);box-shadow:none}
+.q.done .qdef,.q.done .qhow,.q.done .acts,.q.done .grab{display:none}
+.q.done .qname{cursor:pointer;margin:0}
+.qname{display:flex;justify-content:space-between;gap:12px;align-items:baseline;
+font-size:18px;font-weight:300;letter-spacing:0;margin-bottom:6px}
+.q.done .qname{font-size:15px;color:var(--ink-secondary)}
+.qname .ans{font-size:13px;color:var(--ink-mute);letter-spacing:-.39px;
+white-space:nowrap;max-width:52%;overflow:hidden;text-overflow:ellipsis;text-align:right}
+.qdef{color:var(--ink-secondary);font-size:15px;margin-bottom:10px}
+.qhow{background:var(--canvas-soft);border-radius:var(--r-md);padding:10px 12px;
+font-size:13px;color:var(--ink-secondary);letter-spacing:-.39px;margin-bottom:12px}
+.qhow b{font-weight:400;color:var(--ink)}
+.qhow .eg{display:block;margin-top:5px;color:var(--ink-mute)}
+.acts{display:flex;gap:8px;flex-wrap:wrap}
+.grab{margin-top:11px;display:none}
+.grab.on{display:block}
+.grab .cap{font-size:10px;text-transform:uppercase;letter-spacing:.1px;
+color:var(--ink-mute);margin-bottom:5px}
+.grab blockquote{margin:0;background:var(--canvas-cream);border-radius:var(--r-md);
+padding:10px 12px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+font-size:13px;color:var(--ink);line-height:1.6}
+/* one row per marked span; an antibody table can produce eight */
+.spans{list-style:decimal;margin:0;padding:0 0 0 22px}
+.spans li{background:var(--canvas-cream);border-radius:var(--r-md);
+padding:7px 10px;margin-bottom:5px;display:flex;gap:10px;align-items:baseline;
+font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;
+color:var(--ink);line-height:1.55}
+.spans li span{flex:1;overflow-wrap:anywhere}
+.spans li .x{padding:2px 9px;font-size:11px;flex:none;font-family:inherit}
+.morewrap{display:none;align-items:center;gap:8px;margin-top:8px;
+font-size:13px;color:var(--ink-secondary);letter-spacing:-.39px;cursor:pointer}
+.morewrap.on{display:flex}
+.morewrap input{accent-color:var(--primary);width:16px;height:16px;cursor:pointer}
+.q.done .spans li .x{display:none}
+/* Action bar pinned to the TOP. Submit lives here rather than at the foot of a
+   30-minute page, so it is reachable without scrolling once a batch is finished. */
+.bar{position:sticky;top:0;z-index:6;background:var(--canvas);
+border-bottom:1px solid var(--hairline);box-shadow:var(--sh1);
+margin:0 -24px 20px;padding:12px 24px;
+display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.bar .grow{flex:1 1 220px;min-width:140px}
+.prog{height:4px;border-radius:var(--r-pill);background:var(--hairline);overflow:hidden}
+.prog i{display:block;height:100%;background:var(--primary);width:0;transition:width .2s}
+.count{font-size:14px;color:var(--ink-secondary);font-feature-settings:"tnum";
+letter-spacing:-.42px;white-space:nowrap}
+.status{font-size:13px;color:var(--ink-mute);letter-spacing:-.39px;flex-basis:100%}
+.status b{color:var(--ink);font-weight:400}
+.hint{position:fixed;z-index:12;background:var(--brand-dark-900);color:#fff;
+font-size:13px;padding:8px 14px;border-radius:var(--r-pill);box-shadow:var(--sh2);
+left:50%;transform:translateX(-50%);bottom:28px;
+pointer-events:none;opacity:0;transition:opacity .15s}
+.hint.on{opacity:1}
+
+/* Guide. The rules are needed on question 40 as much as on question 1, so they
+   live behind a button that is always in reach rather than scrolled past once. */
+.scrim{position:fixed;inset:0;z-index:10;background:rgba(13,37,61,.34);
+display:none}
+.scrim.on{display:block}
+.guide{position:fixed;top:0;right:0;bottom:0;z-index:11;width:min(560px,100%);
+background:var(--canvas);box-shadow:var(--sh2);overflow:auto;
+padding:28px 28px 64px;transform:translateX(100%);transition:transform .18s ease-out}
+.guide.on{transform:none}
+.guide h2{margin-bottom:14px}
+.guide h3{font-size:20px;font-weight:300;letter-spacing:-.2px;margin:26px 0 8px}
+.guide h3:first-of-type{margin-top:10px}
+.guide p{color:var(--ink-secondary);margin:0 0 10px}
+.guide .close{position:absolute;top:20px;right:24px}
+.guide table{border-collapse:collapse;width:100%;margin-top:6px}
+.guide td{border-bottom:1px solid var(--hairline);padding:8px 10px 8px 0;
+vertical-align:top;font-size:13px;color:var(--ink-secondary)}
+.guide td:first-child{color:var(--ink);white-space:nowrap;padding-right:16px}
+.guide blockquote{margin:8px 0 0;padding:10px 12px;background:var(--canvas-cream);
+border-radius:var(--r-md);font-size:13px;color:var(--ink)}
+</style></head><body><div class='mesh'></div><div class='wrap'><div class='bar'><span class='count' id='count'>0 answered</span><span class='grow'><span class='prog'><i id='bar'></i></span></span><button type='button' class='quiet' onclick='guide(true)'>Guide</button><button class='sec' onclick='download()'>Download CSV</button><button id='send' onclick='send()' disabled>Submit</button><span class='status' id='status'></span></div><h1>Western blot methods review</h1><p class='sub'><span class='num'>9</span> papers, <span class='num'>11</span> questions, about <span class='num'>31</span> minutes. For each paper you read one Methods section, then say whether that text states each of a short list of details. You never type a value: you select the words in the text. Press <b>Guide</b> at any point for the rules.</p><div class='card'><h2>Your name or initials</h2><p class='note' style='margin:6px 0 10px'>Only used to tell reviewers apart when two people code the same batch.</p><input type='text' id='rev' placeholder='for example BH' autocomplete='off'></div><div class='card cream'><h3>The three answers</h3><div class='note'><b>Select the words in the Methods text, then press Use highlighted text.</b> The exact words you selected are what gets recorded. If the paper gives several, mark each one and they stack up in a list; press <b>Done, next</b> when the list is complete.<br><b>Not stated.</b> The Methods text does not give this detail.<br><b>Unclear.</b> You cannot tell either way. These are set aside rather than counted, so it is a safe answer when you are stuck.<br><br><b>What counts as a western blot.</b> Western blot means proteins separated on a gel, transferred to a membrane and detected with an antibody. An OxyBlot counts. A dot blot or slot blot, of RNA or of protein, does not; neither does a capillary system such as Wes or Jess, which has no membrane, or a membrane probed only with streptavidin or a lectin, which uses no antibody. Items marked &#x27;Western blot only&#x27; do not count the same thing described for another assay in the paper: qPCR, immunofluorescence, IHC, flow cytometry, ELISA, mass spectrometry, or a gel that was stained rather than blotted. Judge the text the page shows, including any figure legend printed in it; a detail found only in a legend or supplement that is not shown is not stated. A method given only by citation (&#x27;as previously described [12]&#x27;) is not stated: mark only what the text itself says. The Shortcut citation item is the exception: it records the citation phrase itself. Some PDFs drop the micro sign or print it as m (&#x27;50 g&#x27;, &#x27;25 mg&#x27; for micrograms); rule on the intended unit.<br><br>Every question carries its own <b>What to mark</b> rule with a worked example. Follow it rather than your instinct: consistency between reviewers matters more here than any single choice. Full rules under <b>Guide</b>.</div></div><div class='card'><div class='paper-h'><h2>Paper <span class='num'>1</span> of <span class='num'>9</span></h2><span class='pill'>PMC4855273</span></div><div class='note' style='font-size:13px;color:var(--ink-mute);margin-bottom:6px'> · <span class='num'>year unknown</span></div><div class='split'><div class='col-text'><div class='methods' id='m_PMC4855273'>
+Isolation of monocytes and cell culture
+Peripheral blood was obtained from healthy adults, and peripheral
+blood mononuclear cells were isolated by density gradient centrifuga-
+tion
+using
+Histopaque
+(1.077 g ml-1;
+Sigma-Aldrich,
+Munich,
+Germany) as previously described.13,14 All cells were cultured in RPMI
+1640 medium (Biochrom; Berlin, Germany) supplemented with 1%
+penicillin/streptomycin in 6-, 12- and 96-well plastic plates. One of the
+following additions was made to the cell culture medium: (1) 10%
+fetal bovine serum (FBS) (Biochrom), (2) 10% autologous serum
+from the corresponding donor, (3) 10% FBS with the growth factors
+M-CSF (5.0 ng ml -1) (R&amp;D Systems, Wiesbaden, Germany) and IL-3
+(0.4 ng ml -1) (R&amp;D Systems) or (4) 10% autologous serum with the
+growth factors M-CSF (5.0 ng ml -1) and IL-3 (0.4 ng ml-1). These
+media were tested with uncoated plates and with plates coated with
+10 μg ml -1 fibronectin (Sigma-Aldrich).
+The cells were allowed to adhere overnight in the chosen medium.
+The non-adherent cells were then removed by careful aspiration,
+and the remaining heterogeneous cell population, enriched with
+monocytes, was cultured in the selected medium for 1, 3, 7, 10 or
+14 days at 37 °C and 5% CO2. The chosen medium was replaced by
+fresh medium of the same type every 2 days.
+Cells that were supposed to differentiate into endothelial cells were
+cultured for a maximum of 7 days in the selected medium. After
+7 days, the chosen growth medium was removed and the cells were
+treated for another 7 days with a commercially available endothelial
+cell conditioning medium (EC) (Provitro, Berlin, Germany) supple-
+mented with FCS (0.02 ml), ECGS/H (4 μl), human recombinant
+EGF (0.10 ng), human rec. basic fibroblast growth factor (1 ng),
+hydrocortisone
+(1 μg),
+gentamicin
+(50 μg)
+and
+amphotericin
+b (50 ng). A medium exchange was performed every 2 days.
+The cells were cultured in 6- or 12-well plates and collected by
+mechanical scraping at day 1, 3, 7, 10 or 14 (1 plate from the same
+batch on each day). The collected cells were characterized by
+immunohistochemistry and
+western blotting. Cells cultured
+in
+96-well plates were used for examining cell viability using the MTT
+(3-(4,5-dimethylthiazol-2-yl)-2,5-diphenyltetrazolium bromide) assay.
+Four independent experiments in triplicate were performed each time.
+Measurement of cell viability (MTT)
+On day 1, 3, 7, 10 or 14, the cells were treated with 10% MTT
+(working concentration 0.5 mg ml-1), which is reduced by living cells
+to a non-soluble purple formazan.15,16 For the viability assay, the
+experiments were performed using five or six wells of cultured cells for
+each treatment. Afterwards, the cells were incubated for 3 h at 37 °C,
+and the reaction was stopped by an appropriate stop solution (bidest.
+water, 0.01 M HCl, 10% sodium dodecyl sulfate). The optical density
+of the cell suspensions was measured at 590 nm.
+Cell characterization by histology and
+immunohistochemistry
+After removal of the growth medium, the cells cultured on 12-well
+plates were collected by scraping the cell culture dishes and were
+resuspended in 5 ml phosphate-buffered saline (PBS) (Biochrom).
+After 5 min of centrifugation at 500 g at room temperature, the
+supernatant was removed, and the cell pellet was resuspended in 1 ml
+of PBS. One micoliter of the cell suspension was transferred onto a
+slide and fixed with acetone.
+The slides were stained with various primary antibodies and
+visualized using an LSAB-HRP kit (Dako, Hamburg, Germany)
+according to the manufacturer’s instructions. To investigate whether
+the cultured cells were monocytes, we stained the cells with anti-CD68
+antibodies (R&amp;D Systems, dilution 1:10000) as well as anti-CD14
+antibodies (R&amp;D, 1:200) on days 1-14. Furthermore, the following
+primary antibodies (R&amp;D) were used: CD144 (1:200), VEGF (1:100),
+VEGF-R2 (1:200), CD31 (1:200) and CD34 (1:15). All slides were
+counterstained with hematoxylin and eosin. The stained cells were
+dehydrated in a series of graded ethanol solutions and then covered
+with a cover slip. The number of positive cells was counted using light
+microscopy (Axio Observer A1; Zeiss, Jena, Germany) at × 4
+magnification. The ratio of antibody-positive to antibody-negative
+cells on the stained slides was counted on days 1, 3 and 7.
+The cells were also cultured on chamber slides after centrifugation
+using acetone fixation to generate a better macroscopic picture of their
+morphology and their manner of growth.
+Cell characterization by western blot analysis
+Cells cultured in Auto, FBS-WF or AU-WF were harvested using
+trypsin and lysed as previously described.17 Briefly, sample loading
+buffer and reducing agent (both from Bio-Rad, Hercules, CA, USA)
+were added to the lysates. A standard of 5 μg of protein was used
+from every sample. The samples were heated (5 min, 95 °C) and
+loaded on 4 to 15% Tris-HCl Criterion gels (Bio-Rad), separated by
+SDS-PAGE, and transferred to nitrocellulose. The membranes were
+probed for CD14 (dilution 1:1000, all antibodies by R&amp;D Systems),
+CD68 (1:500), CD31 (1:500), CD144 (1:100), CD106 (1:1000),
+VEGF (1:500, Thermo Fisher Scientific, Schwerte, Germany) and
+the housekeeping protein GAPDH (1:5000, Abcam, Cambridge,
+UK). The blocking and development procedures were performed in
+accordance with the manufacturer’s (Bio-Rad) protocol. The
+samples were tested for the chosen antibodies on day 1, 3, 7 and
+14 with at least 7 days of prior culturing in endothelial cell medium.
+Day 1 was set as 100% in all experiments, and the values at day 3, 7,
+10 and 14 are related to day 1 and display the increase or decrease
+in cell viability in comparison to the starting day. The proteins were
+visualized by a chemiluminescent detection method (SuperSignal
+West
+Pico
+Chemiluminescent
+Substrate,
+Thermo
+Scientific,
+Waltham, MA, USA) using Kodak Scientific Imaging (New Haven,
+CT, USA) film. The developed film was digitalized, and protein
+quantification was performed using the free software ImageJ 1.44p
+(the National Institutes of Health, Bethesda, MD, USA). Following
+normalization to GAPDH, the average of the control tissue samples
+was set as 100%, and the results were calculated in comparison.
+Culturing and differentiation of human monocytes
+W Safiet al
+2
+Experimental &amp; Molecular Medicine
+ Statistical evaluation
+All results are presented as mean values and mean differences (MDs)
+with their s.d. The data were normally distributed, and therefore a
+Student’s t-test was used for comparison. Significant differences
+among more than two groups were analyzed by one-way analysis of
+covariance. All statistical comparisons were two-sided with Po0.05 (*)
+as the level of significance. In the Figures, the results are displayed as
+boxes-and-whisker plots. The middle line inside each box represents
+the median, the upper end of the box represents the 75th quartile, the
+lower end of the box represents the 25th quartile, the upper whisker
+represents the 97.5th quartile, the lower whisker represents the 2.5th
+quartile and open circles represent outliers beyond the 2.5th or 97.5th
+quartile. All statistical analyses were performed using SPSS for
+Windows version 17.0 software (SPSS, Chicago, IL, USA).
+</div><div class='tools'><button type='button' class='quiet' onclick='jumpSec(1)'>Blot section</button><button type='button' class='quiet' onclick='jump(-1)'>Prev</button><button type='button' class='quiet' onclick='jump(1)'>Next</button><span id='hits_PMC4855273' class='num'></span><span class='aid'>shading is a search aid, not an answer</span></div></div><div class='col-q'><div class='q' data-q='v2|PMC4855273|lysis_buffer_composition' data-pmcid='PMC4855273' data-item='lysis_buffer_composition'><div class='qname'><span>Lysis buffer composition</span><span class='ans'></span></div><div class='qdef'>The lysis buffer's recipe, or the product used. A recipe with at least one component of the base buffer and its concentration counts, and so does a product identified by brand name, vendor or catalog number. A generic name alone, such as 'RIPA buffer', does not count, because RIPA recipes differ, and neither do protease or phosphatase inhibitors added to it, which are their own item. Western blot only.</div><div class='qhow'><b>What to mark.</b> Mark the recipe, or the product with what identifies it.<span class='eg'>In <i>RIPA (50 mM Tris pH 7.4, 150 mM NaCl, 1% NP-40, 0.5% deoxycholate, 0.1% SDS)</i> mark the parenthesis; in <i>RIPA (Applygen Technologies)</i> mark the whole phrase. Nothing to mark in <i>lysed in RIPA buffer</i>.</span></div><div class='acts'><button type='button' data-act='mark'>Use highlighted text</button><button type='button' class='sec' data-act='done' style='display:none'>Done, next</button><button type='button' class='sec' data-act='not_stated'>Not stated</button><button type='button' class='quiet' data-act='unclear'>Unclear</button></div><div class='grab'><div class='cap'>Marked so far, add as many as the paper has</div><ol class='spans'></ol><label class='morewrap'><input type='checkbox' class='morebox'>There are more of these than I marked</label></div></div><div class='q' data-q='v2|PMC4855273|membrane_activation' data-pmcid='PMC4855273' data-item='membrane_activation'><div class='qname'><span>Membrane activation</span><span class='ans'></span></div><div class='qdef'>A pre-transfer membrane step: PVDF pre-wetted in methanol, or the membrane equilibrated in transfer buffer. Equilibrating the gel does not count. Western blot only.</div><div class='qhow'><b>What to mark.</b> Mark the step.<span class='eg'>In <i>PVDF membranes were activated in methanol for 1 min</i> mark the whole phrase.</span></div><div class='acts'><button type='button' data-act='mark'>Use highlighted text</button><button type='button' class='sec' data-act='done' style='display:none'>Done, next</button><button type='button' class='sec' data-act='not_stated'>Not stated</button><button type='button' class='quiet' data-act='unclear'>Unclear</button></div><div class='grab'><div class='cap'>Marked so far, add as many as the paper has</div><ol class='spans'></ol><label class='morewrap'><input type='checkbox' class='morebox'>There are more of these than I marked</label></div></div><div class='q' data-q='v2|PMC4855273|reducing_denaturing' data-pmcid='PMC4855273' data-item='reducing_denaturing'><div class='qname'><span>Reducing or denaturing conditions</span><span class='ans'></span></div><div class='qdef'>A statement of reducing or denaturing conditions for the blot's samples: Laemmli buffer; sample or loading buffer with heating; a stated denaturing temperature; a reducing agent (DTT, 2-ME); the condition named ('denatured'); or an explicit non-reducing statement. A reducing agent in a lysis or fractionation buffer feeding the blot counts. SDS-PAGE alone, an SDS running buffer, or heating in elution buffer does not. Western blot only.</div><div class='qhow'><b>What to mark.</b> Mark the phrase or the reagent that states it.<span class='eg'>In <i>boiled in Laemmli buffer containing DTT</i> mark <b>DTT</b>, or <b>boiled in Laemmli buffer</b> if no reagent is named. Nothing to mark in <i>separated by SDS-PAGE</i>, <i>SDS running buffer</i>, or <i>heated in elution buffer</i>.</span></div><div class='acts'><button type='button' data-act='mark'>Use highlighted text</button><button type='button' class='sec' data-act='done' style='display:none'>Done, next</button><button type='button' class='sec' data-act='not_stated'>Not stated</button><button type='button' class='quiet' data-act='unclear'>Unclear</button></div><div class='grab'><div class='cap'>Marked so far, add as many as the paper has</div><ol class='spans'></ol><label class='morewrap'><input type='checkbox' class='morebox'>There are more of these than I marked</label></div></div></div></div></div><div class='card'><div class='paper-h'><h2>Paper <span class='num'>2</span> of <span class='num'>9</span></h2><span class='pill'>PMC10474707</span></div><div class='note' style='font-size:13px;color:var(--ink-mute);margin-bottom:6px'> · <span class='num'>year unknown</span></div><div class='split'><div class='col-text'><div class='methods' id='m_PMC10474707'>
+Resveratrol
+Resveratrol, a non-flavonoid polyphenol organic com-
+pound, is an antitoxin produced by many plants when 
+stimulated. Its chemical name is 3,4’,5-trihydroxy-1,2-di-
+phenyl ethylene, and the chemical formula is C14H12O3. 
+The resveratrol used in this study was purchased from 
+Sigma, USA (CAS 501-36-0, PubChem Chemical 
+No.24278055).
+Animal model
+Male BALB/c mice (6-8 weeks old, 20 ± 2 g) were pur-
+chased from the Animal Research Center of Jiangsu 
+University (Zhenjiang, China). All mice were treated 
+accordingly in the SPF laboratory. Mice were randomly 
+divided into 3 groups (n = 5/group); and the negative 
+control group (NC group), the Dextran sulfate sodium 
+(DSS)-induced colitis group (DSS group), and the Res-
+veratrol-treated colitis group (RSV group). The NC group 
+was given autoclaved purified water, while the DSS and 
+RSV groups were given autoclaved purified water con-
+taining 3% DSS. In addition, mice in the RSV group were 
+given resveratrol solvent (100 mg/kg) by oral gavage every 
+day. The mice were weighed daily and their fecal charac-
+teristics were recorded. When the mice in the DSS group 
+showed obvious bloody stool and weight loss, the feces of 
+the mice in each group were collected aseptically for sub-
+sequent 16S rDNA sequencing and UHPLC/Q-TOF-MS. 
+ Page 3 of 18
+Xu et al. European Journal of Medical Research (2023) 28:319 
+ 
+On the 10th day, all mice were sacrificed and colon and 
+spleen tissues were collected for subsequent experiments.
+Cell culture
+Mouse 
+leukemic 
+monocyte/macrophage 
+cell 
+line 
+(RAW264.7) was purchased from Beiner Biotechnol-
+ogy Company (Beijing, China) and cultured in DMEM 
+medium (Hyclone) containing 10% fetal calf serum (FBS; 
+Excell,Uruguay) at 37 °C in humid air with 5% CO2. The 
+RAW264.7 was cultured in an LPS-induced inflamma-
+tory environment and treated with or without resveratrol 
+(80 nmol/ml) for 12 h.
+Western-blot
+RIPA (Radio-Immunoprecipitation Assay) lysis buffer was 
+added to colon tissue and RAW264.7 cells and the protein 
+concentration was measured by the BCA (Bicinchoninic 
+acid) method. A total of 200 μg of protein sample was 
+separated by 10% SDS-PAGE. The isolated proteins were 
+transferred onto PVDF membranes, blocked in 5% skim 
+milk powder (dissolved in TBST buffer) for 1 h. PVDF 
+membranes were incubated with primary antibodies 
+(PCNA-1:1000, Abcam;Occludin-1:5000, Proteintech; 
+Claudin1-1:1000, Proteintech; iNOS-1:500, Proteintech; 
+Arg1-1:1000, Proteintech; Slc6a8-1:400, Proteintech) at 
+4 °C overnight, and then incubated with secondary anti-
+bodies at room temperature for 1 h to visualize protein 
+bands and generate images.
+Quantitative Real-time (qRT)-PCR
+Total RNA was extracted from mouse colons and 
+RAW264.7 cells by chloroform extraction using Tri-
+zol reagent (Vazyme, Nanjing, China). cDNA was syn-
+thesized using the HiScript 1st Strand cDNA Synthesis 
+Kit (Vazyme, Nanjing, China). β-actin was used as an 
+internal control to detect the expression of target genes. 
+Primer sequences used are shown in Table 1.
+Immunohistochemistry (IHC)
+Paraffin-embedded colon tissue Sections (4 μm thick) 
+were processed for hematoxylin and eosin (H&amp;E) stain-
+ing or deparaffinized for immunohistochemistry (IHC). 
+In IHC, sections were dewaxed and placed in 3% hydro-
+gen peroxide solution, followed by incubation at room 
+temperature for 30 min before thermal repair of anti-
+gens through boiling for 30 min in citrate buffer. After 
+blocking with 5% BSA for 30 min, the primary antibody 
+(Slc6a8- 1:200, Proteintech) was incubated at 4 °C over-
+night, followed by the secondary antibody (Wuhan 
+Boster Biological Technology, Wuhan, China) at room 
+temperature for 1 h. StreptAvidin Biotin Complex 
+(SABC) was added and incubated at 37 °C for 30 min. 
+Finally, diaminobenzidine substrate (DAB) was applied 
+to sections and counter-stained with hematoxylin for 
+microscopic examination.
+Immunofluorescence
+The sections were dewaxed to block nonspecific antigens 
+as described in IHC. Sections were incubated with iNOS 
+antibody (1:200) and Arg1 antibody (1:300) at 4° over-
+night, and then incubated with the corresponding fluo-
+rescent secondary antibody for 2 h at room temperature. 
+The specimens were stained with hoechest33342 (1:300; 
+Sigma-Aldrich) for 10 min at room temperature and 
+observed under a microscope. During the experiment, 
+exposure to light was avoided to prevent fluorescence 
+quenching.
+16S rDNA gene sequencing
+The experimental process for the fecal analysis of 
+the microbiota community and function prediction 
+involved extraction of genome DNA, amplicon gen-
+eration, PCR products quantification and qualifica-
+tion, product mixing and purification, and library 
+preparation and sequencing. The sample quality was 
+strictly controlled in each link from DNA extrac-
+tion to computer sequencing to ensure the authentic-
+ity of sequencing data. For the combined analysis of 
+16S metabolomics, the process involved 16S rDNA 
+amplicon sequencing of significantly different micro-
+biota and significantly different metabolites, followed 
+by various correlation analyses. To confirm differences 
+in the abundance of individual taxonomy between the 
+groups, STAMP software was utilized. LEfSe was used 
+for the quantitative analysis of biomarkers within dif-
+ferent groups. To identify differences in microbial 
+Table 1 Sequence of primers used for qRT-PCR
+Primer name
+Sequence (5’ to 3’)
+mouse-IL-1β-F
+CAC​TAC​AGG​CTC​CGA​GAT​GAA​CAA​C
+mouse-IL-1β-R
+TGT​CGT​TGC​TTG​GTT​CTC​CTT​GTA​C
+mouse-IL6-F
+CTC​CCA​ACA​GAC​CTG​TCT​ATAC​
+mouse-IL6-R
+CCA​TTG​CAC​AAC​TCT​TTT​CTCA​
+mouse-TNF-α-F
+ATG​TCT​CAG​CCT​CTT​CTC​ATTC​
+mouse-TNF-α-R
+GCT​TGT​CAC​TCG​AAT​TTT​GAGA​
+mouse-IL10-F
+TTC​TTT​CAA​ACA​AAG​GAC​CAGC​
+mouse-IL10-R
+GCA​ACC​CAA​GTA​ACC​CTT​AAAG​
+mouse iNOS-F
+ATC​TTG​GAG​CGA​GTT​GTG​GAT​TGT​C
+mouse iNOS-R
+TAG​GTG​AGG​GCT​TGG​CTG​AGTG​
+mouse Arg1-F
+AAT​CTG​GTT​GTG​TAT​CCT​CGTT​
+mouse Arg1-R
+AGA​GGT​GTA​TTA​ATG​TCC​GCAT​
+mouse Slc6a8-F
+GCC​CTA​CCT​CCT​CTC​CTT​CTT​TCC​
+mouse Slc6a8-R
+TTT​CCC​TCC​TCT​CCT​GTT​ACC​CAA​G
+ Page 4 of 18
+Xu et al. European Journal of Medical Research (2023) 28:319 
+communities between the groups, ANOSIM and 
+ADONIS were performed based on the Bray-Curtis 
+dissimilarity distance matrices.
+LC-MS/MS Analysis
+Analyses were performed using a UHPLC (1290 Infinity 
+LC, Agilent Technologies) coupled to a quadrupole time-
+of-flight (AB SciexTripleTOF 6600) in Shanghai Applied 
+Protein Technology Co., Ltd.
+Statistics Analysis
+All data were expressed as mean ± SD. Comparisons 
+between multiple groups were assessed by student t-test. 
+P &lt; 0.05 was considered statistically significant.
+</div><div class='tools'><button type='button' class='quiet' onclick='jumpSec(1)'>Blot section</button><button type='button' class='quiet' onclick='jump(-1)'>Prev</button><button type='button' class='quiet' onclick='jump(1)'>Next</button><span id='hits_PMC10474707' class='num'></span><span class='aid'>shading is a search aid, not an answer</span></div></div><div class='col-q'><div class='q' data-q='v2|PMC10474707|protein_per_lane_ug' data-pmcid='PMC10474707' data-item='protein_per_lane_ug'><div class='qname'><span>Protein loaded per lane</span><span class='ans'></span></div><div class='qdef'>A mass of protein loaded on the blot's gel, per lane, well or sample ('Proteins (40 ug) were run on SDS gels' counts). A volume on its own does not count, and neither does a mass used for another assay (an IP or pull-down input, a digest, drug or RNA amounts). Western blot only.</div><div class='qhow'><b>What to mark.</b> Mark the mass and its unit.<span class='eg'>In <i>30 ug of protein was loaded per lane</i> mark <b>30 ug</b>.</span></div><div class='acts'><button type='button' data-act='mark'>Use highlighted text</button><button type='button' class='sec' data-act='done' style='display:none'>Done, next</button><button type='button' class='sec' data-act='not_stated'>Not stated</button><button type='button' class='quiet' data-act='unclear'>Unclear</button></div><div class='grab'><div class='cap'>Marked so far, add as many as the paper has</div><ol class='spans'></ol><label class='morewrap'><input type='checkbox' class='morebox'>There are more of these than I marked</label></div></div></div></div></div><div class='card'><div class='paper-h'><h2>Paper <span class='num'>3</span> of <span class='num'>9</span></h2><span class='pill'>PMC11024596</span></div><div class='note' style='font-size:13px;color:var(--ink-mute);margin-bottom:6px'> · <span class='num'>year unknown</span></div><div class='split'><div class='col-text'><div class='methods' id='m_PMC11024596'>
+Antibodies
+All tested TIA1 antibodies are listed in Table 2, together with their corresponding Research Resource Identifiers, or
+RRID, to ensure the antibodies are cited properly.28 Peroxidase-conjugated goat anti-rabbit and anti-mouse antibodies are
+from Thermo Fisher Scientific (cat. number 65-6120 and 62-6520). Alexa-555-conjugated goat anti-rabbit and anti-
+mouse secondary antibodies are from Thermo Fisher Scientific (cat. number A21429 and A21424).
+Cell culture
+Both HAP1 WT and TIA1 KO cell lines used are listed in Table 1, together with their corresponding RRID, to ensure the
+cell lines are cited properly.29 Cells were cultured in DMEM high-glucose (GE Healthcare cat. number SH30081.01)
+containing 10% fetal bovine serum (Wisent, cat. number 080450), 2 mM L-glutamine (Wisent cat. number 609065),
+100 IU penicillin and 100 μg/mL streptomycin (Wisent cat. number 450201).
+245-
+48-
+75-
+35-
+17-
+WT
+KO
+NBP2-67203**
+86050**
+NBP3-13791**
+GTX33545
+MA5-26474*
+MA5-32615**
+WT
+KO
+WT
+KO
+WT
+KO
+WT
+KO
+WT
+KO
+245-
+48-
+75-
+35-
+17-
+245-
+48-
+75-
+35-
+17-
+245-
+48-
+75-
+35-
+17-
+245-
+48-
+75-
+35-
+17-
+245-
+48-
+75-
+35-
+17-
+245-
+48-
+75-
+35-
+17-
+245-
+48-
+75-
+35-
+17-
+245-
+48-
+75-
+35-
+20-
+245-
+48-
+75-
+35-
+17-
+245-
+48-
+75-
+35-
+17-
+WT
+KO
+ab140595**
+A6237
+ab263945**
+ARP40979
+ARP40981
+NBP2-53336*
+WT
+KO
+WT
+KO
+WT
+KO
+WT
+KO
+WT
+KO
+245-
+48-
+75-
+35-
+17-
+245-
+48-
+75-
+35-
+17-
+245-
+48-
+75-
+35-
+17-
+245-
+48-
+75-
+35-
+17-
+245-
+48-
+75-
+35-
+17-
+245-
+48-
+75-
+35-
+17-
+245-
+48-
+75-
+35-
+17-
+245-
+48-
+75-
+35-
+17-
+245-
+48-
+75-
+35-
+17-
+245-
+48-
+75-
+35-
+17-
+245-
+48-
+75-
+35-
+17-
+245-
+48-
+75-
+35-
+17-
+245-
+48-
+75-
+35-
+20-
+Figure 1. TIA1 antibody screening by Western Blot. Lysates of HAP1 (WT and TIA1 KO) were prepared and 50 μg of
+protein were processed for Western Blot with the indicated TIA1 antibodies. The Ponceau stained transfers of each
+blot are presented to show equal loading of WT and KO lysates and protein transfer efficiency from the acrylamide
+gels to the nitrocellulose membrane. Antibody dilutions were chosen according to the recommendations of the
+antibody supplier. Antibody dilution used: ab140595** at 1/5000; ab263945** at 1/1000; A6237 at 1/1000;
+ARP40979 at 1/500; ARP40981 at 1/200; NBP2-53336* at 1/1000; NBP2-67203** at 1/1000; NBP3-13791** at 1/500;
+86050** at 1/1000; GTX33545 at 1/500; MA5-26474* at 1/2000; and MA5-32615** at 1/500. Predicted band size:
+43 kDa. *=monoclonal antibody, **=recombinant antibody.
+Page 4 of 16
+F1000Research 2024, 12:745 Last updated: 17 APR 2024
+ Antibody screening by Western Blot
+Western Blots were performed as described in our standard operating procedure.30 HAP1 WT and TIA1 KO were
+collected in RIPA buffer (25mM Tris-HCl pH 7.6, 150mM NaCl, 1% NP-40, 1% sodium deoxycholate, 0.1% SDS)
+(Thermo Fisher Scientific, cat. number 89901) supplemented with 1x protease inhibitor cocktail (MilliporeSigma,
+cat. number 78429). Lysates were sonicated briefly and incubated for 30 min on ice. Lysates were spun at ~110,000 x g for
+15 min at 4°C and equal protein aliquots of the supernatants were analyzed by SDS-PAGE and Western Blot. BLUelf
+prestained protein ladder from GeneDireX (cat. number PM008-0500) was used.
+Western Blots were performed with precast midi 4-20% Tris-Glycine polyacrylamide gels from Thermo Fisher Scientific
+(cat. number WXP42012BOX) ran with Tris/Glycine/SDS buffer from Bio-Rad (cat. number 1610772), loaded in
+Laemmli loading sample buffer from Thermo Fisher Scientific (cat. number AAJ61337AD) and transferred onto
+nitrocellulose membranes. Proteins on the blots were visualized with Ponceau S staining (Thermo Fisher Scientific,
+cat. number BP103-10) which is scanned to show together with individual Western Blot. Blots were blocked with 5%
+milk for 1 hr, and antibodies were incubated overnight at 4°C with 5% bovine serum albumin (BSA) (Wisent, cat. number
+800-095) in TBS with 0,1% Tween 20 (TBST) (Cell Signalling Technology, cat. number 9997). Following three washes
+with TBST, the peroxidase conjugated secondary antibody was incubated at a dilution of ~0.2 μg/mL in TBST with 5%
+milk for 1 hr at room temperature followed by three washes with TBST. Membranes were incubated with Pierce ECL
+from Thermo Fisher Scientific (cat. number 32106) prior to detection with the HyBlot CL autoradiography films from
+Denville (cat. number 1159T41).
+Antibody screening by immunoprecipitation
+Immunoprecipitation was performed as described in our standard operating procedure.31 Antibody-bead conjugates were
+prepared by adding 1 μg of antibody to 500 μL of Pierce IP Lysis Buffer from Thermo Fisher Scientific (cat. number
+135-
+48-
+75-
+35-
+20-
+A
+B
+135-
+48-
+75-
+35-
+20-
+135-
+48-
+75-
+35-
+20-
+135-
+48-
+75-
+35-
+20-
+135-
+48-
+75-
+35-
+20-
+135-
+48-
+75-
+35-
+20-
+135-
+48-
+75-
+35-
+20-
+135-
+48-
+75-
+35-
+20-
+135-
+48-
+75-
+35-
+20-
+135-
+48-
+75-
+35-
+20-
+135-
+48-
+75-
+35-
+20-
+135-
+48-
+75-
+35-
+20-
+WB: 86050**
+WB: 86050**
+WB: 86050**
+WB: 86050**
+WB: 86050**
+WB: 86050**
+SM
+UB
+IP: ab140595**
+SM
+UB
+IP: ab263945**
+SM
+UB
+IP: ARP40981
+SM
+UB
+IP: NBP2-67203**
+SM
+UB
+IP: 86050**
+SM
+UB
+IP: MA5-26474*
+135-
+48-
+75-
+35-
+20-
+unbound fractions
+135-
+48-
+75-
+35-
+20-
+135-
+48-
+75-
+35-
+20-
+135-
+48-
+75-
+35-
+20-
+unbound fractions
+WB: 86050**
+starting material
+ab263945**
+86050**
+GTX33545
+A6237
+ARP40981
+ARP40979
+starting material
+starting material
+NBP2-53336*
+NBP3-13791**
+NBP2-67203**
+MA5-26474*
+MA5-32615**
+ab140595**
+starting material
+Figure 2. TIA1 antibody screening by immunoprecipitation. HAP1 lysates were prepared, and IP was performed
+using 1.0 μg of the indicated TIA1 antibodies pre-coupled to Dynabeads protein G or protein A. (A) Ability of the
+antibodies to capture TIA1 was assessed by comparing the level of protein available in the starting material to the
+level remaining in the unbound fraction. (B) The immunoprecipitates for antibodies which could immunocapture
+TIA1 in (A) are shown. For Western Blot, 86050** was used at 1/1000 in A) and B). The Ponceau stained transfers of
+each blot are shown. SM=4% starting material; UB=4% unbound fraction; IP=immunoprecipitate. *=monoclonal
+antibody, **=recombinant antibody.
+Page 5 of 16
+F1000Research 2024, 12:745 Last updated: 17 APR 2024
+ 87788) in a 1.5 mL microcentrifuge tube, together with 30 μL of Dynabeads protein A- (for rabbit antibodies) or protein
+G- (for mouse antibodies) from Thermo Fisher Scientific (cat. number 10002D and 10004D, respectively). Tubes were
+rocked for ~1 hr at 4°C followed by two washes to remove unbound antibodies.
+HAP1 WT were collected in Pierce IP buffer (25 mM Tris-HCl pH 7.4, 150 mM NaCl, 1 mM EDTA, 1% NP-40 and 5%
+glycerol) supplemented with 1x protease inhibitor (Millipore Sigma, cat. number P8340). Lysates were rocked 30 min at 4°C
+and spun at 110,000 x g for 15 min at 4°C. 0.5 mL aliquots at 2.0 mg/mL of lysate were incubated with an antibody-bead
+conjugate for ~1 hr at 4°C. The antibody-bead conjugate can elute the protein of interest if the tested antibodies can
+successfully bind their antigen. The unbound fractions were collected and removed while the beads were subsequently
+washed three times with 1.0 mLof or IP lysisbuffer and processed for SDS-PAGE and Western Blot on a precast midi 4-20%
+Tris-Glycine polyacrylamide gels. Prot-A: HRP (MilliporeSigma, cat. number P8651) was used as a secondary detection
+antibody
+DAPI
+antibody
+DAPI
+antibody
+DAPI
+ab140595**
+A6237
+ab263945**
+ARP40979
+ARP40981
+NBP2-53336*
+NBP2-67203**
+86050**
+NBP3-13791**
+GTX33545
+MA5-26474*
+MA5-32615**
+Figure 3. TIA1 antibody screening by immunofluorescence. HAP1 WT and TIA1 KO cells were labelled with a green
+or a far-red fluorescent dye, respectively. WT and KO cells were mixed and plated to a 1:1 ratio in a 96-well plate with
+optically clear flat-bottom. Cells were stained with the indicated TIA1 antibodies and with the corresponding Alexa-
+fluor 555 coupled secondary antibody including DAPI. Acquisition of the blue (nucleus-DAPI), green (identification of
+WT cells), red (antibody staining) and far-red (identification of KO cells) channels was performed. Representative
+images of the merged blue and red (grayscale) channels are shown. WT and KO cells are outlined with green and
+magenta dashed line, respectively. Antibody dilutions were chosen according to the recommendations of the
+antibody supplier. Exceptions were given to antibodies ab140595**, A6237, NBP2-67203**, and GTX33545, which
+were titrated to their respective concentrations found bellow, as the signals were too weak when following the
+suppliers&#x27; recommendations. When the concentrations were not indicated by the supplier, which was the case for
+antibodies ab263945**, ARP40979, ARP40981, and NBP3-13791** we tested antibodies at 1/300, 1/500, 1/500 and
+1/200, respectively. At these concentrations, the signal from each antibody was in the range of detection of the
+microscope used. Antibody dilution used: ab140595** at 1/600; ab263945** at 1/300; A6237 at 1/1000; ARP40979 at
+1/500; ARP40981 at 1/500; NBP2-53336* at 1/100; NBP2-67203** at 1/1000; NBP3-13791** at 1/200; 86050** at
+1/100; GTX33545 at 1/800; MA5-26474* at 1/1000; and MA5-32615** at 1/100. Bars = 10 μm. *=monoclonal antibody,
+**=recombinant antibody.
+Page 6 of 16
+F1000Research 2024, 12:745 Last updated: 17 APR 2024
+ Table 2. Summary of the TIA1 antibodies tested.
+Company
+Catalog
+number
+Lot number
+RRID
+(Antibody
+Registry)
+Clonality
+Clone ID
+Host
+Concentration
+(μg/μl)
+Vendors
+recommended
+applications
+Abcam
+ab140595**
+GR223312-17
+AB_2687963
+recombinant-mono
+EPR9304
+rabbit
+0.665
+Wb, IP, IF
+Abcam
+ab263945**
+GR3297000-3
+AB_2885132
+recombinant-mono
+EPR22999-80
+rabbit
+0.599
+Wb, IP
+Abclonal
+A6237
+18980101
+AB_2766845
+polyclonal
+-
+rabbit
+2.920
+Wb, IF
+Aviva Systems Biology
+ARP40979
+QC10247-90408
+AB_2048416
+polyclonal
+-
+rabbit
+0.500
+Wb
+Aviva Systems Biology
+ARP40981
+QC10249-41152
+AB_938457
+polyclonal
+-
+rabbit
+0.500
+Wb, IP
+Bio-Techne
+NBP2-53336*
+7072-1p210821
+AB_2885158
+monoclonal
+TIA1/1313
+mouse
+0.200
+Wb, IF
+Bio-Techne
+NBP2-67203**
+H00823
+AB_29277441
+recombinant-mono
+JM42-11
+rabbit
+1.000
+Wb, IP, IF
+Bio-Techne
+NBP3-13791**
+7072-2P210904
+AB_29277431
+recombinant-mono
+TIA1/1352R
+rabbit
+0.200
+other
+Cell Signaling Technology
+86050**
+1
+AB_2800070
+recombinant-mono
+D1Q3K
+rabbit
+0.002
+Wb, IP
+GeneTex
+GTX33545
+822104511
+AB_2887719
+polyclonal
+-
+rabbit
+0.820
+Wb, IF
+Thermo Fisher Scientific
+MA5-26474*
+VL3152368
+AB_2725518
+monoclonal
+OTI1D7
+mouse
+1.000
+Wb, IF
+Thermo Fisher Scientific
+MA5-32615**
+VL3152613
+AB_2809892
+recombinant-mono
+JM42-11
+rabbit
+1.000
+Wb, IP, IF
+Wb=Western blot; IF= immunofluorescence; IP=immunoprecipitation.
+*= monoclonal antibody.
+**= recombinant antibody.
+1refers to RRID recently added to the Antibody Registry (in February 2023), they will be available on their website in the coming weeks.
+Page 7 of 16
+F1000Research 2024, 12:745 Last updated: 17 APR 2024
+ system at a dilution of 0.3 μg/mL for experiments where rabbit antibodies are used for both immunoprecipitation and its
+corresponding Western Blot.
+Antibody screening by immunofluorescence
+Immunofluorescence was performed as described in our standard operating procedure.17-24 HAP1 WT and TIA1 KO
+were labelled with a CellTrackerTM green (Thermo Fisher Scientific, cat. number C2925) or CellTrackerTM deep red
+(Thermo Fisher Scientific, cat. number C34565) fluorescence dye, respectively. WT and KO cells were plated in 96-well
+plate with optically clear flat-bottom (Perkin Elmer, cat. number 6055300) as a mosaic and incubated for 24 hrs in a cell
+culture incubator at 37oC, 5% CO2. Cells were fixed in 4% paraformaldehyde (PFA) (Beantown chemical, cat. number
+140770-10ml) in phosphate buffered saline (PBS) (Wisent, cat. number 311-010-CL) for 15 min at room temperature and
+then washed 3 times with PBS. Cells were permeabilized in PBS with 0.1% Triton X-100 (Thermo Fisher Scientific, cat.
+number BP151-500) for 10 min at room temperature and blocked with PBS containing 5% BSA, 5% goat serum (Gibco,
+cat. number 16210-064) and 0.01% Triton X-100 for 30 min at room temperature. Cells were incubated with IF buffer
+(PBS, 5% BSA, 0,01% Triton X-100) containing the primary TIA1 antibodies overnight at 4°C. Cells were then washed
+3  10 min with IF buffer and incubated with corresponding Alexa Fluor 555-conjugated secondary antibodies in IF
+buffer at a dilution of 1.0 μg/mL for 1 hr at room temperature with DAPI (Thermo Fisher Scientific, cat. Number D3571)
+fluorescent stain, used to label the nuclei. Cells were washed 3  10 min with IF buffer and once with PBS.
+Images were acquired on an ImageXpress micro widefield high-content microscopy system (Molecular Devices), using a
+20x/0.45 NA air objective lens and scientific CMOS camera (16-bit, 1.97mm field of view), equipped with 395, 475,
+555 and 635 nm solid state LED lights (Lumencor Aura III light engine) and bandpass emission filters (432/36 nm, 520/35
+nm, 600/37 nm and 692/40 nm) to excite and capture fluorescence emission for DAPI, CellTrackerTM green, Alexa fluor
+555 and CellTrackerTM deep red, respectively. Images had pixel sizes of 0.68 x 0.68 microns. Exposure time was set with
+maximal (relevant) pixel intensity ~80% of dynamic range and verified on multiple wells before acquisition. Since the IF
+staining varied depending on the primary antibody used, the exposure time was set using the most intensely stained well
+as reference. Frequently, the focal plane varied slightly within a single field of view. To remedy this issue, a stack of three
+images per channel was acquired at a z-interval of 4 microns per field and best focus projections were generated during the
+acquisition (MetaExpress v6.7.1, Molecular Devices). Segmentation was carried out on the projections of CellTrackerTM
+channels using CellPose v1.0 on green (WT) and far-red (KO) channels, using as parameters the ‘cyto’ model to detect
+whole cells, and using an estimated diameter tested for each cell type, between 15 and 20 microns.32 Figures were
+assembled with Adobe Photoshop (version 24.1.2) to adjust contrast then assembled with Adobe Illustrator (version
+27.3.1).
+Data availability
+Underlying data
+Zenodo: Antibody Characterization Report for TIA1, https://doi.org/10.5281/zenodo.7671718.26
+Zenodo: Dataset for the TIA1 antibody screening study, https://doi.org/10.5281/zenodo.7796012.27
+</div><div class='tools'><button type='button' class='quiet' onclick='jumpSec(1)'>Blot section</button><button type='button' class='quiet' onclick='jump(-1)'>Prev</button><button type='button' class='quiet' onclick='jump(1)'>Next</button><span id='hits_PMC11024596' class='num'></span><span class='aid'>shading is a search aid, not an answer</span></div></div><div class='col-q'><div class='q' data-q='v2|PMC11024596|total_protein_stain' data-pmcid='PMC11024596' data-item='total_protein_stain'><div class='qname'><span>Total protein stain</span><span class='ans'></span></div><div class='qdef'>A total-protein stain used to normalize or check the blot: Ponceau S or REVERT on the membrane, stain-free imaging used for normalization, or Coomassie stated as the blot's loading or transfer check, including a parallel gel stained and stated as the blot's loading check. A stained gel with no stated link to a blot, or a stain-free gel named only as a product, does not count. Western blot only.</div><div class='qhow'><b>What to mark.</b> Mark the stain name only.<span class='eg'>In <i>confirmed by Ponceau S staining</i> mark <b>Ponceau S</b>. Nothing to mark in <i>run on a 4-15% TGX Stain-Free gel</i> with no normalization stated, in any stain on a purity, expression, preparative, mass-spec or antibody-QC gel, or in a stain on a gel that was never blotted and is not stated as the blot's loading check.</span></div><div class='acts'><button type='button' data-act='mark'>Use highlighted text</button><button type='button' class='sec' data-act='done' style='display:none'>Done, next</button><button type='button' class='sec' data-act='not_stated'>Not stated</button><button type='button' class='quiet' data-act='unclear'>Unclear</button></div><div class='grab'><div class='cap'>Marked so far, add as many as the paper has</div><ol class='spans'></ol><label class='morewrap'><input type='checkbox' class='morebox'>There are more of these than I marked</label></div></div></div></div></div><div class='card'><div class='paper-h'><h2>Paper <span class='num'>4</span> of <span class='num'>9</span></h2><span class='pill'>PMC4605622</span></div><div class='note' style='font-size:13px;color:var(--ink-mute);margin-bottom:6px'> · <span class='num'>year unknown</span></div><div class='split'><div class='col-text'><div class='methods' id='m_PMC4605622'>
+Reagents and recombinant proteins
+Recombinant COMP-Ang1 and BMP2 was purchased from Innotherapy (Seoul, Korea) and
+Cowellmedi (Seoul, Korea), respectively. The absorbable collagen sponge CollaDerm was
+obtained from Bioland (Ochang, Korea).
+Animal preparations
+All animal studies were reviewed and approved by the Animal Ethics Committee of Chonnam
+National University (No. CNU-IACUC-YB-2014-35). Six week-old male C57BL/6 mice were
+purchased from Daehan Biolink (Eumseong, Korea) and housed in a housed temperature-con-
+trolled condition with 12 h light/dark cycles at Chonnam National University School of Den-
+tistry. Mice were anesthetized by intraperitoneal injection of a mixture of Zoletil (30 mg/kg;
+Virbac Lab, Carros, France) and Rompun (10 mg/kg; Bayer Korea Ltd, Gyeonggido, Korea). A
+0.8 to 1.0-cm sagittal incision was made on the scalp, and then calvarial bone was exposed by
+blunt dissection. A critical size defect was created by means of a 5-mm inner diameter trephine
+bur under sterile environment. After BMP2 and/or COMP-Ang1 with absorbable collagen
+sponges were implanted into the defects, surgical incisions were closed. Animals were sacrificed
+by carbon dioxide exposure at a low-flow rate of 10%-30% of the cage volume per minute after
+3 weeks of surgical treatment, and calvarial bones were harvested for further analysis.
+Micro-computed tomography analysis
+Calvarial bone was harvested 3 weeks after implanting, and radiographic analysis for evaluating
+bone repair was performed with a micro-computed tomography (μ-CT) apparatus (Skyscan
+1172; Skyscan, Aartselaar, Belgium). Each specimen was scanned in a cone-beam acquisition
+mode. The X-ray source was set at 50 kV and 200 μA with 0.5-mm aluminum filter and at a
+17.09 μm resolution. Exposure time was 1.2 sec. From the scan, 449 projections were acquired
+over an angular range of 180°(angular step; 0.4°), and the image slices were reconstructed with
+the Nrecon program (version 1.10.0.5, Skyscan). Bone volume repaired was measured by using
+the CT-Analyzer program (version 1.10.0.5, Skyscan). The 3D surface rendering image was
+obtained by Mimics imaging program (version 14.0, Materialise N.V., Leuven, Belgium).
+Histology and immunofluorescence analysis
+All specimens were decalcified in rapid decalcifying solution (Calci-Clear Rapid, National
+Diagnostics, Atlanta, GA) for 10 days and then embedded in paraffin, and cut into 7 μm sec-
+tions. The sections were deparaffinized in xylene, rehydrated with a graded series of alcohols,
+and stained with hematoxylin and eosin solution.
+Immunofluorescence assay was performed to evaluate vascular formation and pericyte
+recruitment. Briefly, histology sections were deparaffinized, rehydrated, and incubated in phos-
+phate buffered saline solution with Tween-20 (PBS-T), containing 5% normal serum for 2 hrs.
+After overnight incubation with primary mouse anti-NG2 (1:100; Abcam, Cambridge, UK)
+and rabbit anti-CD31 (1:50; Abcam, Cambridge, UK) antibodies, the histology sections were
+treated with Alexa Fluor 488-conjugated donkey anti-mouse IgG and Alexa Fluor 555-conju-
+gated goat anti-rabbit IgG (Santa Cruz Biotechnology, Delaware, CA, USA). Cell nuclei were
+stained with 40, 6-Diamidino-2-phenylindole dihydrochloride (DAPI). Immunoreactivity was
+detected by confocal microscopy (Carl Zeiss, Jena, Germany). The fluorescence intensity was
+measured from 4 different samples (at least 5 foci per section) by image analyzer LSM 510 soft-
+ware (Carl Zeiss, Jena, Germany).
+COMP-Ang1 Enhances BMP2-Induced Bone Repair
+PLOS ONE | DOI:10.1371/journal.pone.0140502
+October 14, 2015
+3 / 13
+ Cell culture experiments
+The human brain microvascular pericytes (NeuroVascular Coordination Research Center;
+Seoul, Korea) [23] were cultured in Dulbecco&#x27;s Modified Eagle&#x27;s medium (DMEM, Invitrogen,
+USA) supplemented with 10% fetal bovine serum (FBS, Invitrogen, USA) and 1% antibiotics
+(Sigma, MO, USA), and incubated at 37°C in a humidified atmosphere of 5% CO2. For osteo-
+genic differentiation, 50 μg/ml of ascorbic acid and 5 mM of β-glycerophosphate were added
+into the culture medium. Cells were maintained for 3 or 15 days in the presence of COM-
+P-Ang1 (600 ng/ml) and/or BMP2 (200 ng/ml), and then harvested for RT-PCR or Alizarin
+red staining, respectively. Osteogenic medium was replaced every 3 days.
+Cell migration assay
+Migration activity of pericytes was evaluated with a Boyden&#x27;s chamber containing polycarbon-
+ate filters with 8-μm pores (Corning, NY, USA) [24]. Cells were seeded onto upper chambers
+in transwell-24 well culture plates at a density of 5×104 cells/cm2 and lower chambers were
+filled with serum-free DMEM containing COMP-Ang1 (600 ng) and/or BMP2 (200 ng), fol-
+lowed by incubation at 37°C for 6 hrs in a humidified atmosphere of 5% CO2. After removing
+non-migrating cells with a cotton swab, the remaining cells were fixed with 4% paraformalde-
+hyde in PBS and stained with 0.1% crystal violet solution. Cells that had migrated through the
+transwell membrane pores toward the bottom chamber were counted in 5 random fields from
+each membrane under a light microscope (Leica, Wetzlar, Germany).
+Reverse transcriptase PCR
+Total RNA was isolated using TRIzol reagent (Invitrogen, Carlsbad, CA, USA) according to
+the manufacturer’s instruction. The cDNA was synthesized with the random primer and
+reverse transcriptase (Invitrogen). Each reaction consisted of initial denaturation at 94°C for
+1 min followed by 3-step cycling: denaturation at 94°C for 30 sec, annealing at a temperature
+optimized for each primer pair for 30 sec, and extension at 72°C for 30 sec. After the requisite
+number of cycles (28-30 cycles), the reactions underwent a final extension at 72°C for 5 min.
+The primer sequences were as follows: human bone sialoprotein (hBSP), forward 50-AACCTA
+CAACCCCACCACAA-30 and reverse 50- AGGTTCCCCGTTCTCACTTT-30; human osteo-
+calcin (hOCN), forward 50-CTCACACTCCTCGCCCTATT-30 and reverse 50-GCTCCCAGC
+CATTGATACAG-30; human osterix (hOSX), forward 50-GGCACAAAGAAGCCGTACTC-30
+and reverse 50-TGGGAAAAGGGAGGGTAATC-30; β-actin, forward 50- GTCGGGCGCCCC
+AGGCACCA-30 and reverse 50-CTCCTTAATGTCACGCACGAT-30.
+Western blot analysis
+Cells were harvested in a lysis buffer (Cell Signaling, Beverly, MA, USA) and then total protein
+concentration was determined by the BCA assay reagent (Bio-Rad Laboratories, Hercules, CA,
+USA). Proteins were resolved on a 10% SDS-PAGE and transferred to a PVDF membrane.
+After blocking in 5% skim milk in TBS with 0.1% Tween-20 (TBS-T), the membrane was incu-
+bated overnight at 4°C with primary antibodies for phospho-Smad1/5/8 and total Smad (Cell
+Signaling, Beverly, MA, USA) diluted 1:2,000 in 5% skim milk in TBS-T. After washing, the
+blots were incubated for 2 hrs with anti-rabbit horseradish-peroxidase-conjugated antibody
+(Promega, Madison, WI, USA) diluted 1:3,000 in TBS-T. Signals were detected by an enhanced
+chemiluminescence reagent (Santa Cruz Biotech, CA, USA), and LAS-4000 luminoimage ana-
+lyzer system (Fujifilm, Tokyo, Japan).
+COMP-Ang1 Enhances BMP2-Induced Bone Repair
+PLOS ONE | DOI:10.1371/journal.pone.0140502
+October 14, 2015
+4 / 13
+ Alizarin red staining
+Alizarin Red staining was performed to examine matrix calcification. Briefly, cultured cells
+were fixed with 70% ethanol for 60 min, rinsed thrice with deionized water, and reacted with a
+40 mM alizarin red solution (pH 4.2) for 15 min. The stained cultures were then photographed.
+For quantitative comparison, stains were extracted with 10% (w/v) cetylpyridinium chloride,
+and then absorbance was measured with standard alizarin red solution by using spectropho-
+tometry (Multiskan GO, Thermo Scientific, Waltham, USA).
+Statistical analysis
+All experiments were repeated at least thrice, and statistical analysis of the data was performed
+by one-way analysis of variance (ANOVA) and Tukey’s comparisons using the Graph Pad
+Prism 4 for Windows statistical software package (Graph Pad Software Inc., La Jolla, CA,
+USA). All data presented were expressed as mean ± SEM of 3 independent measurements. A
+value of p &lt; 0.05 was considered to be statistically significant.
+</div><div class='tools'><button type='button' class='quiet' onclick='jumpSec(1)'>Blot section</button><button type='button' class='quiet' onclick='jump(-1)'>Prev</button><button type='button' class='quiet' onclick='jump(1)'>Next</button><span id='hits_PMC4605622' class='num'></span><span class='aid'>shading is a search aid, not an answer</span></div></div><div class='col-q'><div class='q' data-q='v2|PMC4605622|secondary_ab_vendor' data-pmcid='PMC4605622' data-item='secondary_ab_vendor'><div class='qname'><span>Secondary antibody vendor</span><span class='ans'></span></div><div class='qdef'>The company that supplied a secondary antibody, including the maker of a kit that supplies it. 'All antibodies were from X' counts. Counts for an antibody used in any assay, not only the blot.</div><div class='qhow'><b>What to mark.</b> Mark every distinct company name. Leave out the city and country. A table can be marked as one block.<span class='eg'>In <i>HRP-conjugated goat anti-rabbit IgG (Jackson ImmunoResearch)</i> mark <b>Jackson ImmunoResearch</b>.</span></div><div class='acts'><button type='button' data-act='mark'>Use highlighted text</button><button type='button' class='sec' data-act='done' style='display:none'>Done, next</button><button type='button' class='sec' data-act='not_stated'>Not stated</button><button type='button' class='quiet' data-act='unclear'>Unclear</button></div><div class='grab'><div class='cap'>Marked so far, add as many as the paper has</div><ol class='spans'></ol><label class='morewrap'><input type='checkbox' class='morebox'>There are more of these than I marked</label></div></div></div></div></div><div class='card'><div class='paper-h'><h2>Paper <span class='num'>5</span> of <span class='num'>9</span></h2><span class='pill'>PMC5486552</span></div><div class='note' style='font-size:13px;color:var(--ink-mute);margin-bottom:6px'> · <span class='num'>year unknown</span></div><div class='split'><div class='col-text'><div class='methods' id='m_PMC5486552'>
+Tissue culturing and whole plant experiments
+Aponogeton madagascariensis (Mirbel) H. Bruggen cul-
+tures
+were
+established
+and
+propagated
+according
+to
+Gunawardena et al. (2006). Plants were grown in Magenta
+GA-7 vessels containing 50 ml of solid MS medium con-
+sisting of 1.5% agar (Phytotechnology Laboratories) and
+150 ml of liquid MS. Cultures were kept at 24 C under
+daylight deluxe fluorescent light bulbs (Philips) at an
+intensity of 125 lmol/m2/s on 12 h light/dark cycles.
+Whole plant experiments were carried out using plants with
+a minimum of three perforated mature leaves. Optimized
+treatments included: (1) an antioxidant treatment of
+400 lg/ml L-ascorbic acid and 200 lg/ml L-cysteine (Bio-
+shop Canada), (2) a ROS treatment of 1 mM H2O2 (Fisher
+134
+Planta (2017) 246:133-147
+123
+ Scientific), and (3) the antioxidant ? ROS treatment which
+consisted of a treatment with the antioxidants, followed
+by 1 mM H2O2 4-5 days later. Plants were allowed to
+grow for 2 weeks before their leaves were harvested and
+analyzed. Leaf measurements included length, width, and
+the number of perforations formed. A minimum of 12
+plants were treated for each group.
+Long-term live cell imaging
+Time-lapse videos were captured using the audio-video
+interleave (AVI) function of Nikon NIS AR software
+controlling a Nikon Eclipse 90i compound light micro-
+scope (Nikon Canada Inc). The live cell imaging technique
+described by Wertman et al. (2012) was employed, with
+some modifications. Whole window stage leaves were
+removed from plant cultures, rinsed with distilled water,
+and mounted in a custom grooved slide that matched the
+width and depth of the leaf midrib and allowed the blade to
+lie flat on the slide surface. Depending on the experimental
+conditions, either distilled water or a treatment was applied
+to the leaf before a glass coverslip was applied and sealed
+with melted VALAP (2:1:1, w/w mixture of paraffin wax,
+vaseline, and lanolin). Leaf observations were carried out
+for 12 h daily. The leaf was rinsed with distilled water and
+remounted every 6 h to reduce stress and contamination,
+and kept in the dark at 24 C in fresh media overnight until
+the next period of imaging. The time of death was deter-
+mined at the point where all PCD area cells up to the
+NPCD boundary had expired. A minimum of three inde-
+pendent replicates were carried out for each treatment
+group.
+Nitro blue tetrazolium (NBT) staining
+Histochemical detection of O2
+- in window stage leaves
+was performed using a modified protocol from Grellet
+Bournonville and Dı ́az-Ricci (2011). Leaves from the
+various treatment groups were cut into 5 mm2 sections and
+then immersed in stain solution consisting of 50 mM
+Fig. 1 Lace plant (A. madagascariensis) model system. a Axenic
+lace
+plant
+cultures
+are
+maintained
+in
+Magenta
+GA-7
+boxes.
+b Programmed cell death (PCD) is actively occurring in the window
+stage of leaf development (dashed line, a) between longitudinal and
+transverse veins (c) where a unique gradient of cell death exists as
+highlighted by the dashed lines. d Non-PCD (NPCD) cells are replete
+with anthocyanins and do not undergo PCD during leaf morphogen-
+esis. e Early programmed PCD (EPCD) cells are fated to die and have
+lost
+their
+anthocyanin
+pigmentation.
+f
+Late-programmed
+PCD
+(LPCD) cells are nearly transparent and are on the verge of death.
+Bars 1 cm (a), 5 mm (b), 100 lm (c), and 25 lm (d-f)
+Planta (2017) 246:133-147
+135
+123
+ potassium phosphate buffer (7.8 pH), 10 mM sodium
+azide, and 0.1% NBT (Sigma-Aldrich). The samples were
+then kept in the dark, vacuum infiltrated at 15 psi for
+15 min, and then incubated at room temperature for 15 min
+prior to microscopic observation. The negative control
+underwent the same procedure with the solution lacking
+NBT. After staining, specimens were mounted in distilled
+water and viewed using a Nikon Eclipse Ti microscope. To
+confirm the observed staining patterns in the various leaf
+stages
+without
+the
+interference
+of
+anthocyanin
+and
+chlorophyll pigmentation, samples were placed in 95%
+ethanol for 2-3 days. A minimum of three replicates were
+carried out for all groups.
+Detection of superoxide dismutase-1 (SOD1)
+and catalase (CAT)
+Harvested leaves had their midrib removed, blot-dried,
+and
+frozen
+with
+liquid
+nitrogen.
+The
+tissues
+were
+homogenized on ice in a 1:1 ratio of Pipes buffer (6.8 pH)
+to protease inhibitor solution. The protease inhibitor
+solution was a 1:2 ratio of component A to component B,
+respectively. Component A was comprised of 10 mg/
+ml leupeptin and 10 mg/ml soybean trypsin inhibitor
+(Sigma-Aldrich) dissolved in Pipes buffer. Component B
+consisted of 10 mg/ml pepstatin and 20 mg/ml PMSF
+dissolved in 95% ethanol. The homogenized samples were
+then centrifuged at 16,000g for 15 min. The supernatants
+were removed and quantified for total protein concentra-
+tion via Bradford assay (Bradford 1976). Sample prepa-
+rations for SDS-PAGE were made using a 1:1 ratio of
+sample to 29 Laemmli sample buffer (Bio-Rad) with 5%
+b-mercaptoethanol
+(v/v).
+The
+Precision
+Plus
+Protein
+Standards (Bio-Rad) and samples (10 lg protein weight)
+were loaded into 8-16% SDS polyacrylamide Mini-
+PROTEAN TGX precast gels (Bio-Rad) and resolved at
+160 V for 1 h in ice cold running buffer (0.1% SDS (v/v),
+25 mM Tris and 192 mM glycine, 8.3 pH). Proteins were
+transferred overnight at 120 mA to a 0.2 lm nitrocellu-
+lose
+membrane
+(Bio-Rad)
+in
+transfer
+buffer
+(20%
+methanol (v/v), 25 mM Tris, and 192 mM glycine, 8.3
+pH) at room temperature.
+Nitrocellulose membranes were blocked for 1 h at room
+temperature with mild shaking using 3% (w/v) low fat milk
+powder in TBS-T (Tris buffered saline with Tween 20;
+10 mM Tris, 140 mM NaCl, and 0.1% Tween-20, 7.4 pH).
+The membrane was then incubated at room temperature for
+30 min in a 1:1000 dilution of the SOD1 rabbit polyclonal
+antibody (Santa Cruz Biotechnology, #sc-11407) in TBS-
+T, and then rinsed four times for 1, 1, 2, and 3 min,
+respectively. The membrane was then transferred to TBS-T
+with a 1:10,000 dilution of goat anti-rabbit IgG HRP-
+conjugated antibody (Santa Cruz Biotechnology, #sc-2004)
+for 30 min, and then rinsed as mentioned above with the
+addition of a final 2 min rinse in TBS. Secondary antibody
+localization was achieved using a Pierce ECL Western
+Blotting Substrate (Thermo Fisher Scientific) according to
+the manufacturer’s instructions and imaged using a MF-
+ChemiBIS 3.2 gel documentation system (DNR Bio-
+Imaging). Following imaging, the membrane was rinsed for
+5 min in TBS-T and then incubated overnight at 2 C in a
+1:5000
+dilution
+of
+CAT
+rabbit
+polyclonal
+antibody
+(Agrisera, #AS09 501) in 5% (w/v) low fat milk in TBS-T.
+The next day, the secondary antibody incubation and
+imaging was performed as mentioned above. A minimum
+of four independent replicates were carried out for all
+treatment groups.
+Protein band intensities were normalized to their
+respective control via Ponceau staining, which served as
+the loading control. Ponceau staining was done for 5 min
+with mild shaking at room temperature, followed by a
+2 min rinse with TBS-T. An image of the Ponceau-stained
+membrane was converted to greyscale and imported into
+Image Studio Lite and quantified (Li-Cor Biosciences).
+Image Studio Lite was also used to determine individual
+band intensities.
+Anthocyanin and ABTS spectrophotometric assays
+Tissue samples (20 mg) were excised from mature and
+window stage leaves taken from sterile cultures. The
+anthocyanin extraction protocol was adapted from Li et al.
+(2010). Tissue samples were ground and macerated in
+200 ll of formic acid/methanol (5/95, v/v) and placed at
+room temperature in the dark for 50 min, followed by
+10 min centrifugation at 10,000g. The supernatant was
+collected and absorbance immediately read at 520 nm
+using a SmartSpec Plus Spectrophotometer (Bio-Rad). The
+2,20-azino-bis-3-ethylbenzothiazoline-6-sulphonic
+acid
+(ABTS) assay kit was used according to the manufacturer’s
+instructions (Zen-Bio). Absorbance was determined using a
+SpectraMax Plus 384 Microplate Reader and Softmax Pro
+5 software (Molecular Devices). Standard curves of
+ascorbic acid (ABTS) and cyanidin-3-rutinoside (antho-
+cyanin) were generated, and results were expressed as
+vitamin C equivalents and cyanidin-3-rutinoside equiva-
+lents (C3RE), respectively. A minimum of 4 replicates
+were analyzed for each group.
+Image and video processing
+Photographs were acquired using a Nikon L110 digital
+camera. All images and videos were prepared for pub-
+lication using Photoshop and Premiere Pro, respectively
+(Adobe Creative Cloud; Adobe Systems Inc.). When
+necessary
+to
+improve
+image
+quality,
+alterations
+to
+136
+Planta (2017) 246:133-147
+123
+ brightness, contrast, and color were made evenly. In the
+whole plant layouts and detached window stage leaf
+images, backgrounds and or shadows were removed
+using Photoshop. Window stage leaf micrographs were
+acquired by a Nikon AZ100 microscope and multiple
+images were merged together using the layer mask tool
+in Photoshop.
+Statistical analysis and data representation
+The one-way ANOVA followed by a Tukey or Dunnett’s
+test was carried out to detect significant differences among
+means. All data are expressed as mean ± SE unless
+otherwise stated. Analyses were carried out using the
+GraphPad Prism 5 software (GraphPad Software Inc.).
+Fig. 2 Whole plant effects of antioxidant and ROS treatments.
+Representative leaf layouts showing the control (a), the antioxidant
+combination of 400 lg/ml ascorbic acid (AA) and 200 lg/ml cysteine
+(Cys) (b), 1 mM H2O2 and an antioxidant ? ROS treatment receiving
+400 lg/ml AA (c), and 200 lg/ml Cys followed by 1 mM H2O2
+4-5 days later (d). Leaves were arranged chronologically-leaf 0
+represents a control leaf, which developed prior to treatment, while
+leaves 1-4 developed afterwards (4 being the youngest). The length
+(e) and the mean number of perforations (f) were quantified for post-
+treatment mature leaves along with the mean number of perforations
+by leaf (g). Representative window stage images (1 week after the
+beginning of the experiment) were taken for control (h), the AA and
+Cys combination (i), 1 mM H2O2 (j) and antioxidant ? ROS
+(k) treatments. Bars 2 cm (a-d), 5 lm (leaves, h-k), 250, 100, and
+50 lm (micrographs, top to bottom, h-k). Means with different letters
+differ significantly and error bars represent standard error. One-way
+ANOVA, Tukey test (P \ 0.05; n C 12)
+Planta (2017) 246:133-147
+137
+123
+ Results
+Whole plant experiments
+Lace plants grown in axenic cultures were utilized to deter-
+mine the effects of antioxidants and ROS on developmental
+PCD and perforation formation. Control plants (Fig. 2a) had
+mature leaves with a length of 13.51 ± 0.49 cm (Fig. 2e) and
+122.60 ± 10.26 perforations (Fig. 2f). An optimized antiox-
+idant combination treatment of 400 lg/ml ascorbic acid (AA)
+and 200 lg/ml L-cysteine (Cys; Fig. 2b) resulted in leaves
+with a length of 13.09 ± 0.49 cm (Fig. 2e) and 13.67 ± 4.92
+perforations (Fig. 2f), which was significantly fewer perfo-
+rations than controls. A 1 mM H2O2 (Fig. 2c) ROS treatment
+showed no differences from the control in terms of leaf length
+(13.09 ± 0.49 cm; Fig. 2e) and perforations (120.70 ± 9.11;
+Fig. 2f). Higher concentrations of H2O2 (C5 mM) were too
+extreme and killed the plants’ leaves (data not shown). The
+antioxidant ? ROS treatment (Fig. 2d) resulted in signifi-
+cantly fewer perforations (62.69 ± 11.83; Fig. 2f) than the
+control, but more than the antioxidant [ascorbic acid
+(AA) ? cysteine (Cys)] treatment alone. The antioxi-
+dant ? ROS
+treatment
+group
+leaf
+lengths
+of
+13.74 ± 0.6254 cm (Fig. 2e) did not differ significantly from
+the control.
+The number of perforations by leaf was analyzed for the
+control, antioxidant, ROS, and antioxidants ? ROS groups
+(Fig. 2g). Control and 1 mM H2O2 treated plants showed
+very similar trends with a steady increase in the number of
+perforations in each subsequent leaf (Fig. 2g). The antioxi-
+dant and the antioxidant ? ROS treatment groups both had
+strong PCD inhibition by leaf 1; however, perforation for-
+mation sharply increased in the antioxidant ? ROS treat-
+ment by leaves 2 and 3 (Fig. 2g). Micrographs of window
+stage leaves (Fig. 2h-k), 1 week following the onset of
+experimentation, showed a visible difference in anthocyanin
+pigmentation in the ascorbic acid (AA) ? cysteine (Cys)
+treatment group (Fig. 2i), which did not have the typical
+window stage gradient of cell death as seen in the control
+(Fig. 2h) and H2O2 specimens (Fig. 2j). The window stage
+leaves of the antioxidant ? ROS treatment (Fig. 2k) had
+anthocyanin pigmentation, but it was not as prominent as the
+control and H2O2 leaves.
+ROS detection in lace plant PCD
+The stages of lace plant perforation formation were investi-
+gated in terms of ROS production, specifically O2
+- using nitro
+blue tetrazolium (NBT) staining (Fig. 3a). Pre-perforation
+stage leaves showed little to no NBT staining. Window stage
+leaves had NBT staining predominantly in PCD cells. As the
+perforation formed centrally, the most abundant staining was
+inthe late-programmedcell death stage (LPCD). Dark staining
+in PCD cells bordering the degraded cells was also observed
+during the expansion phase of the perforation. In mature
+leaves, light NBT staining was visible but ubiquitous
+throughout the cells (Fig. 3a). Specimens fixed and cleared in
+95% ethanol were also subjected to NBT to confirm the
+staining patterns without obfuscation from the naturally
+occurring leaf pigments. Likewise, NBT staining was
+observed in all stages; most importantly, there was little to no
+staining in pre-perforation leaves (Fig. 3b), or the NPCD
+region of the window stage (Fig. 3c). PCD cells of the window
+stage (Fig. 3c) were prominently stained and there was ubiq-
+uitous staining in the mature stage (Fig. 3d). NBT staining of
+antioxidant-treated window stage leaves had little to no for-
+mazan precipitation, while the mature leaves had some stain-
+ing throughout the tissue (Fig. 3e). Leaves treated with ROS
+(1 mM H2O2, Fig. 3f) had similar staining to the controls.
+Long-term live cell imaging
+The treatments optimized in whole plant experiments were
+utilized for detached, early window stage leaves. The
+detached leaves were observed using a modified long-term
+live cell imaging technique developed by Wertman et al.
+(2012) (Fig. 4; Online Resource S1 and S2). In the control
+treatment
+(Fig. 4a),
+the
+time
+for
+cell
+death
+was
+62.08 ± 4.89 h (Fig. 5). The antioxidant treatment (Fig. 4b)
+slowed the progression of PCD significantly compared to the
+control, as the time for death was 111.43 ± 8.80 h (Fig. 5).
+There was also a strong phenolic ring that formed centrally,
+approximately 36-48 h into the observation (T48; Fig. 4b),
+which was more pronounced than that observed in control
+samples (T36; Fig. 4a). The 1 mM H2O2 ROS treatment
+(Fig. 4c) had a time of death of 54.85 ± 1.75 h (Fig. 5),
+which did not differ significantly from the control. The 5 mM
+H2O2 ROS treatment increased the rate of cell death signifi-
+cantly (Fig. 4d), as the time of death was 29.88 ± 2.21 h
+(Fig. 5). After death of the PCD area, even NPCD cells lost
+their pigmentation and died approximately 36-48 h in the
+experiment (T48, Fig. 4d).
+c
+Fig. 3 Superoxide detection using nitro blue tetrazolium (NBT)
+staining in lace plant leaves. Pre-perforation stage leaves in which
+programmed cell death (PCD) has not yet initiated (a). Window stage
+leaves, where PCD is actively occurring in the center of areoles. PCD
+radiates outward and a hole forms centrally in the perforation
+formation stage. The perforation expansion is demarcated by a drastic
+increase of dead cells and enlargement of the hole, and precedes the
+mature stage where PCD halts 4-5 cell layers from the veins. Cleared
+and fixed stained specimens for the pre-perforation (b), window (c),
+and
+mature
+(d)
+stages.
+Antioxidant
+(400 lg/ml
+ascorbic
+acid ? 200 lg/ml cysteine) treated window and mature stage leaves
+(e). Early window stage leaf treated with ROS (1 mM H2O2) (f). Bars
+40 lm
+138
+Planta (2017) 246:133-147
+123
+ Planta (2017) 246:133-147
+139
+123
+ Superoxide dismutase 1 (SOD1) and catalase (CAT)
+detection
+The levels of two antioxidant enzymes (SOD1 and CAT)
+were investigated for window stage and mature leaf
+extracts via western blotting for the control and each of the
+treatments (Fig. 6). In general, window stage leaves had
+less SOD1 than mature leaves (Fig. 6a). Among the win-
+dow stage samples, the relative SOD1 band intensities were
+significantly lower in antioxidant, as well as the antioxi-
+dant ? ROS treated leaves compared to controls, but there
+were no differences observed from the ROS (1 mM H2O2)
+Fig. 4 Long-term live cell imaging of window stage leaves. Control
+leaves at T0, 24, 36, and 54 h, just prior to the death of the leaf (a).
+Antioxidant-treated leaves [400 lg/ml ascorbic acid (AA) and
+200 lg/ml L-cysteine (Cys)] at T0, 24, 48, and 133 h (b). 1 mM
+H2O2 ROS treatment at T0, 24, 36, and 48 h (c). The 5 mM H2O2
+treatment at T0, 24, 30, and 48 h (d). The top row shows a
+generalized view of the areole, the bottom focuses on the PCD
+gradient at a higher magnification. Please see Online Resource S1 and
+S2 for more detail. Bars 50 lm
+140
+Planta (2017) 246:133-147
+123
+ treatment (Fig. 6a, b). No significant differences in SOD1
+were detected among the treatment groups for mature stage
+leaves (Fig. 6a, c). The overall CAT levels were not dif-
+ferent between window and mature leaves (Fig. 6a). The
+relative CAT band intensities showed no significant dif-
+ference in window stage leaves among the control and
+other treatment groups (Fig. 6a, d). In mature leaves, the
+antioxidant-treated leaves had significantly higher CAT
+proteins than the control, but there were no differences
+between the control and either the H2O2 (ROS) or antiox-
+idant ? ROS treatment groups (Fig. 6a, e).
+Anthocyanin and ABTS spectrophotometric assays
+Spectrophotometric assays were used to determine antho-
+cyanin and antioxidant scavenging levels in window stage
+and mature lace plant leaves (Table 1). Total anthocyanin
+content (cyanidin-3-rutinoside equivalents, C3RE) ranged
+from 0.34 to 3.29 mg/g. In both window and mature leaves,
+plants exposed to the antioxidant combination treatment
+had the lowest anthocyanin levels. Among the window
+stage, the antioxidant treatment was significantly different
+compared to all other groups. Mature leaves had signifi-
+cantly lower anthocyanins levels compared to control,
+H2O2, and the antioxidant ? H2O2 window stage leaves,
+but did not differ from the window stage antioxidant group.
+The ABTS assay showed higher radical scavenging activ-
+ity in window stage leaf extracts compared to mature
+leaves across all treatment groups; however, no significant
+differences were observed among treatment groups within
+each developmental stage. Anti-radical scavenging capac-
+ity from the ABTS assay ranged from 1.69 to 1.88 mg
+vitamin C equivalents per gram.
+</div><div class='tools'><button type='button' class='quiet' onclick='jumpSec(1)'>Blot section</button><button type='button' class='quiet' onclick='jump(-1)'>Prev</button><button type='button' class='quiet' onclick='jump(1)'>Next</button><span id='hits_PMC5486552' class='num'></span><span class='aid'>shading is a search aid, not an answer</span></div></div><div class='col-q'><div class='q' data-q='v2|PMC5486552|membrane_source' data-pmcid='PMC5486552' data-item='membrane_source'><div class='qname'><span>Membrane source or grade</span><span class='ans'></span></div><div class='qdef'>The supplier, product name or grade of the blot membrane, such as Immobilon-P (Millipore) or Amersham Hybond. Membrane chemistry or pore size alone does not count, and neither does the supplier of a transfer system or kit that does not name the membrane, or an Immobilon ECL substrate, which is the ECL reagent. Western blot only.</div><div class='qhow'><b>What to mark.</b> Mark the supplier or product words for the membrane.<span class='eg'>In <i>transferred to PVDF membranes (Immobilon-P, Millipore)</i> mark <b>Immobilon-P, Millipore</b>. Nothing to mark in <i>transferred to PVDF membranes</i>.</span></div><div class='acts'><button type='button' data-act='mark'>Use highlighted text</button><button type='button' class='sec' data-act='done' style='display:none'>Done, next</button><button type='button' class='sec' data-act='not_stated'>Not stated</button><button type='button' class='quiet' data-act='unclear'>Unclear</button></div><div class='grab'><div class='cap'>Marked so far, add as many as the paper has</div><ol class='spans'></ol><label class='morewrap'><input type='checkbox' class='morebox'>There are more of these than I marked</label></div></div></div></div></div><div class='card'><div class='paper-h'><h2>Paper <span class='num'>6</span> of <span class='num'>9</span></h2><span class='pill'>PMC6412418</span></div><div class='note' style='font-size:13px;color:var(--ink-mute);margin-bottom:6px'> · <span class='num'>year unknown</span></div><div class='split'><div class='col-text'><div class='methods' id='m_PMC6412418'>
+4.1. Plant Materials
+Seeds for 08-641 inbred maize line were provided by the maize research institute of Sichuan
+Agricultural University and grown at the school farm in the summer of 2013-2017. Developing kernels
+from self-pollinated ears were collected 10 DAP, 15 DAP, 20 DAP, 27 DAP, 30 DAP, 35 DAP, and 40 DAP
+and were quickly frozen in liquid nitrogen and stored at -80 ◦C until use. For phos-tagTM enrichment
+assay, three independent biology repeated maize endosperm samples collected at the same time were
+mixed as a pool for proteomic analysis.
+4.2. GST-Gene Fusion System Protein Expression and Purification
+GST-gene fusion system protein expression vector pGEX-6t-1-Bt2 were constructed by adding
+Bt2 genes into the pGEX-6t-1 vector. The cloning primers of Bt2 were as follows: Bt2 Forward: 5′-CG
+ggatccATGGACTGGCTTTGGCGTCTA-3′, Reverse: 5′-CAGctcgagTCATATAACTGTTCCACTAG
+GGAG-3′. The lowercase letters indicate the introduced base to create an BamHI and XhoI, respectively.
+The protein expression and purification of Bt2 were performed according to the GST gene fusion
+system handbook from GE Healthcare (Piscataway, NY, USA).
+4.3. Rabbit Breeding, Anti-serum Preparation, and Antibody Purification
+New Zealand white rabbits were provided by Da Shuo experimental animal company. Rabbits
+were maintained in the Animal Core Facility following procedures approved by the Animal Care
+and Use Committee of Sichuan Agricultural University (no 20160320, Chengdu, China). After one
+week of acclimation, rabbits were injected with an antigen mixed with adjuvant every two weeks and
+their venous blood harvested after three injections. Polyclonal rabbit antisera targeted to maize Bt2
+were raised against the antigen, in which GST-Bt2 were purified by GST-gene fusion system protein
+expression assay. Antiserum containing the polyclonal maize antibody was applied to the column
+with 1 cm3 50% protein A and 50% protein G and washed with 10 cm3 ice-cold TBS (50 mM Tris-HCl,
+pH 7.4, 150 mM NaCl, and 0.05% sodium azide). The antiserum was then thawed in ice water and
+clarified by centrifugation at 15,000× g for 5 min at 4 ◦C. 3.6 cm3 of the clarified antiserum was added
+to the column and the column was washed with 36 cm3 TBS buffer. 2.5 cm3 elution buffer with pH 2.7
+and pH 1.9 (100 mM glycine pH 2.7 and 100 mM glycine pH 1.9, respectively) was gently added to the
+column. Roughly 0.4 cm3 fractions were collected in the tubes above and neutralized with NB buffer
+(1 M Tris-HCl, pH 8.0; 1.5 M NaCl; 1 mM EDTA; 0.5% sodium azide) to adjust the pH to approximately
+7.4. Pure antibodies were used in immunoblot and immunoprecipitation. Pre-immune sera for each of
+the antibodies used above were employed as negative controls, and showed no cross-reaction with
+proteins from maize endosperm lysates and co-immunoprecipitation experiments.
+4.4. Plant Protein Extraction and Protein Determination
+Maize kernels were harvested and quickly frozen in liquid nitrogen and stored at -80 ◦C until
+use. Maize endosperm was dissected using pre-chilled tweezers and a mortar on ice, and total
+endosperm proteins were extracted from endosperm tissues flash frozen in liquid nitrogen. Two grams
+of endosperm tissue were pulverized using a mortar and pestle under liquid nitrogen. 6 cm3 of native
+protein extraction buffer (100 mM Tris-HCl, pH 7, 10 mM MgCl2, 100 mM KCl, 15% glycerol and DDT,
+40 mM β-mercaptoethanol, 1 mM PMSF and phosphatase inhibitor cocktail (Sigma) added freshly)
+were added followed by further shaking in a vortex. The homogenates were centrifuged (16,000× g,
+10 min, 4 ◦C) and supernatants stored at -80 ◦C until use. Protein concentration was determined using
+ Int. J. Mol. Sci. 2019, 20, 986
+12 of 17
+the Bio-Rad protein assay (Bio-Rad, Hercules, CA, USA) according to the manufacturer’s instructions
+and with BSA as a standard.
+4.5. SDS-PAGE and Immunoblotting
+Zn2+-phos-tagTM agarose was used to enrich phosphoproteins according to the manufacturer’s
+instructions (Wako Pure Chemical Industries Ltd., Hiroshima, Japan).
+Briefly, the total maize
+endosperm cell lysate sample containing 200 μg protein was used for enriching phosphoproteins
+with 200 mm3 Zn2+-phos-tagTM agarose. For dephosphorylation assay, we treated cell lysate by
+adding alkaline phosphatase. The binding assay was performed for 4 h at 4 ◦C, and then washed
+3 times with washing buffer (0.1 M Tris-CH3COOH, 1.0 M CH3COONa, pH 7.5). Elution buffer
+(0.1 M Tris-CH3COOH, 1.0 M NaCl, 10 mM NaH2PO4-NaOH, pH 7.5) was used for the elution
+of phosphoproteins. Zn2+-phos-tagTM agarose binding proteins were separated by electrophoresis.
+In addition, 20 μg maize endosperm cell lysates were subjected to SDS-PAGE as a control. The SDS
+polyacrylamide gels consisted of an 8% or 10% acrylamide separation gel and a 4% stacking gel.
+The resolved proteins were electrophoretically transferred to nitrocellulose membranes (GE Healthcare
+Life Sciences, Cat: 10600003). The membranes were incubated with anti-Bt2 antibody diluted 1:5000
+and anti-actin antibody diluted 1:1000 for 2 h at room temperature. The membranes were then
+incubated with horseradish peroxidase conjugated with anti-rabbit IgG (Kangwei Company) diluted
+1:5000 for 30 min, and the immunoreactive bands were detected using the chemiluminescent substrate,
+Lumi-Light immunoblotting Substrate (Thermo Scientific, Cat: PI208186 and PJ209602, Rockford, IL,
+USA). All immunoblot assays were independently performed at least three times.
+4.6. Mass Spectrometry and Data Processing
+The binding protein was collected from phos-tagTM agarose incubated with endosperm protein.
+Similarly, the production of IP was collected. Protein was performed SDS-PAGE electrophoresis and
+stained commassie brilliant blue. The gel was cut for in-gel tryptic digestion, gel pieces were destained
+in 400 mm3 50 mM NH4HCO3 in 50% acetonitrile (v/v) until clear. Gel pieces were dehydrated with
+100 mm3 of 100% acetonitrile for 5 min, the liquid was removed and the gel pieces were rehydrated in
+10 mM dithiothreitol and incubated at 56 ◦C for 60 min. Gel pieces were again dehydrated in 100%
+acetonitrile, liquid was removed and gel pieces were rehydrated with 55 mM iodoacetamide. Samples
+were incubated at room temperature in the dark for 45 min. Gel pieces were washed with 50 mM
+NH4HCO3 and dehydrated with 100% acetonitrile. Gel pieces were rehydrated with 10 ng/mm3
+trypsin resuspended in 50 mM NH4HCO3 on ice for 1 h. Excess liquid was removed and gel pieces
+were digested with trypsin at 37 ◦C overnight. Peptides were extracted with 50% acetonitrile and 5%
+formic acid, followed by 100% acetonitrile. Peptides were dried and re-suspended in 0.1% formic acid.
+The tryptic peptides were dissolved in 0.1% formic acid (solvent A), directly loaded onto a
+homemade reversed-phase analytical column (15 cm in length, 75 μm i.d.). The gradient was comprised
+of an increase from 4% to 50% solvent B (0.1% formic acid in 98% acetonitrile) in 50 min, 50% to 100%
+in 4 min, then holding at 100% for the last 6 min, all at a constant flow rate of 400 nl/min on an
+EASY-nLC 1000 UPLC system. The peptides were subjected to NSI source followed by tandem mass
+spectrometry (MS/MS) in Q ExactiveTM Plus (Thermo) coupled online to the UPLC. The electrospray
+voltage applied was 2.0 kV. The m/z scan range was 350 to 1800 for full scan, and intact peptides
+were detected in the Orbitrap at a resolution of 70,000. Peptides were then selected for MS/MS
+using NCE setting as 28 and the fragments were detected in the Orbitrap at a resolution of 17,500.
+This was a data-dependent procedure that alternated between one MS scan followed by 20 MS/MS
+scans with 15.0 s dynamic exclusion. Automatic gain control (AGC) was set at 5E4. The resulting
+MS/MS data were processed using a Proteome Discoverer 1.3.6 Tandem mass spectra were searched
+using MASCOT (Matrix Science, London, UK; version 2.2) and against an uniprot Zea mays database
+(https://www.uniprot.org; 132356 sequences, download on 1 August 2018). Trypsin/P (or other
+enzymes if any) was specified as the cleavage enzyme, allowing up to 2 missing cleavages. Mass error
+ Int. J. Mol. Sci. 2019, 20, 986
+13 of 17
+was set to 10 ppm for precursor ions and 0.02 Da for fragment ions. Peptide confidence was set at high,
+and the peptide ion score was set &gt;20. The GO term protein function classification in levels 1 and 2
+were analyzed by http://www.ebi.ac.uk/GOA/.
+4.7. Immunoprecipitation (IP) and Co-immunoprecipitation (Co-IP)
+Co-immunoprecipitation experiments were conducted using the methods described by Fushan
+Liu with some modifications [30]. Purified Bt2 antibodies (each approximately 10 μg) were individually
+used for the immunoprecipitation and co-immunoprecipitation experiments with 27 days endosperm
+after pollination cell lysates (1 cm3, 0.5 mg/cm3 proteins). The mixture of antibody and cell lysate
+was incubated at 4 ◦C on a rotator for 4 h and precipitation of the antibody performed by adding
+20 mm3 of Protein A/G-Sepharose (Biorad) made up as a 50% (w/v) slurry with phosphate buffered
+saline (PBS, 137 mM NaCl, 10 mM Na2HPO4, 2.7 mM KCl, 1.8 mM KH2PO4, pH 7.4) at 4 ◦C for 4 h.
+The Protein A-Sepharose/antibody/protein complex was centrifuged at 2000× g for 5 min at 4 ◦C in a
+refrigerated microfuge and the supernatant was discarded. The pellet was washed five times (1.0 cm3
+each) with PBS, followed by washing five times with a buffer containing 10 mM HEPES-NaOH, pH 7.5,
+and 150 mM NaCl. Washed pellets were boiled in SDS loading buffer and separated by SDS-PAGE,
+followed by immunoblot analysis.
+4.8. Pro-Q Diamond Phosphoprotein Staining
+For the control group, 20 μg total protein were extracted from 08-641 maize endosperm 15 days,
+20 days and 27 days after pollination for running gel. For the phos-tagTM group, a total of 200 μg maize
+endosperm cell lysate protein was enriched with 20 mm3 slurry made up as Zn2+-phos-tagTM agarose
+and a 50% (v/v) suspension buffer containing 20 mM Tris-CH3COOH pH 7.4, 20% (v/v) 3-propanol.
+For the immunoprecipitation (IP) group, 200 μg protein from endosperm was incubated with the
+control IgG and Bt2, respectively. Then precipitation of the antibody was performed by adding 20 mm3
+of Protein A/G-Sepharose (Biorad) made up as a 50% (w/v) slurry with phosphate buffered saline
+(PBS, 137 mM NaCl, 10 mM Na2HPO4, 2.7 mM KCl, 1.8 mM KH2PO4, pH 7.4) at 4 ◦C on a rotator
+for 4 h. The Protein A-Sepharose/antibody/protein complex was centrifuged at 2000× g for 5 min
+at 4 ◦C in a refrigerated microfuge, and the supernatant was discarded. The pellet was washed five
+times (1.0 cm3 each) with PBS buffer. Washed pellets were boiled in SDS loading buffer and separated
+by SDS-PAGE. For all protein samples, transferring protein to a polyvinylidene difluoride (PVDF)
+membrane (GE Healthcare Life Sciences, Cat: 10600023) was used for Pro-Q diamond phosphoprotein
+dye staining according to manufacturer’s instruction from Invitrogen (Cat: MP33300). A commercially
+available phosphorylated protein marker was used as a positive control and was purchased from
+Thermo Fisher Scientific (Cat: MP33350). In order to exclude the possibility that the signal of Pro-Q
+diamond phosphoprotein dye interfered with the signal from immunoblotting, after destaining of the
+PVDF membrane with Pro-Q diamond phosphoprotein dye, the PVDF membrane with the protein
+sample was used for Bt2 immunoblotting.
+4.9. iTRAQTM Labeling and Mass Spectrometry Analysis
+Phosphorylated protein was identified by the iTRAQTM method described by and Ma [48].
+Briefly, three biological repeats maize 15 DAP kernels and three dependent transgene samples
+protein were extracted and digested by sequencing-grade trypsin. Peptides were collected and
+lyophilized. The samples were reconstituted in TEAB buffer and three independent samples labelled
+by iTRAQ reagents (8 PLEX multiplex kit, AB Sciex, Cat: 4381663). Three independent WT samples
+were respectively labeled with iTRAQ tag 115,116,117. Three independent transgenic samples were
+respectively labeled with iTRAQ tag 118,119,121. TiO2 was used to enrich the phosphopeptides for
+mass spectrometry analysis. All analyses were performed by a Triple TOF 5600 Mass Spectrometer
+(SCIEX, USA) equipped with a Nanospray III source (SCIEX, Framingham, MA, USA). Samples were
+loaded by a capillary C18 trap column (3 cm × 100 μm) and then separated by a C18 column (15 cm
+ Int. J. Mol. Sci. 2019, 20, 986
+14 of 17
+× 75 μm) on an Eksigent nanoLC-1D plus system (SCIEX, USA). The flow rate was 300 nL/min and
+the linear gradient was 90 min (from 5-85% B over 67 min; mobile phase A = 2%ACN/0.1%FA and
+B = 95%ACN/0.1%FA). Data were acquired with a 2.4 kV ion spray voltage, 35 psi curtain gas, 5 psi
+nebulizer gas, and an interface heater temperature of 150 ◦C. The MS scanned between 400 and 1500
+with an accumulation time of 250 ms. For IDA, 30 MS/MS spectra (80 ms each, mass range 100-1500)
+were acquired with MS peaks above intensity 260 and a charge state of between 2 and 5. A rolling
+collision energy voltage was used for CID fragmentation for MS/MS spectra acquisitions. Mass was
+dynamically excluded for 22 s.
+4.10. Zymograms of Native PAGE
+AGPase zymograms modified method was used for in-gel assay of AGPase activity as described
+by Huang et al. [34]. Five endosperm samples were ground in liquid nitrogen using a pre-chilled
+mortar and pestle, and an extraction buffer (100 mM Tris-HCl, pH 7, 40 mM β-mercaptoethanol added
+freshly, 10 mM MgCl2, 100 mM KCl, and 15% glycerol) was added in 1.5 cm3 EP tubes. The homogenate
+was centrifuged at 16,000× g for 30 min at 4◦C, and the supernatant was stored at -80 ◦C or used
+immediately. Equal amounts of protein (40 μg) were loaded onto a 7.5% (w/v) native acrylamide gel
+and electrophoresed in Laemmli buffer lacking SDS at 4 ◦C at 90 V for 2 to 4 h. The gel was then
+incubated overnight at 37 ◦C in 100 mM Tris-HCl, pH 8, 5 mM β-mercaptoethanol, 5 mM CaCl2, 10 mM
+MgCl2, 5 mM Glc-1-P, 5 mM ATP, and 10 mM 3-PGA. Gels were photographed on a dark background
+to visualize white precipitate bands. Control assays omitted ATP.
+5. Conclusions
+We provide the evidence that AGPase subunit Bt2 was phosphorylated in the maize endosperm
+during starch synthesis process. Proteomic and mass spectrometry analysis showed the peptides
+of AGPase subunit Bt2 were identified from product of phos-tagTM agarose binding maize
+endosperm proteins.
+Phosphorylation of AGPase subunits could bind phos-tagTM agarose.
+However, dephosphorylation of AGPase subunits would lose the binding treating with ALP. We further
+demonstrated the result by immunoblot through specific Bt2 antibodies. Pro-Q diamond staining
+further demonstrated the phosphorylation of Bt2. The specific phosphorylation sites of Bt2 at Ser10,
+Thr451, and Thr462 were identified by iTRAQTM. Protein sequence multiple alignment analysis showed
+Bt2-Thr451 and Bt2-Thr462 were very conserved sites in different species. Bt2-Ser10 is specific for maize,
+potato and tomato. In native gel assay, removing phosphate group from Bt2 with alkaline phosphatase,
+the activity of AGPase was abolished. In all, our data potentially suggest that phosphorylation of Bt2
+may be a new model to regulate activity of AGPase.
+Supplementary Materials: Supplementary materials can be found at http://www.mdpi.com/1422-0067/20/4/
+986/s1.
+Author Contributions: G.Y., Y.H. (Yubi Huang) designed the experiments. G.Y., Y.L. (Yanan Lv), L.S., Y.Q., N.W.,
+Y.L. (Yangping Li), H.H., N.Z. performed the experiments; Y.W., Y.L. (Yinghong Liu), Y.H. (Yufeng Hu), H.L., J.Z.
+analyzed the data. G.Y. and Y.H. (Yubi Huang) wrote the paper. All authors have given approval of the final
+version of the manuscript.
+Funding: This work was supported by the Natural Science Foundation of China (No: 31501322), Postdoctoral
+Special Foundation of Sichuan Province (No: 03130104), Overseas Scholar Science and Technology Activities
+Project Merit Funding (No: 00124300) and the National Key Basic Research Program of China (No: 2014CB138200).
+</div><div class='tools'><button type='button' class='quiet' onclick='jumpSec(1)'>Blot section</button><button type='button' class='quiet' onclick='jump(-1)'>Prev</button><button type='button' class='quiet' onclick='jump(1)'>Next</button><span id='hits_PMC6412418' class='num'></span><span class='aid'>shading is a search aid, not an answer</span></div></div><div class='col-q'><div class='q' data-q='v2|PMC6412418|sample_storage' data-pmcid='PMC6412418' data-item='sample_storage'><div class='qname'><span>Lysate storage stated</span><span class='ans'></span></div><div class='qdef'>How the blot's lysates or protein extracts were stored before loading: a storage temperature, with or without a duration ('lysates were stored at -80 °C until use'). Storage of tissue, cells, blood or other samples before lysis, and storage of antibodies or reagents, does not count. Western blot only.</div><div class='qhow'><b>What to mark.</b> Mark the words that state the storage.<span class='eg'>In <i>the supernatant was aliquoted and stored at -80 &deg;C</i> mark <b>stored at -80 &deg;C</b>. Nothing to mark in <i>tissues were snap-frozen in liquid nitrogen and stored at -80 &deg;C</i>.</span></div><div class='acts'><button type='button' data-act='mark'>Use highlighted text</button><button type='button' class='sec' data-act='done' style='display:none'>Done, next</button><button type='button' class='sec' data-act='not_stated'>Not stated</button><button type='button' class='quiet' data-act='unclear'>Unclear</button></div><div class='grab'><div class='cap'>Marked so far, add as many as the paper has</div><ol class='spans'></ol><label class='morewrap'><input type='checkbox' class='morebox'>There are more of these than I marked</label></div></div></div></div></div><div class='card'><div class='paper-h'><h2>Paper <span class='num'>7</span> of <span class='num'>9</span></h2><span class='pill'>PMC7338428</span></div><div class='note' style='font-size:13px;color:var(--ink-mute);margin-bottom:6px'> · <span class='num'>year unknown</span></div><div class='split'><div class='col-text'><div class='methods' id='m_PMC7338428'>
+Study Population
+We included patients from the following study (Fandiño-
+Vaquero et al., 2014) with HF diagnosis according to the
+recommendations of the European Society of Cardiology
+(Kirchhof et al., 2016; Ponikowski et al., 2016).
+At admission, we divided the population into two groups
+according to the presence of previous AF. They were followed
+up for 5 years after open-heart surgery. New-onset paroxysmal
+or persistent AF during follow-up, excluding AF during the first
+72 h after surgery, was recorded in a database.
+Samples
+The protocol was approved by the Galician Clinical Research
+Ethics Committee and carried out in accordance with the
+Declaration of Helsinki. Epicardial fat biopsies (0.1-0.3 g) were
+obtained before extracorporeal pulmonary circulation from 29
+patients who signed informed consent and underwent open-heart
+surgery (valve replacement and/or coronary artery bypass graft).
+Blood samples from 12 patients were obtained in EDTA tubes
+before surgery. The exclusion criteria were previous heart surgery
+or severe infectious diseases. Instantaneously, the collected
+samples were placed in a sterile tube with phosphate-buffered
+saline solution that contained the following (in mM): 0.5 EDTA,
+5 KCl, 10 HEPES, 2 MgCl2, 10 NaHCO3, 0.5 KH2PO4, 0.5
+NaH2PO4, 10 glucose, 110 NaCl, and 0.16 CaCl2 (pH 7.4) (Sigma-
+Aldrich, San Luis, MO, United States). After washing samples
+three times, fat pads were split in 100 mg weight and cultured
+in 24-well plates with 0.5 ml of M199 medium (Lonza Biologics,
+Porriño, Spain). After 24 h, the medium was replaced, and fat
+pads were treated or not with isoproterenol at 1 μM for 6 h
+as previously described. Finally, the supernatants and fat tissues
+were collected and stored at -80◦C until use.
+Protein Identification
+Secretomes from isoproterenol-treated fat pads of 11 patients
+were divided and filtrated by two different Amicon Ultra 0.5-
+ml columns (&gt;50 and 10-50 kDa) (Merck Millipore, Billerica,
+MA, United States). One fraction (named A) contained proteins
+heavier than 50 kDa, and the other fraction (named B) had
+proteins with a molecular weight between 10 and 50 kDa.
+Then, proteins were loaded and separated by sodium dodecyl
+sulfate polyacrylamide gel electrophoresis (SDS-PAGE). After
+gels were stained with SYPRO Ruby (Bio-Rad), protein bands
+were digested with trypsin (Shevchenko et al., 1996), and peptides
+were separated by reverse-phase chromatography. Gradient was
+achieved using a micro liquid chromatography system (Eksigent
+Technologies nanoLC 400, SCIEX) coupled to high-speed triple
+time-of-flight (TOF) 6600 mass spectrometer (SCIEX) with a
+micro flow source. The silica-based reverse-phase column was
+YMC-TRIART C18 150 × 0.30 mm with a 3-mm particle size
+and 120-Å pore size (YMC Technologies, Teknokroma), and
+the trap column was YMC-TRIART C18 (YMC Technologies,
+Teknokroma) with a 3-mm particle size and 120-Å pore size,
+switched online with the analytical column. A solution of 0.1%
+formic acid in water at 10 μl/min was loaded in the pump, and the
+micro-pump provided a flow rate of 5 μl/min, and it was operated
+under gradient elution (0.1% formic acid in water was mobile
+phase A and 0.1% formic acid in acetonitrile was mobile phase
+TABLE 1A | Clinical characteristics of proteomic study with respect to AF.
+With AF (n = 4)
+Without AF (n = 7)
+Age years (SD)
+72 (3)
+68 (12); p = 0.501
+BMI, kg/m2 (SD)
+27 (5)
+31 (4); p = 0.126
+Heart rate (bpm)
+65 (10)
+76 (12); p = 0.186
+Gender (male/female)
+1/3
+2/5; p = 0.898
+CAD (no/yes)
+3/1
+3/4; p = 0.303
+NYHA (I/II/III-IV)
+0/2/2
+2/4/1; p = 0.308
+T2DM (no/yes)
+3/1
+6/1; p = 0.658
+HTA (no/yes)
+2/2
+2/5; p = 0.477
+DLP (no/yes)
+3/1
+1/6; p = 0.044*
+Aortic valve replacement (no/yes)
+3/1
+2/5; p = 0137
+Mitral valve replacement (no/yes)
+2/2
+6/1; p = 0.201
+LVEF (%)
+49 (15)
+61 (15); p = 0.223
+Diuretics (no/yes)
+3/1
+2/4; p = 0.197
+β-Blockers (no/yes)
+2/2
+3/3; p = 1.000
+Statins (no/yes)
+2/2
+2/4; p = 0.598
+ACEi (no/yes)
+2/2
+4/2; p = 0.598
+ARB (no/yes)
+2/2
+3/3; p = 1.000
+Antiarrhythmic class III (no/yes)
+2/2
+6/0; p = 0.053
+With AFf (n = 3)
+Without AFf (n = 4)
+Age years (SD)
+68 (6)
+68 (16); p = 0.975
+BMI, kg/m2 (SD)
+32 (4)
+31 (4); p = 0.699
+Heart rate (bpm)
+76 (5)
+75 (17); p = 0.976
+Gender (male/female)
+0/3
+2/2; p = 0.147
+CAD (no/yes)
+2/1
+1/3; p = 0.270
+NYHA (I/II/III)
+0/3/0
+2/1/1; p = 0.140
+T2DM (no/yes)
+2/1
+4/0; p = 0.212
+HTA (no/yes)
+1/2
+1/3; p = 0.809
+DLP (no/yes)
+0/3
+1/3; p = 0.350
+Aortic valve replacement (no/yes)
+1/2
+1/3; p = 0.809
+Mitral valve replacement (no/yes)
+2/1
+4/0; p = 212
+LVEF (%)
+65 (6)
+58 (29); p = 0.567
+Diuretics (no/yes)
+0/2
+2/2; p = 0.221
+β-Blockers (no/yes)
+1/1
+2/2; p = 1.000
+Statins (no/yes)
+1/1
+1/3; p = 540
+ACEi (no/yes)
+2/0
+2/2; p = 221
+ARB (no/yes)
+1/1
+2/2; p = 1.000
+BMI, body mass index; CAD, coronary artery disease; NYHA, New York Heart
+Association; T2DM, type 2 diabetes mellitus; HTA, hypertension arterial; DLP,
+dyslipidemia; LVEF, left ventricle ejection fraction; ACEi, angiotensin-converting
+enzyme inhibitors; ARB, angiotensin receptor blockers; AFf, AF during follow-up;
+AF, atrial fibrillation. ∗p &lt; 0.05 statistical significance.
+Frontiers in Physiology | www.frontiersin.org
+3
+June 2020 | Volume 11 | Article 620
+ Agra-Bermejo et al.
+Epicardial Fat and Atrial Fibrillation Risk
+FIGURE 2 | Venn diagram determines common and differential identified proteins in epicardial adipose tissue (EAT) secretomes from patients who suffer or not from
+atrial fibrillation (AF) or will develop or not AF after follow-up. Common proteins of EAT secretome from patients with AF and those who develop AF are named in the
+right square (A). Graph represents molecular function of identified proteins on EAT secretomes from AF patients and those who develop AF (B).
+B). Peptides were separated using a 90-min gradient ranging from
+2 to 90% mobile phase B (mobile phase A: 2% acetonitrile, 0.1%
+formic acid; mobile phase B: 100% acetonitrile, 0.1% formic acid).
+The injection volume was 4 μl, and data were acquired in a triple
+TOF 6600 system (SCIEX, Foster City, CA, United States) using a
+data-dependent workflow. Source and interface conditions were
+as follows: ion spray voltage floating (ISVF) 5,500 V, curtain gas
+(CUR) 25, collision energy (CE) 10, and ion source gas 1 (GS1)
+25. The instrument was operated with Analyst TF 1.7.1 software
+(SCIEX, United States). Switching criteria were set to ions greater
+than a mass-to-charge ratio (m/z) of 350 and smaller than m/z
+1,400 with a charge state of 2-5, mass tolerance of 250 ppm,
+and an abundance threshold of more than 200 counts (cps).
+Former target ions were excluded for 15 s. The instrument was
+automatically calibrated every 4 h using tryptic peptides from
+beta galactosidase as an external calibrant.
+After MS/MS analysis, data files were processed using
+Protein Pilot TM 5.0.1 software from SCIEX which uses the
+algorithm ParagonTM for database search and ProgroupTM for
+data grouping. Data were searched using a human-specific
+UniProt database. Then, identified proteins were grouped
+with the functional enrichment analysis tool (FunRich) in the
+presence/absence of AF or presence/absence of AF during follow-
+up. The design of the study is shown in Figure 1A. Then, the
+selected proteins, after being identified, were tested on EAT and
+plasma to study the local or systemic changes (Figure 1B).
+Tissue Homogenization and Protein
+Analysis
+Stored fat tissues (100 mg) from 15 patients were lysed with
+0.3 ml of RIPA buffer [25 mM Tris-HCl, pH = 7.6, 150 mM
+NaCl, 1% (C2H4O) nC14H22O, 1% C24H39NaO4, and 0.1%
+NaC12H25SO4]. All of them were from Sigma-Aldrich. Protease
+and phosphatase inhibitors (complete tables and PhosStOP easy
+pack from Roche Diagnostics, Basilea, CH) were added to RIPA
+Frontiers in Physiology | www.frontiersin.org
+4
+June 2020 | Volume 11 | Article 620
+ Agra-Bermejo et al.
+Epicardial Fat and Atrial Fibrillation Risk
+buffer. Then, tissues were homogenized in a tissue lyser with
+steel beads (Qiagen, Hilden, DE) for 3 min at 30 Hz. Lysed
+tissues were centrifuged at 12,000 × g for 10 min, and the lipid
+layer was discarded. Proteins were purified with a 2-D Clean-
+Up Kit (GE Healthcare, Chicago, IL, United States) following the
+manufacturer’s recommendations. Finally, 20 mg per tissue was
+separated with 8% SDS-PAGE and transferred to fluorescence
+polyvinylidene difluoride (PVDF) membranes (Merck Millipore,
+Burlington, MA, United States), at 300 mA for 90 min. The
+primary antibody against CD5L (1:1,000) was incubated in
+agitation overnight at 4◦C (Santa Cruz Biotechnology, Dallas,
+TX, United States) after being blocked with 3% bovine serum
+albumin in Tris-buffered saline solution with Tween 20 (TBST),
+containing 20 mM Tris-HCl, pH = 7.6; 150 mM NaCl; and 0.%
+Tween 20. To remove the excess primary antibody, membranes
+were washed three times for 10 min with TBST. Finally, protein
+was detected in a fluorescence scanner (Typhoon FLA 9500,
+GE Healthcare) after membrane incubation with fluorescent
+anti-mouse secondary antibody Alexa 532 (Thermo Fisher).
+Densitometry of CD5L and IgG bands were determined by
+Quantity One software (Bio-Rad, Hercules, CA, United States).
+CD5L values were represented as the CD5L/IgG ratio in arbitrary
+units (a.u.). Plasma from 12 patients was obtained after blood
+centrifuging at 1,800 × g. Then, IgG and albumin were depleted
+with a mixed bed of Cibacron blue/protein A gel following the
+manufacturer’s protocol (Thermo Scientific). At the end of the
+protocol, plasma was diluted seven times. After plasma filtration
+through 3-kDa columns (Sigma-Aldrich), it was diluted three
+times, and 10 μl was separated by SDS-PAGE and transferred
+TABLE 1B | Clinical characteristics of tissue CD5L study with respect to A.
+With AF or AFf (n = 9)
+Without AF (n = 6)
+Age years (SD)
+68 (10)
+66 (16); p = 0.788
+BMI, kg/m2 (SD)
+30 (6)
+31 (4); p = 0.938
+Heart rate (bpm)
+69 (15)
+69 (20); p = 0.995
+Gender (male/female)
+4/5
+5/1; p = 0.138
+CAD (no/yes)
+2/7
+5/1; p = 0.020*
+NYHA (I/II/III-IV)
+2/7/0
+1/3/2; p = 0.176
+T2DM (no/yes)
+7/2
+5/1; p = 0.792
+HTA (no/yes)
+5/4
+2/4; p = 0.398
+DLP (no/yes)
+5/3
+1/5; p = 0.086
+Aortic valve replacement (no/yes)
+2/7
+2/4; p = 0.634
+Mitral valve replacement (no/yes)
+7/2
+5/1; p = 0.796
+LVEF (%)
+55 (10)
+57 (22); p = 0.995
+Diuretics (no/yes)
+3/5
+2/4; p = 0,872
+β-Blockers (no/yes)
+5/3
+1/5; p = 0.086
+Statins (no/yes)
+5/3
+2/4; p = 0.280
+ACEi (no/yes)
+5/3
+4/2; p = 0.872
+ARB (no/yes)
+7/1
+3/3; p = 0.124
+Antiarrhythmic class III (no/yes)
+7/1
+6/0; p = 0.369
+BMI, body mass index; CAD, coronary artery disease; NYHA, New York Heart
+Association; T2DM, type 2 diabetes mellitus; HTA, hypertension arterial; DLP,
+dyslipidemia; LVEF, left ventricle ejection fraction; ACEi, angiotensin-converting
+enzyme inhibitors; ARB, angiotensin receptor blockers; AFf, AF during follow-up;
+AF, atrial fibrillation. ∗p &lt; 0.05 statistical significance.
+to PVDF membranes that were incubated with CD5L antibody
+as described above. CD5L levels were referenced to values of the
+positive control (same sample on every western blot).
+CD5L was also determined in secretomes and biopsies
+from three independent patients with or without isoproterenol
+treatment following the same previously described protocol.
+Statistical Analysis
+After protein identification, false discovery rate was performed
+using a nonlineal fitting method displaying only those results
+that reported ≥1% global false discovery rate (Shilov et al., 2007;
+Tang et al., 2008). Clinical continuous variables were presented
+as mean ± standard deviation, and categorical variables were
+presented as frequency and percentage. Comparison between
+groups was performed with unpaired t-test or Pearson’s χ2 test.
+Differences regarding two groups were performed by unpaired
+t-test analysis. All analyses were performed using SPSS 19.0.
+(Software SPSS Inc., Chicago, IL, United States).
+</div><div class='tools'><button type='button' class='quiet' onclick='jumpSec(1)'>Blot section</button><button type='button' class='quiet' onclick='jump(-1)'>Prev</button><button type='button' class='quiet' onclick='jump(1)'>Next</button><span id='hits_PMC7338428' class='num'></span><span class='aid'>shading is a search aid, not an answer</span></div></div><div class='col-q'><div class='q' data-q='v2|PMC7338428|replicate_definition' data-pmcid='PMC7338428' data-item='replicate_definition'><div class='qname'><span>Replicate definition</span><span class='ans'></span></div><div class='qdef'>What a replicate of the blot was, with the unit named: independent cultures or passages, animals, patients, separate blots, or technical repeats of one lysate. 'Independent experiments' or 'biological replicates' with no unit named does not count, and neither does a count alone. Western blot only.</div><div class='qhow'><b>What to mark.</b> Mark the words that say what was replicated.<span class='eg'>In <i>three independent cell cultures, each blotted once</i> mark the whole phrase. Nothing to mark in <i>representative of three independent experiments</i>.</span></div><div class='acts'><button type='button' data-act='mark'>Use highlighted text</button><button type='button' class='sec' data-act='done' style='display:none'>Done, next</button><button type='button' class='sec' data-act='not_stated'>Not stated</button><button type='button' class='quiet' data-act='unclear'>Unclear</button></div><div class='grab'><div class='cap'>Marked so far, add as many as the paper has</div><ol class='spans'></ol><label class='morewrap'><input type='checkbox' class='morebox'>There are more of these than I marked</label></div></div></div></div></div><div class='card'><div class='paper-h'><h2>Paper <span class='num'>8</span> of <span class='num'>9</span></h2><span class='pill'>PMC8460759</span></div><div class='note' style='font-size:13px;color:var(--ink-mute);margin-bottom:6px'> · <span class='num'>year unknown</span></div><div class='split'><div class='col-text'><div class='methods' id='m_PMC8460759'>
+RNA Sequencing Data Collection and
+Processing
+The Cancer Genome Atlas (TCGA, https://portal.gdc.cancer.gov/
+), Genotype-Tissue Expression (GTEx, https://www.gtexportal.
+org/home/), and The Human Protein Atlas (HPA, https://www.
+proteinatlas.org/) were used to assess the FOXF2 expression level
+in various tumor tissues, including GC, and multiple human
+normal tissues. Expression profiling by array from Gene
+Expression Omnibus (GEO) was also used to confirm FOXF2
+expression in GC. The RNA-Seq data of GC generated from the
+TCGA database were downloaded using the TCGAbiolinks
+package (Colaprico et al., 2016) in R and used to identify
+differentially expressed genes (DEGs) in GC and normal
+gastric tissues. The cutoff criteria were fold change |FC| &gt; 2.0
+and FDR &lt;0.05. The Trimmed Mean of M values (TMM) method
+(Robinson and Oshlack, 2010) was used to normalize the
+observed counts, and the limma package (Ritchie et al., 2015)
+was then used for identification with R software.
+GC Cell Lines and Clinical Samples
+Human GC cell lines SGC-7901, BGC-823, MGC-803, and
+MKN-45 and the normal gastric epithelium cell line (GES-1)
+used in the present study were purchased from the Chinese
+Academy of Sciences (Shanghai, China). All cell lines were
+maintained in DMEM medium (Gibco, Germany) containing
+10% fetal bovine serum (FBS, MilliporeSigma, Shanghai,
+China), 100 μg/ml streptomycin (Thermo Fisher Scientific,
+United States), and 100 U/mL penicillin (Thermo Fisher
+Scientific) in an incubator with 5% CO2 at 37°C. Medium
+changes were performed every 2-3 days (after reaching
+70-80% cell confluence).
+Clinical
+samples
+including
+25
+paired
+gastric
+tumor
+tissues and adjacent nontumor tissues (at least 5 cm away
+from
+the
+clear
+edge
+of
+tumor
+tissues)
+were
+collected
+from
+patients with GC during
+surgery in
+the Fourth
+Affiliated Hospital of China Medical University. None of
+the
+patients
+received
+any
+adjuvant
+treatments
+before
+surgery. The ethical approval for this study was obtained
+from the Fourth Affiliated Hospital of China Medical
+University, and written informed consents were signed by
+all patients. All the tissues were removed during the surgery
+and immediately stored at -80°C.
+RNA Extraction and Real-Time PCR
+Total RNA was extracted from cells and tissues by using TRIzol
+reagent (Invitrogen, United States), and the concentration and
+purity of RNA were measured with a spectrophotometer. Total
+RNA was converted into cDNA by reverse transcription using the
+PrimeScriptTMRT Reagent Kit with gDNA Eraser (TaKaRa,
+Dalian, China). Quantitative real-time PCR (qRT-PCR) was
+performed using TB Green® Premix Ex TaqTMII (TaKaRa,
+Dalian,
+China).
+Glyceraldehyde-3-phosphate
+dehydrogenase
+(GAPDH) was used as a reference. The primers used for qRT-
+PCR are shown in Supplementary Table S1. All steps were
+performed in accordance with the instructions of the reagent
+manufacturer.
+Bisulfite Sequencing PCR (BSP) and
+Methylation Drug Treatment
+Methprimer 2.0 (Li and Dahiya, 2002) was used to determine
+whether there are CpG islands in the promoter sequence of
+Frontiers in Molecular Biosciences | www.frontiersin.org
+September 2021 | Volume 8 | Article 645470
+2
+Zhang et al.
+Aberrant DNA Methylation-Mediated FOXF2 Dysregulation
+ FOXF2 and for designing BSP primers. The MiniBEST Universal
+Genomic DNA Extraction Kit (TaKaRa, Dalian, China) was used
+to extract DNA from cells and tissues. The EZ DNA Methylation-
+Gold kit (Zymo Research, Irvine, CA, United States) was used for
+methylation to modify DNA. The bisulfite-modified DNA was
+used
+for
+BSP.
+The
+primers
+sequences
+are
+shown
+in
+Supplementary Table S1. Three GC cell lines, namely SGC-
+7901, MGC-803, and MKN-45, and GES-1 were cultured and
+treated with 5-Aza-dC (Sigma-Aldrich) at the dose of 15 μmol/L
+for 3 days. The mRNA and protein expression levels of FOXF2
+were measured.
+Cytoplasm and Nucleus Separation
+The Nuclear and Cytoplasmic Protein Extraction Kit (Wanleibio,
+China) was used to isolate cytoplasm and nucleus protein
+according to the manufacturer’s instructions.
+Western Blotting
+The protocols for western blotting were described in a previous
+study (Zhang et al., 2019). The primary antibodies were
+incubated at 4°C overnight according to the following
+dilution ratio: FOXF2 (1:200; Abcam, Cambridge, MA,
+United States). β-actin and Histone H3 were used as
+endogenous loading control.
+FOXF2 Methylation and Prognosis Risk
+Analysis
+The Stomach Adenocarcinoma methylation (HM450) profile,
+downloaded from cBioPortal (Cerami et al., 2012) (http://www.
+cbioportal.org/), was used to assess correlation between FOXF2
+expression and methylation level. The cg locus located at the
+FOXF2 promoter region was identified using the MEXPRESS
+tool (Koch et al., 2019), and the association between the
+methylation level of the target cg locus and FOXF2 expression
+was then evaluated. SurvivalMeth (Zhang et al., 2020) (http://bio-
+bigdata.hrbmu.edu.cn/survivalmeth), a web server to investigate
+the effect of DNA methylation-related functional elements on
+prognosis, was used to analyze methylation levels and the
+correlation between methylation and risk score, gene expression,
+and prognosis. All steps were performed in accordance with the
+developer’s instructions. The risk score system from SurvivalMeth
+was calculated by integrating the methylation level of the cg locus
+and the corresponding Cox regression coefficient. The optimal
+cutoff value of risk score was then identified by the “Maximally
+Selected Rank Statistics” (maxstat) model (Laska et al., 2012). Then,
+the patients were divided into low/high risk groups based on the
+risk score, and the survival analysis was performed to determine the
+prognosis of the two groups.
+FOXF2-miRNAs and Target Genes
+Prediction Network
+The
+inclusion
+criteria
+for
+FOXF2-miRNAs-target
+gene
+regulation
+network
+are
+as
+follows:
+1)
+TransmiR
+v2.0
+database (Tong et al., 2019) (http://www.cuilab.cn/transmir)
+is a database that provides information on the regulatory
+relationships between TFs and miRNAs. Thus, we first
+obtained
+the
+miRNAs
+that
+could
+be
+transcriptionally
+regulated by FOXF2; 2) According to the cutoff criteria of
+FC &gt; 2.0 and FDR &lt;0.05, the upregulated miRNAs in GC were
+identified by analyzing the TCGA Stomach Adenocarcinoma
+mature miRNA expression profile; 3) Pearson’s correlation
+coefficient (R value) for association between FOXF2 and
+miRNAs is less than -0.3; and 4) Upregulated miRNAs (FC
+&gt; 2.0 and FDR &lt;0.05) in blood of patients with GC determined
+by analyzing the blood miRNA expression profile from the
+BBCancer database (Zuo et al., 2020). The miRNAs that met
+the four abovementioned criteria were considered to be FOXF2
+transcriptional regulated miRNAs. Then, Starbase v2.0 (Li
+et
+al.,
+2014)
+(http://starbase.sysu.edu.cn/)
+was
+used
+to
+predict the target genes of miRNAs. The predicted target
+genes that are downregulated in GC were included for
+regulation network construction.
+Gene Function Enrichment Analysis
+To determine the biological function of these target genes, we
+performed biological pathway analysis by FunRich, which is a
+functional enrichment and interaction network analysis tool
+(Pathan et al., 2015). The pathway items with p &lt; 0.05 were
+considered to be statistically significant.
+Statistical Analyses
+All statistical analyses were performed with SPSS version 19.0
+(Chicago, IL, United States) or GraphPad Prism software
+version 7 (GraphPad Software Inc., CA, United States). The
+statistical significance between two groups was analyzed by
+paired or unpaired t test. The Kaplan-Meier curve was
+analyzed
+by
+the
+log-rank
+test.
+Receiver
+operating
+characteristic (ROC) curves were used to test the diagnostic
+ability of blood miRNAs in GC. p &lt; 0.05 was considered to be
+statistically significant.
+</div><div class='tools'><button type='button' class='quiet' onclick='jumpSec(1)'>Blot section</button><button type='button' class='quiet' onclick='jump(-1)'>Prev</button><button type='button' class='quiet' onclick='jump(1)'>Next</button><span id='hits_PMC8460759' class='num'></span><span class='aid'>shading is a search aid, not an answer</span></div></div><div class='col-q'><div class='q' data-q='v2|PMC8460759|shortcut_citation' data-pmcid='PMC8460759' data-item='shortcut_citation'><div class='qname'><span>Shortcut citation</span><span class='ans'></span></div><div class='qdef'>A statement that the blot method, or a step of it, was done as described in a cited source ('as previously described [12]', 'according to Smith et al.'), with or without details given. A citation for a reagent, for an antibody's validation, or for another assay does not count, and neither does following a manufacturer's instructions. Western blot only.</div><div class='qhow'><b>What to mark.</b> Mark the phrase that points to the citation.<span class='eg'>In <i>Western blotting was performed as previously described (24)</i> mark <b>as previously described (24)</b>. Nothing to mark in <i>qPCR was performed as previously described (12)</i>.</span></div><div class='acts'><button type='button' data-act='mark'>Use highlighted text</button><button type='button' class='sec' data-act='done' style='display:none'>Done, next</button><button type='button' class='sec' data-act='not_stated'>Not stated</button><button type='button' class='quiet' data-act='unclear'>Unclear</button></div><div class='grab'><div class='cap'>Marked so far, add as many as the paper has</div><ol class='spans'></ol><label class='morewrap'><input type='checkbox' class='morebox'>There are more of these than I marked</label></div></div></div></div></div><div class='card'><div class='paper-h'><h2>Paper <span class='num'>9</span> of <span class='num'>9</span></h2><span class='pill'>PMC9696674</span></div><div class='note' style='font-size:13px;color:var(--ink-mute);margin-bottom:6px'> · <span class='num'>year unknown</span></div><div class='split'><div class='col-text'><div class='methods' id='m_PMC9696674'>
+Animals and tissue processing
+B6.129S4(Cg)-Mapttm1(eGFP)Klt/J mice (C57
+BL6J background) from The Jackson Laboratory
+(stock 029219) with two GFP copies (here referred
+to as TauGFP/GFP) are knockout mice for the
+microtubule-associated protein tau (MAPT) gene due
+to insertion of the transgene GFP [11]. TauGFP/+
+mice with a single copy of GFP are hemizygous
+mice for MAPT gene, while the littermate Tau+/+
+are the wild-type mice. Mice were housed in a spe-
+cific pathogen-free colony facility, in accordance
+and handle following European and local animal
+care protocols. Male and female mice (2, 6, 12,
+and 18 months old) were used for all experiments.
+Animal experiments received the approval of the
+CBMSO’s (AECC-CBMSO-13/172) and national
+(PROEX 102.0/21) Ethics Committee. Mice were
+fully anesthetized by an intraperitoneal injection of
+pentobarbital (Dolethal, Vetoquinol, 60 mg/mL) and
+transcardially perfused with 0.9% saline.
+Brain samples
+All human brain samples from hippocampus and
+frontal lateral cortex were obtained from Banco de
+Tejidos (Fundaci ́on CIEN, Instituto de Salud Car-
+los III, Madrid, Spain). Cerebellum samples were
+kindly provided by Dr. Isidro Ferrer from Bellvitge
+UniversityHospital,IDIBELL(BellvitgeBiomedical
+Research Centre), Barcelona, Spain. Hippocampus
+(HPC) and frontal lateral cortex (FLC) samples were
+from control subjects (not AD associated pathology).
+Due to absence of control subjects from cerebellum,
+samples on very early stages of the disease (Braak
+I and II stages of tau-related AD pathology) were
+used. See Table 1 for a detailed description of each
+subject and the regions of brain available from each
+individual. Written informed consent was obtained
+premortem from all patients.
+RNA extraction and RT-qPCR
+Brain samples were extracted using Qiazol lysis
+reagent (79306, Qiagen). One stainless steel bead
+ L. Vall ́es-Saiz et al. / Tau Expression in Brain Areas
+679
+Table 1
+Summary of the samples employed for qPCR
+Group
+Sex
+Age
+FLC
+HPC
+CBL
+Control
+M
+41
+✓
+✓
+Control
+F
+58
+✓
+✓
+Control
+F
+78
+✓
+Control
+M
+43
+✓
+✓
+Control
+M
+56
+✓
+✓
+Control
+M
+49
+✓
+✓
+Control
+M
+84
+✓
+✓
+Control
+M
+84
+✓
+✓
+Control
+M
+78
+✓
+✓
+Control
+M
+14
+✓
+Braak I
+M
+70
+✓
+Braak I
+M
+61
+✓
+Braak I
+F
+75
+✓
+Braak II
+M
+86
+✓
+Braak II
+M
+73
+✓
+FLC, frontal lateral cortex; HPC, hippocampus; CBL, cerebellum.
+(69989, Qiagen) was introduced in an Eppendorf
+with a small portion of each brain sample and
+was homogenized through agitation for 4 min at a
+frequency of 30/s on a Qiagen Retsch MM300 Tis-
+sueLyser. All RNA extracts were used by qPCR.
+Relative expression of TIR12-MAPT was determined
+by qPCR. cDNA was isolated from previously
+extracted RNA samples with the PrimeScript 1st
+strand cDNA Synthesis Kit (6110A, Takara) using
+oligo dT primer, during 45 min at 42◦C, according to
+manufacturer’s protocols. Gene expression was then
+determined using quantitative PCR with fast SYBR
+Green reagent (4385612, Applied Biosystems) on a
+CFX384 Touch Real-Time PCR Detection System
+(Bio-Rad). The reaction per well was 10 L and con-
+tained: 25 ng of cDNA template per sample, 5 L of
+the SYBR Green PCR mix, and 1 L per oligonu-
+cleotide pair at 5 M (see Table 2). Amplification
+was carried out for 40 cycles of 1 s at 95◦C followed
+by 20 s at 60◦C. Three technical replicates per gene
+were used. Each primer pair showed a single, sharp
+peak, thereby indicating that the primers amplified
+onlyonespecificPCRproduct.Noamplificationfrom
+the no template control was observed for genes of
+interest.
+Immunofluorescence
+Mice whose samples were employed were fixed
+with 4% PFA in 0.1 N phosphate buffer (PB) for
+24 h at 4◦C. They were then washed three times
+in PB and placed in a 10% sucrose/4% agarose
+matrix. Sagittal brain sections were obtained on a
+Leica VT1000 S vibratome (50 m). The sections
+were subjected to a floating immunolabeling pro-
+cess. For immunofluorescence after performing three
+washes with PB 0.1 N, the sections were incubated
+with the following primary antibodies in the block-
+ing solution (1% BSA and 1% Triton X-100 in 0.1 N
+PB) at 4◦C for 24 h: anti-Olig2 (rabbit, 1 : 1000,
+Millipore); anti-Iba1 (guinea pig, 1 : 1000, Synaptic
+systems); anti-GFAP (chicken, 1 : 500, Invitrogen);
+and anti-NeuN (mouse, 1 : 1000, Millipore). Next,
+five washes were performed with this same block-
+ing solution, and the sections were incubated with
+the corresponding secondary antibodies conjugated
+with Alexa fluorophores at 4◦C with gentle agita-
+tion for 24 h (1 : 1000, Molecular Probes). Finally,
+three washes were performed with PB and sam-
+ples were incubated with DAPI diluted 1 : 5000 for
+10 min, followed by three additional washes with PB.
+The sections were placed on slides using FluorSave
+Images that were taken using a Confocal Spinning
+Disk SpinSR10 attached to an IX83 inverted micro-
+scope (Olympus).
+Table 2
+Detailed information of the oligonucleotides used for qPCR
+Name
+Sequence
+Target
+TIR12 Fw
+CATAAACCAGGAGGTGGCCAG
+Intron-12-retaining MAPT
+TIR12 Rv
+CACCCTACCCCCTTTACCTTTT
+MAPT-Fw
+GTCGAAGATTGGGTCCCTGG
+Total MAPT
+MAPT-Rv
+GACACCACTGGCGACTTGTA
+18S Fw
+ATCCATTGGAGGGCAAGTC
+Normalizing human
+genes (18S, GAPDH,
+tubulin, -actin)
+18S Rv
+GCTCCCAAGATCCAACTACG
+GAPDH Fw
+AGCCACATCGCTCAGACAC
+GAPDH Rv
+CGCCCAATACGACCAAAT
+TubB Fw
+CTTTGTGGAATGGATCCCCA
+TubB Rv
+GACTGCCATCTTGAGGCCA
+BACT Fw
+CAGGCACCAGGGCGTG
+BACT Rv
+GTGAGGATGCCTCTCTTGCTCT
+ 680
+L. Vall ́es-Saiz et al. / Tau Expression in Brain Areas
+Protein extracts and western blots
+Mousebraintissuepreservedat-80◦Cwashomog-
+enized to obtain the extracts in RIPA buffer as
+described before [9]. Next, the protein concentra-
+tion of each homogenate was determined by the
+Bradford method [12], using the BCA test (Thermo
+Fisher). Finally, the SDS-PAGE buffer used in [9] was
+added to the protein extracts obtained. The extracts
+were boiled in a thermoblock at 100◦C for 5 min.
+Thirty micrograms of protein from each sample were
+loaded in as many wells. The proteins were sepa-
+rated on 10% acrylamide/bisacrylamide gels in the
+presence of SDS at 120 mV for approximately 1 h.
+Those present in the gel were transferred to nitrocel-
+lulose membranes (Schleicher and Schuell, Keene,
+NH, USA) at 150 mA for 45 min, using the Bio-Rad
+Mini-Protean system. Subsequently, the membranes
+were blocked using 5% milk powder in 0.1% Tween
+PBS for 1 h. The membranes were then washed
+twice with 0.1% PBS Tween-20 (v/v) under stirring
+for 10 min. The membrane was stained with Pon-
+ceau dye (Ponceau 0.3% in TCA 3%) to check the
+transfer efficiency. Finally, they were incubated with
+the appropriate primary antibody overnight at 4◦C:
+anti-total Tau5 (mouse, 1 : 1000, Calbiochem); anti-
+GFP (rabbit, 1 : 1000, Invitrogen); and anti-Vinculin
+(rabbit, 1 : 5000, Abcam) as load control. Protein
+expression was detected using the secondary anti-
+body (1 : 1000), which were incubated for 1 h at room
+temperature. After performing three 10-min washes
+in the wash solution, the immunoreactive proteins
+were detected using an ECL kit (Enhanced Chemilu-
+minescence Detection System, Amersham).
+Statistical analysis
+Mean data were analyzed with one-way ANOVA
+followed by Tukey’s test post hoc analysis or by
+two tails T-test. Differences between groups were
+considered significant at *p&lt;0.05, **p&lt;0.01, and
+***p&lt;0.001.
+</div><div class='tools'><button type='button' class='quiet' onclick='jumpSec(1)'>Blot section</button><button type='button' class='quiet' onclick='jump(-1)'>Prev</button><button type='button' class='quiet' onclick='jump(1)'>Next</button><span id='hits_PMC9696674' class='num'></span><span class='aid'>shading is a search aid, not an answer</span></div></div><div class='col-q'><div class='q' data-q='v2|PMC9696674|transfer_conditions' data-pmcid='PMC9696674' data-item='transfer_conditions'><div class='qname'><span>Transfer conditions</span><span class='ans'></span></div><div class='qdef'>The voltage or current, the time, or the temperature of the transfer. Any one counts. The transfer method alone ('wet transfer') does not. Western blot only.</div><div class='qhow'><b>What to mark.</b> Mark the conditions.<span class='eg'>In <i>transferred at 100 V for 1 h at 4 &deg;C</i> mark the whole phrase.</span></div><div class='acts'><button type='button' data-act='mark'>Use highlighted text</button><button type='button' class='sec' data-act='done' style='display:none'>Done, next</button><button type='button' class='sec' data-act='not_stated'>Not stated</button><button type='button' class='quiet' data-act='unclear'>Unclear</button></div><div class='grab'><div class='cap'>Marked so far, add as many as the paper has</div><ol class='spans'></ol><label class='morewrap'><input type='checkbox' class='morebox'>There are more of these than I marked</label></div></div></div></div></div></div><div class='scrim' id='scrim' onclick='guide(false)'></div><aside class='guide' id='guide'><button type='button' class='quiet close' onclick='guide(false)'>Close</button><h2>Guide</h2><h3>You do not type anything</h3><p>Select the words in the Methods text, then press <b>Use highlighted text</b>. The exact words you selected are what gets recorded.</p><p>Typing is what this design removes. Given a sentence like the one below, one person types RIPA, another types the whole parenthesis, a third types the clause. All three read the paper correctly and disagree in the data. Selecting removes that entirely.</p><blockquote>The cell total protein was isolated using RIPA (Applygen Technologies Inc., Beijing, China). Protease inhibitor (CWBIO, Shanghai, China) was added into the RIPA at a ratio of 1:100.</blockquote><p style='margin-top:10px'>For lysis buffer there, mark just <b>RIPA</b>, the first time it appears.</p><h3>How much to select</h3><p><b>The shortest phrase that states the detail.</b> Not the whole sentence when three words will do, and not the vendor, city or catalog number unless the question asks for them.</p><p>Every question shows a worked example under <b>What to mark</b>. Follow it rather than your instinct.</p><h3>When a paper gives several</h3><p>Many papers list a table of antibodies with eight RRIDs, eight catalog numbers and several vendors. <b>Mark them all.</b> Press <b>Use highlighted text</b> once per value and they stack up in a numbered list. Press <b>Done, next</b> when the list is complete.</p><p>If they sit in a contiguous table or a run-on list, selecting the whole block in one go is fine and much faster. You are marking where the evidence is, not counting.</p><p>The same value repeated does not need marking twice. A paper that uses 1:1000 for six antibodies has one dilution, not six.</p><p><b>If you stop before you have them all, tick 'There are more of these than I marked'.</b> That box matters more than it looks: without it, someone who stopped at five of eight cannot be told apart from someone who found everything, and the three they skipped would count against the extractor as mistakes it did not make.</p><h3>What counts</h3><p><b>Judge only what is written.</b> Not what the authors almost certainly did, and not what is standard practice in the field.</p><p><b>Judge the text shown.</b> The page shows the Methods section, and sometimes figure legends or the full text where no Methods heading was found. A detail in the text shown counts, legend included. A detail found only in a legend or supplementary file that is not shown is <b>Not stated</b>.</p><p><b>Unclear</b> is a real answer. It is set aside rather than counted either way, so use it when you are genuinely stuck rather than guessing.</p><h3>The shaded sentences</h3><p><b>The faint tint marks the western blot section</b>: sentences that name the blot, the gel, the membrane or its detection. It is the same for every question on a paper. <b>Blot section</b> jumps between its blocks. Other assays are left untinted, but an item can still be stated elsewhere, for example in a figure legend.</p><p><b>The warmer marks</b> are the sentences most likely to hold the answer to the open question, and <b>Prev</b> and <b>Next</b> step between them.</p><p>Both are search aids and nothing more. Fixed keyword rules pick them; they are never told the answer, they sometimes shade irrelevant sentences and sometimes miss the right one. Read around them, and judge only the text.</p><h3>Getting through a batch</h3><p>The Methods text stays pinned on the left while questions scroll on the right. Answers collapse to one line and the next question opens automatically. Click any collapsed line to change it.</p><p>Your work is saved in this browser as you go, so closing the tab loses nothing. <b>Submit</b> is at the top of the page and turns on once every question is answered and your initials are filled in.</p><h3>Every question, in one place</h3><table><tr><td>Lysis buffer composition</td><td>The lysis buffer's recipe, or the product used. A recipe with at least one component of the base buffer and its concentration counts, and so does a product identified by brand name, vendor or catalog number. A generic name alone, such as 'RIPA buffer', does not count, because RIPA recipes differ, and neither do protease or phosphatase inhibitors added to it, which are their own item. Western blot only.<br><b>Mark:</b> Mark the recipe, or the product with what identifies it. In <i>RIPA (50 mM Tris pH 7.4, 150 mM NaCl, 1% NP-40, 0.5% deoxycholate, 0.1% SDS)</i> mark the parenthesis; in <i>RIPA (Applygen Technologies)</i> mark the whole phrase. Nothing to mark in <i>lysed in RIPA buffer</i>.</td></tr><tr><td>Membrane activation</td><td>A pre-transfer membrane step: PVDF pre-wetted in methanol, or the membrane equilibrated in transfer buffer. Equilibrating the gel does not count. Western blot only.<br><b>Mark:</b> Mark the step. In <i>PVDF membranes were activated in methanol for 1 min</i> mark the whole phrase.</td></tr><tr><td>Reducing or denaturing conditions</td><td>A statement of reducing or denaturing conditions for the blot's samples: Laemmli buffer; sample or loading buffer with heating; a stated denaturing temperature; a reducing agent (DTT, 2-ME); the condition named ('denatured'); or an explicit non-reducing statement. A reducing agent in a lysis or fractionation buffer feeding the blot counts. SDS-PAGE alone, an SDS running buffer, or heating in elution buffer does not. Western blot only.<br><b>Mark:</b> Mark the phrase or the reagent that states it. In <i>boiled in Laemmli buffer containing DTT</i> mark <b>DTT</b>, or <b>boiled in Laemmli buffer</b> if no reagent is named. Nothing to mark in <i>separated by SDS-PAGE</i>, <i>SDS running buffer</i>, or <i>heated in elution buffer</i>.</td></tr><tr><td>Protein loaded per lane</td><td>A mass of protein loaded on the blot's gel, per lane, well or sample ('Proteins (40 ug) were run on SDS gels' counts). A volume on its own does not count, and neither does a mass used for another assay (an IP or pull-down input, a digest, drug or RNA amounts). Western blot only.<br><b>Mark:</b> Mark the mass and its unit. In <i>30 ug of protein was loaded per lane</i> mark <b>30 ug</b>.</td></tr><tr><td>Total protein stain</td><td>A total-protein stain used to normalize or check the blot: Ponceau S or REVERT on the membrane, stain-free imaging used for normalization, or Coomassie stated as the blot's loading or transfer check, including a parallel gel stained and stated as the blot's loading check. A stained gel with no stated link to a blot, or a stain-free gel named only as a product, does not count. Western blot only.<br><b>Mark:</b> Mark the stain name only. In <i>confirmed by Ponceau S staining</i> mark <b>Ponceau S</b>. Nothing to mark in <i>run on a 4-15% TGX Stain-Free gel</i> with no normalization stated, in any stain on a purity, expression, preparative, mass-spec or antibody-QC gel, or in a stain on a gel that was never blotted and is not stated as the blot's loading check.</td></tr><tr><td>Secondary antibody vendor</td><td>The company that supplied a secondary antibody, including the maker of a kit that supplies it. 'All antibodies were from X' counts. Counts for an antibody used in any assay, not only the blot.<br><b>Mark:</b> Mark every distinct company name. Leave out the city and country. A table can be marked as one block. In <i>HRP-conjugated goat anti-rabbit IgG (Jackson ImmunoResearch)</i> mark <b>Jackson ImmunoResearch</b>.</td></tr><tr><td>Membrane source or grade</td><td>The supplier, product name or grade of the blot membrane, such as Immobilon-P (Millipore) or Amersham Hybond. Membrane chemistry or pore size alone does not count, and neither does the supplier of a transfer system or kit that does not name the membrane, or an Immobilon ECL substrate, which is the ECL reagent. Western blot only.<br><b>Mark:</b> Mark the supplier or product words for the membrane. In <i>transferred to PVDF membranes (Immobilon-P, Millipore)</i> mark <b>Immobilon-P, Millipore</b>. Nothing to mark in <i>transferred to PVDF membranes</i>.</td></tr><tr><td>Lysate storage stated</td><td>How the blot's lysates or protein extracts were stored before loading: a storage temperature, with or without a duration ('lysates were stored at -80 °C until use'). Storage of tissue, cells, blood or other samples before lysis, and storage of antibodies or reagents, does not count. Western blot only.<br><b>Mark:</b> Mark the words that state the storage. In <i>the supernatant was aliquoted and stored at -80 &deg;C</i> mark <b>stored at -80 &deg;C</b>. Nothing to mark in <i>tissues were snap-frozen in liquid nitrogen and stored at -80 &deg;C</i>.</td></tr><tr><td>Replicate definition</td><td>What a replicate of the blot was, with the unit named: independent cultures or passages, animals, patients, separate blots, or technical repeats of one lysate. 'Independent experiments' or 'biological replicates' with no unit named does not count, and neither does a count alone. Western blot only.<br><b>Mark:</b> Mark the words that say what was replicated. In <i>three independent cell cultures, each blotted once</i> mark the whole phrase. Nothing to mark in <i>representative of three independent experiments</i>.</td></tr><tr><td>Shortcut citation</td><td>A statement that the blot method, or a step of it, was done as described in a cited source ('as previously described [12]', 'according to Smith et al.'), with or without details given. A citation for a reagent, for an antibody's validation, or for another assay does not count, and neither does following a manufacturer's instructions. Western blot only.<br><b>Mark:</b> Mark the phrase that points to the citation. In <i>Western blotting was performed as previously described (24)</i> mark <b>as previously described (24)</b>. Nothing to mark in <i>qPCR was performed as previously described (12)</i>.</td></tr><tr><td>Transfer conditions</td><td>The voltage or current, the time, or the temperature of the transfer. Any one counts. The transfer method alone ('wet transfer') does not. Western blot only.<br><b>Mark:</b> Mark the conditions. In <i>transferred at 100 V for 1 h at 4 &deg;C</i> mark the whole phrase.</td></tr></table><h3>Ask about a rule</h3><p>This answers questions about <b>what a rule means</b>, nothing else. It is never given the paper, it cannot see what you are reading, and it will refuse if you paste text and ask what the answer is. Deciding what a paper says is the whole job being measured here, so it has to stay yours.</p><p>Questions are logged with your initials, so ask freely and openly.</p><select id='ask_item' style='width:100%;margin-bottom:8px;padding:8px 12px;border-radius:var(--r-sm);border:1px solid var(--hairline-input);font-family:inherit;font-size:15px;font-weight:300;background:var(--canvas);color:var(--ink)'><option value='lysis_buffer_composition'>Lysis buffer composition</option><option value='membrane_activation'>Membrane activation</option><option value='reducing_denaturing'>Reducing or denaturing conditions</option><option value='protein_per_lane_ug'>Protein loaded per lane</option><option value='total_protein_stain'>Total protein stain</option><option value='secondary_ab_vendor'>Secondary antibody vendor</option><option value='membrane_source'>Membrane source or grade</option><option value='sample_storage'>Lysate storage stated</option><option value='replicate_definition'>Replicate definition</option><option value='shortcut_citation'>Shortcut citation</option><option value='transfer_conditions'>Transfer conditions</option></select><input type='text' id='ask_q' placeholder='for example: does a lot number count as a catalog number?' autocomplete='off'><div style='margin-top:8px'><button type='button' class='sec' onclick='ask()'>Ask</button></div><blockquote id='ask_out' style='margin-top:10px'>The rules above are the reference. This is only for when one of them is unclear.</blockquote></aside><div class='hint' id='hint'></div><script>
+const BATCH = {"batch": "v2batch_26", "papers": [{"pmcid": "PMC4855273", "items": ["lysis_buffer_composition", "membrane_activation", "reducing_denaturing"]}, {"pmcid": "PMC10474707", "items": ["protein_per_lane_ug"]}, {"pmcid": "PMC11024596", "items": ["total_protein_stain"]}, {"pmcid": "PMC4605622", "items": ["secondary_ab_vendor"]}, {"pmcid": "PMC5486552", "items": ["membrane_source"]}, {"pmcid": "PMC6412418", "items": ["sample_storage"]}, {"pmcid": "PMC7338428", "items": ["replicate_definition"]}, {"pmcid": "PMC8460759", "items": ["shortcut_citation"]}, {"pmcid": "PMC9696674", "items": ["transfer_conditions"]}]};
+const ENDPOINT = "https://script.google.com/macros/s/AKfycbyGh-3zVfU0yh_nklOLXH03km-7FFzjtqE2J42hj0_pd2rWQmMLXtaROiSQH7I6TSUN/exec";
+const CUES = {"primary_ab_rrid": ["rrid|research resource|\\bab_\\d|identifier", "ab_\\d{4,}|rrid"], "ab_catalog_any": ["antibod|cat(alog(ue)?)?\\s*\\.?\\s*(no|num|#)|product\\s*(no|#)|from\\s+\\w+\\s*\\(", "#\\s*\\d|\\b[a-z]{2,4}-?\\d{3,6}\\b|clone"], "primary_ab_vendor": ["antibod|purchased|obtained|supplied|from\\s+\\w+\\s*\\(", "abcam|cell signal|santa cruz|sigma|thermo|invitrogen|millipore|proteintech|r&d|bd bio|novus|genetex"], "primary_ab_host": ["antibod|anti-", "rabbit|mouse|goat|rat\\b|donkey|monoclonal|polyclonal"], "ab_dilution_any": ["antibod|incubat|dilut|probe", "1\\s*[:/]\\s*\\d"], "secondary_ab_conjugate": ["secondary|conjugat", "hrp|horseradish|alkaline phosphat|irdye|alexa|biotin"], "detection_chemistry": ["detect|visuali[sz]|develop|expos", "chemilumin|\\becl\\b|fluoresc|colorimetric|autoradiograph|film"], "ecl_reagent": ["\\becl\\b|chemilumin|substrate|detect", "supersignal|clarity|luminata|immobilon|femto|pico|dura|amersham|pierce"], "blocking_agent": ["block", "milk|\\bbsa\\b|casein|serum|albumin"], "blocking_percent": ["block", "\\d+\\s*%"], "membrane_type": ["membrane|transfer|blott", "pvdf|nitrocellulose|immobilon"], "membrane_pore_um": ["membrane|pvdf|nitrocellulose|pore", "0?\\.\\d+\\s*[u\u00b5\u03bc]?m|micron|\\d\\.\\d+"], "gel_percentage": ["gel|sds-?page|acrylamide|electrophore|separat|resolv", "\\d+\\s*%|gradient|\\d+\\s*-\\s*\\d+"], "transfer_method": ["transfer|blott", "semi-?dry|wet|tank|iblot|trans-?blot|electro|\\bmini\\b"], "reducing_denaturing": ["sample buffer|loading buffer|laemmli|denatur|boiled|reduc", "\\bdtt\\b|mercaptoethanol|[\u03b2b]-?me\\b|95\\s*\u00b0|100\\s*\u00b0|boil"], "protein_per_lane_ug": ["load|per lane|separat|resolv|subjected", "\\d+\\s*[u\u00b5\u03bcm]g\\b|\\d+\\s*g\\s+(of\\s+)?(total\\s+)?protein|microgram"], "protein_quant_method": ["protein|concentration|quantif|determin", "\\bbca\\b|bradford|lowry|nanodrop|\\bdc\\b|coomassie"], "lysis_buffer": ["lys(is|ed|e )|extract|homogeni|solubili|harvest|isolat|scrap|resuspend|prepar|collect", "ripa|np-?40|triton|laemmli|\\btris\\b|\\bsds\\b|buffer"], "total_protein_stain": ["membrane|normali[sz]|total protein|ponceau|stain-?free|revert|amido", "ponceau|stain-?free|revert|coomassie|amido"], "loading_control_identity": ["loading control|normali[sz]|internal control|reprob|antibod|probe|blot", "gapdh|actin|tubulin|vinculin|hsp\\s?90|lamin|histone|vdac|calnexin"], "quantification_software": ["quantif|densitom|analy[sz]|band intensit|measur", "imagej|fiji|image ?lab|image ?studio|quantity one|imagepro|alphaview|empiria|software"], "acquisition_software": ["captur|acqui|imag(ed|ing)|software", "image ?lab|image ?studio|cs analyzer|software|version"], "imager_instrument": ["imag(ed|ing|er)|captur|develop|expos|scan", "chemidoc|odyssey|amersham|\\blas-?\\d|x-?ray|film|fusion|azure|ibright"], "replicate_n": ["western|immunoblot|\\bblot|densitometr", "\\bn\\s*=\\s*\\d|three|four|five|six|triplicate|duplicate|\\d+\\s*times|each group"], "reducing_agent_named": ["sample buffer|loading buffer|laemmli|\\blys(is|ed|ate|e)\\b|boil|heat|denatur|\\bdtt\\b|dithiothreitol|mercaptoethanol|tcep", "\\bdtt\\b|dithiothreitol|mercaptoethanol|[\u03b2b]-?me\\b|2-me\\b|tcep|reducing agent"], "antibody_diluent": ["antibod|dilut", "dilut\\w*\\s+(in|with)|diluent|\\bbsa\\b|milk|tbst|blocking buffer"], "ab_incubation_conditions": ["antibod|incubat|probe", "overnight|\\d+\\s*(h|hr|hours?|min)\\b|4\\s*\u00b0|room temperature|\\brt\\b"], "exposure_time": ["expos|film|chemilumin|captur|acqui", "\\d+(\\.\\d+)?\\s*(s|sec|seconds?|min)\\b"], "normalization_stated": ["normali[sz]|relative to|ratio|densitom|band intensit", "gapdh|actin|tubulin|vinculin|total|loading control|control group"], "secondary_ab_vendor": ["secondary|conjugat|anti-(rabbit|mouse|goat|rat)", "abcam|cell signal|santa cruz|sigma|thermo|invitrogen|millipore|proteintech|jackson|bio-?rad|li-?cor|beyotime|zsgb|vector|dako|promega"], "uncropped_blots": ["uncropped|full[- ]length blot|full blot|original blot|raw blot|unprocessed|whole blot", "supplementa(ry|l) (fig|figure|material|data|information|file)|figure s\\d|fig\\.? ?s\\d|repository|figshare|zenodo|mendeley data"], "antibody_validation": ["specific|validat|knock|sirna|shrna|peptide|overexpress", "knock-?(down|out)|sirna|shrna|blocking peptide|specificity"], "antibody_lot": ["\\blot\\b|batch no", "\\blot\\s*(no\\.?|number|#)?\\s*:?\\s*[a-z0-9-]{3,}"], "mw_marker": ["\\bmarkers?\\b|ladder|(protein|molecular[- ]weight|mw|size) standards?", "pageruler|precision plus|seeblue|spectra|magicmark|chameleon|prestained|ladder"], "blinded_quantification": ["blind", "densitom|quantif|band|imagej|image analys|blot"], "dynamic_range_check": ["saturat|linear range|dynamic range|linearity|dilution series|serial dilution", "saturat|linear|dynamic range|within the range"], "quantified_band_identified": ["densitom|quantif|band intensit|analy[sz]ed", "\\d+\\s*kda\\b.{0,20}band|band.{0,30}\\d+\\s*kda|(upper|lower|smaller|larger|cleaved|full-length) (band|form)|additional band"], "blocking_duration": ["block", "\\d+(\\.\\d+)?\\s*(h|hr|hours?|min)\\b|overnight|room temperature|\\brt\\b|\\d+\\s*\u00b0"], "wash_conditions": ["wash|rins", "\\d+\\s*(x|\u00d7|times)|\\d+\\s*min|tbs-?t|pbs-?t|tween"], "substrate_incubation_time": ["ecl|substrate|chemilumin|luminol", "\\d+(\\.\\d+)?\\s*(s|sec|seconds?|min)\\b"], "software_version": ["imagej|fiji|image ?lab|image ?studio|quantity one|software", "\\bv(ersion)?\\.?\\s*\\d+(\\.\\d+)+|\\bversion\\s*\\d"], "quantification_procedure": ["densitom|quantif|band intensit|integrated density", "background|rolling|integrated density|area under|peak|subtract"], "ab_clone_id": ["clone|monoclonal", "clone\\s*[:#]?\\s*[a-z0-9][a-z0-9-]{1,}"], "ab_mass_concentration": ["antibod|anti-", "\\d+(\\.\\d+)?\\s*[u\u00b5\u03bcn]g\\s*/\\s*m[lL]"], "ab_immunogen": ["immunogen|raised against|peptide|epitope|residues", "residues?\\s*\\d|peptide|recombinant|immunogen"], "replicate_definition": ["western|immunoblot|\\bblot|densitometr", "independent|biological|technical|separate (cultures|animals|experiments)"], "image_adjustment_disclosed": ["contrast|brightness|adjust|levels", "uniform|entire image|whole image|linear|no (other )?adjust"], "splicing_disclosed": ["splic|rearrang|dividing line|cropped from|non-?contiguous|different (parts|regions) of", "splic|rearrang|line|same (membrane|blot|gel)"], "control_same_blot": ["same (membrane|blot|gel)|reprob|separate (gel|membrane)|parallel gel|cut", "gapdh|actin|tubulin|vinculin|loading control|reprob"], "lysis_buffer_composition": ["lys|ripa|extract|homogeni", "\\d+\\s*m?M\\s+(tris|hepes|nacl|edta)|\\d+(\\.\\d+)?\\s*%\\s*(np-?40|triton|sds|deoxychol)|cat(alog)?\\.?\\s*(no|#)"], "inhibitors_named": ["inhibitor|protease|phosphatase", "complete|phosstop|pmsf|aprotinin|leupeptin|pepstatin|orthovanadate|naf\\b|halt|cocktail"], "sample_buffer_composition": ["sample buffer|loading buffer|laemmli|lds", "\\d+(\\.\\d+)?\\s*%\\s*(sds|glycerol)|lds|nupage|bio-?rad|\\d+\\s*x\\b"], "transfer_buffer_composition": ["transfer", "methanol|tris-?glycine|caps|\\d+\\s*%\\s*methanol|transfer buffer \\("], "gel_running_system": ["gel|sds-?page|electrophore", "bis-?tris|tris-?glycine|tris-?acetate|tricine|mops|mes\\b|nupage|criterion|mini-protean|tgx|precast"], "electrophoresis_conditions": ["electrophore|sds-?page|gel|resolv|separat", "\\d+\\s*(v|ma)\\b|\\d+\\s*(min|h)\\b"], "transfer_conditions": ["transfer", "\\d+\\s*(v|ma|a)\\b|\\d+\\s*(min|h)\\b|4\\s*\u00b0"], "denaturation_time_temp": ["boil|heat|denatur|sample buffer|loading buffer|laemmli", "\\d+\\s*\u00b0\\s*c.{0,20}\\d+\\s*min|\\d+\\s*min.{0,20}\\d+\\s*\u00b0|boil\\w*.{0,20}\\d+\\s*min"], "stripping_reprobing": ["strip|reprob|re-prob", "strip|reprob|re-prob"], "between_blot_normalization": ["between (blots|gels|membranes)|across (blots|gels|membranes)|inter-?blot|reference sample|calibrator", "normali|reference|calibrat|every (gel|blot)"], "sample_layout_across_gels": ["same gel|same membrane|randomi[sz]|across gels|balanced", "group|sample|lane"], "membrane_activation": ["pvdf|membrane", "methanol|activat|pre-?wet|equilibrat"], "ab_isotype": ["antibod|monoclonal|polyclonal|\\bmab\\b|clone|isotype|subclass", "\\big[gmaedy][1-4]?[abc]?\\b|isotype|subclass|immunoglobulin"], "secondary_ab_host": ["secondary|conjugat|hrp|peroxidase|alexa|irdye", "\\b(goat|donkey|rabbit|mouse|horse|sheep|chicken|rat)\\s+anti-?\\s*(rabbit|mouse|goat|rat|human|chicken|sheep|guinea)"], "fraction_purity_shown": ["fraction|nuclear|cytosol|cytoplasm|mitochond|membrane fraction", "purity|contaminat|enrich|marker"], "sample_storage": ["lysate|supernatant|extract|homogenate|protein", "-\\s*80\\s*\u00b0|\u2212\\s*80|-\\s*20\\s*\u00b0|stored at"], "stripping_verified": ["strip", "confirm|verif|check|complete|re-?expos|no (residual )?signal"], "membrane_cut_disclosed": ["membrane|blot", "\\bcut\\b|strips?\\b|sectioned"], "replicate_handling": ["western|immunoblot|\\bblot|densitometr|lanes?\\b|\\bgels?\\b", "(duplicate|triplicate|replicate) lanes|technical (replicate|duplicate|triplicate)|random effect|mixed model|block(ing)? factor"], "loading_control_validated": ["gapdh|actin|tubulin|vinculin|loading control|total protein", "did not (differ|change)|unchanged|not (altered|affected)|constant|stable"], "shortcut_citation": ["western|immunoblot|\\bblot|sds-?page|electrophore", "as (previously )?described|according to (our |the )?previous|as reported|described (previously|elsewhere)"], "secondary_ab_catalog": ["secondary|anti-(rabbit|mouse|goat|rat)|hrp|conjugat", "cat(alog)?\\.?\\s*(no|#)|#\\s*\\d|\\d{3}-\\d{3}-\\d{3}|\\bab\\d{4,}|\\bsc-\\d{3,}|926-\\d{5}"], "protocol_deposited": ["protocol", "protocols\\.io|protocol exchange|bio-?protocol|10\\.17504"], "membrane_source": ["pvdf|nitrocellulose|membrane", "immobilon|hybond|protran|millipore|amersham|bio-?rad|\\bge\\b|pall|whatman|cytiva|thermo"], "blocking_agent_source": ["block", "sigma|bio-?rad|carnation|fraction v|intercept|odyssey|superblock|everyblot|blotting[- ]grade|roth|fisher|amresco|biofroxx"]};
+const DEFS = {"secondary_ab_vendor": ["Secondary antibody vendor", "The company that supplied a secondary antibody, including the maker of a kit that supplies it. 'All antibodies were from X' counts. Counts for an antibody used in any assay, not only the blot.", "Mark every distinct company name. Leave out the city and country. A table can be marked as one block."], "shortcut_citation": ["Shortcut citation", "A statement that the blot method, or a step of it, was done as described in a cited source ('as previously described [12]', 'according to Smith et al.'), with or without details given. A citation for a reagent, for an antibody's validation, or for another assay does not count, and neither does following a manufacturer's instructions. Western blot only.", "Mark the phrase that points to the citation."], "membrane_source": ["Membrane source or grade", "The supplier, product name or grade of the blot membrane, such as Immobilon-P (Millipore) or Amersham Hybond. Membrane chemistry or pore size alone does not count, and neither does the supplier of a transfer system or kit that does not name the membrane, or an Immobilon ECL substrate, which is the ECL reagent. Western blot only.", "Mark the supplier or product words for the membrane."], "membrane_activation": ["Membrane activation", "A pre-transfer membrane step: PVDF pre-wetted in methanol, or the membrane equilibrated in transfer buffer. Equilibrating the gel does not count. Western blot only.", "Mark the step."], "replicate_definition": ["Replicate definition", "What a replicate of the blot was, with the unit named: independent cultures or passages, animals, patients, separate blots, or technical repeats of one lysate. 'Independent experiments' or 'biological replicates' with no unit named does not count, and neither does a count alone. Western blot only.", "Mark the words that say what was replicated."], "transfer_conditions": ["Transfer conditions", "The voltage or current, the time, or the temperature of the transfer. Any one counts. The transfer method alone ('wet transfer') does not. Western blot only.", "Mark the conditions."], "lysis_buffer_composition": ["Lysis buffer composition", "The lysis buffer's recipe, or the product used. A recipe with at least one component of the base buffer and its concentration counts, and so does a product identified by brand name, vendor or catalog number. A generic name alone, such as 'RIPA buffer', does not count, because RIPA recipes differ, and neither do protease or phosphatase inhibitors added to it, which are their own item. Western blot only.", "Mark the recipe, or the product with what identifies it."], "sample_storage": ["Lysate storage stated", "How the blot's lysates or protein extracts were stored before loading: a storage temperature, with or without a duration ('lysates were stored at -80 \u00b0C until use'). Storage of tissue, cells, blood or other samples before lysis, and storage of antibodies or reagents, does not count. Western blot only.", "Mark the words that state the storage."], "total_protein_stain": ["Total protein stain", "A total-protein stain used to normalize or check the blot: Ponceau S or REVERT on the membrane, stain-free imaging used for normalization, or Coomassie stated as the blot's loading or transfer check, including a parallel gel stained and stated as the blot's loading check. A stained gel with no stated link to a blot, or a stain-free gel named only as a product, does not count. Western blot only.", "Mark the stain name only."], "protein_per_lane_ug": ["Protein loaded per lane", "A mass of protein loaded on the blot's gel, per lane, well or sample ('Proteins (40 ug) were run on SDS gels' counts). A volume on its own does not count, and neither does a mass used for another assay (an IP or pull-down input, a digest, drug or RNA amounts). Western blot only.", "Mark the mass and its unit."], "reducing_denaturing": ["Reducing or denaturing conditions", "A statement of reducing or denaturing conditions for the blot's samples: Laemmli buffer; sample or loading buffer with heating; a stated denaturing temperature; a reducing agent (DTT, 2-ME); the condition named ('denatured'); or an explicit non-reducing statement. A reducing agent in a lysis or fractionation buffer feeding the blot counts. SDS-PAGE alone, an SDS running buffer, or heating in elution buffer does not. Western blot only.", "Mark the phrase or the reagent that states it."]};
+const RUBRIC = "A6-defs-v2-2026-09-26";
+const SECTION = true;
+const NOTE = "Western blot means proteins separated on a gel, transferred to a membrane and detected with an antibody. An OxyBlot counts. A dot blot or slot blot, of RNA or of protein, does not; neither does a capillary system such as Wes or Jess, which has no membrane, or a membrane probed only with streptavidin or a lectin, which uses no antibody. Items marked 'Western blot only' do not count the same thing described for another assay in the paper: qPCR, immunofluorescence, IHC, flow cytometry, ELISA, mass spectrometry, or a gel that was stained rather than blotted. Judge the text the page shows, including any figure legend printed in it; a detail found only in a legend or supplement that is not shown is not stated. A method given only by citation ('as previously described [12]') is not stated: mark only what the text itself says. The Shortcut citation item is the exception: it records the citation phrase itself. Some PDFs drop the micro sign or print it as m ('50 g', '25 mg' for micrograms); rule on the intended unit.";
+const KEY = 'trackF_A6_' + RUBRIC + '_' + BATCH.batch;
+const T0 = Date.now();
+
+function total(){ return BATCH.papers.reduce((a,p)=>a+p.items.length,0); }
+function esc(s){ return s.replace(/[&<>]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
+
+/* ---- state ----------------------------------------------------------------
+   ANS[judgement_id] = {answer, spans:[{text,start,end}], more:bool, done:bool}
+
+   Several items are set-valued in the papers themselves. An antibody table gives
+   eight RRIDs, eight catalog numbers and several vendors, and stage 2 emits all
+   of them pipe-joined. A single span could never validate that, so a question
+   accepts as many spans as the paper needs.
+
+   `more` records "there are more of these than I marked". Without it, a reviewer
+   who stopped after five of eight is indistinguishable from a reviewer who found
+   everything, and the three unmarked values would score as extractor errors. */
+const ANS = {};
+
+function answered(){
+  return Object.values(ANS).filter(v=>v.done).length;
+}
+function refresh(){
+  const a = answered(), t = total();
+  document.getElementById('count').textContent = a + ' of ' + t + ' answered';
+  document.getElementById('bar').style.width = (100*a/t) + '%';
+  document.getElementById('send').disabled =
+    (a < t) || !document.getElementById('rev').value.trim();
+  try{
+    localStorage.setItem(KEY, JSON.stringify(
+      {rev: document.getElementById('rev').value, a: ANS}));
+  }catch(e){}
+}
+function restore(){
+  let s; try{ s = JSON.parse(localStorage.getItem(KEY)||'null'); }catch(e){}
+  if (!s) return 0;
+  document.getElementById('rev').value = s.rev || '';
+  let n = 0;
+  Object.entries(s.a||{}).forEach(([q,v])=>{
+    const el = document.querySelector('[data-q="'+CSS.escape(q)+'"]');
+    if (!el) return;
+    ANS[q] = v; paint(el); n++;
+  });
+  return n;
+}
+
+/* ---- sentence segmentation and cue ranking --------------------------------
+   Sentence level, not line level. PDF text wraps at arbitrary columns, so a
+   "line" is a fragment and marking one marks half a clause. */
+function sentences(text){
+  const out = [];
+  let start = 0;
+  const re = /([.!?])(\s|$)/g;
+  let m;
+  while ((m = re.exec(text)) !== null){
+    const end = m.index + 1;
+    if (end - start > 12) { out.push([start, end]); start = re.lastIndex; }
+  }
+  if (text.length - start > 12) out.push([start, text.length]);
+  return out;
+}
+/* A marked span longer than this is not a search aid, it is a wall. Ordinary
+   Methods sentences run 100 to 250 characters. */
+const MAXSEG = 320;
+/* Tuned on the STAR Protocols key-resources table. 70/90 let adjacent windows merge
+   into 300-character blobs; 30/40 was too tight to read a row in context. At 45/55
+   that table marks two separate RRID rows instead of one merged run, and drops from
+   100% of the block marked to about 9%. */
+const WIN_BEFORE = 45, WIN_AFTER = 55;
+
+function snapL(s, i){ const j = s.lastIndexOf(' ', i); return j > i - 25 && j >= 0 ? j + 1 : i; }
+function snapR(s, i){ const j = s.indexOf(' ', i);     return j >= 0 && j < i + 25 ? j : i; }
+
+/* Windows around each value hit inside an over-long block.
+   STAR Protocols and Cell Press papers carry a KEY RESOURCES TABLE that survives PDF
+   extraction as one 2,500-character run with almost no sentence punctuation. Marking
+   the containing "sentence" marked the entire reagent list for a question about one
+   RRID. Requiring a value hit and marking a window around it turns that into two tight
+   marks on the two RRIDs actually present. */
+function windows(text, s, e, valSrc, out){
+  const seg = text.slice(s, e);
+  let re;
+  try{ re = new RegExp(valSrc, 'gi'); }catch(err){ return; }
+  let m, n = 0;
+  while ((m = re.exec(seg)) !== null && n < 6){
+    const a = snapL(seg, Math.max(0, m.index - WIN_BEFORE));
+    const b = snapR(seg, Math.min(seg.length, m.index + m[0].length + WIN_AFTER));
+    out.push({s: s + a, e: s + b, score: 2});
+    n++;
+    if (m.index === re.lastIndex) re.lastIndex++;
+  }
+}
+
+function merge(spans){
+  if (!spans.length) return [];
+  spans.sort((a,b)=> a.s - b.s);
+  const out = [spans[0]];
+  for (let i = 1; i < spans.length; i++){
+    const last = out[out.length-1], cur = spans[i];
+    if (cur.s <= last.e){
+      last.e = Math.max(last.e, cur.e);
+      last.score = Math.max(last.score, cur.score);
+    } else out.push(cur);
+  }
+  return out;
+}
+
+function rank(text, item){
+  const c = CUES[item];
+  if (!c) return [];
+  let ctx;
+  try{ ctx = new RegExp(c[0],'i'); }catch(e){ return []; }
+  const hasVal = seg => { try{ return new RegExp(c[1],'i').test(seg); }catch(e){ return false; } };
+  const segs = sentences(text);
+  let scored = [];
+
+  for (const [s,e] of segs){
+    const seg = text.slice(s,e);
+    if (!ctx.test(seg)) continue;              // context is required, not optional
+    if (e - s <= MAXSEG){ scored.push({s, e, score: 1 + (hasVal(seg) ? 1 : 0)}); continue; }
+    windows(text, s, e, c[1], scored);         // long block: narrow to the value hits
+  }
+
+  // Requiring context is what makes the marking precise, but when a paper phrases
+  // something no context cue anticipated, shading nothing is worse than shading
+  // loosely. Drop to value cues alone rather than leave a blank pane.
+  if (!scored.length){
+    for (const [s,e] of segs){
+      const seg = text.slice(s,e);
+      if (!hasVal(seg)) continue;
+      if (e - s <= MAXSEG) scored.push({s, e, score: 1});
+      else windows(text, s, e, c[1], scored);
+    }
+  }
+
+  scored = merge(scored);
+  scored.sort((a,b)=> b.score - a.score || (a.e - a.s) - (b.e - b.s) || a.s - b.s);
+  const top = scored.slice(0, 8);
+  top.sort((a,b)=> a.s - b.s);
+  return top;
+}
+
+let curBox = null, curMarks = [], curIdx = -1, curSecs = [], secIdx = -1;
+
+/* Western blot section: sentences naming the blot, with gaps of one or two non-blot sentences
+   between blot sentences filled in, merged into blocks. The same for every question on the paper, so it
+   locates the blot methods without pointing at any item's answer. */
+const SECTION_TERMS = /western|immuno-?blot|\bblot(s|ted|ting)?\b|sds[- ]?page|polyacrylamide gel|\bpvdf\b|nitrocellulose|electro-?transfer|chemilumin|\becl\b|densitometr|loading control|ponceau|laemmli/i;
+function sectionBlocks(text){
+  if (!SECTION) return [];
+  const segs = sentences(text);
+  const f = segs.map(([s,e]) => SECTION_TERMS.test(text.slice(s,e)));
+  const hit = f.slice();
+  for (let i = 1; i + 1 < f.length; i++)          // fill gaps of one or two non-blot sentences
+    if (!hit[i] && hit[i-1] && (hit[i+1] || (i + 2 < f.length && !hit[i+1] && hit[i+2]))) f[i] = true;
+  const out = [];
+  segs.forEach(([s,e], i) => {
+    if (!f[i]) return;
+    const last = out[out.length-1];
+    if (last && (i > 0 && f[i-1])) last.e = e; else out.push({s, e});
+  });
+  return out;
+}
+
+function highlight(pmcid, item){
+  const box = document.getElementById('m_' + pmcid);
+  if (!box) return;
+  curBox = box;
+  const raw = box.dataset.raw;
+  const spans = rank(raw, item);
+  const secs = sectionBlocks(raw);
+  // Layer the two kinds of shading: cut the text at every boundary, then wrap each piece.
+  const cuts = new Set([0, raw.length]);
+  spans.forEach(sp => { cuts.add(sp.s); cuts.add(sp.e); });
+  secs.forEach(b => { cuts.add(b.s); cuts.add(b.e); });
+  const pts = [...cuts].sort((a,b) => a - b);
+  let out = '';
+  for (let k = 0; k + 1 < pts.length; k++){
+    const a = pts[k], b = pts[k+1];
+    if (b <= a) continue;
+    let piece = esc(raw.slice(a, b));
+    const ci = spans.findIndex(sp => sp.s <= a && b <= sp.e);
+    const si = secs.findIndex(bl => bl.s <= a && b <= bl.e);
+    if (ci >= 0) piece = '<mark data-c="' + ci + '">' + piece + '</mark>';
+    if (si >= 0) piece = '<span class="sec" data-s="' + si + '">' + piece + '</span>';
+    out += piece;
+  }
+  box.innerHTML = out;
+  curMarks = spans.map((_, i) => [...box.querySelectorAll('mark[data-c="' + i + '"]')]).filter(x => x.length);
+  curSecs = secs.map((_, i) => [...box.querySelectorAll('span.sec[data-s="' + i + '"]')]).filter(x => x.length);
+  curIdx = -1; secIdx = -1;
+  const lab = document.getElementById('hits_' + pmcid);
+  if (lab){
+    const parts = [];
+    if (Object.keys(CUES).length) parts.push(curMarks.length
+      ? curMarks.length + ' likely passage' + (curMarks.length>1?'s':'')
+      : 'no likely passage found');
+    if (SECTION) parts.push(curSecs.length
+      ? 'blot section: ' + curSecs.length + ' block' + (curSecs.length>1?'s':'')
+      : 'no blot section found, read the text');
+    lab.textContent = parts.join(' · ');
+  }
+  if (curMarks.length) jump(1);
+  else if (curSecs.length) jumpSec(1);
+}
+function jump(d){
+  if (!curMarks.length) return;
+  if (curIdx >= 0) curMarks[curIdx].forEach(m => m.classList.remove('cur'));
+  curIdx = (curIdx + d + curMarks.length) % curMarks.length;
+  curMarks[curIdx].forEach(m => m.classList.add('cur'));
+  curMarks[curIdx][0].scrollIntoView({block:'center', behavior:'smooth'});
+}
+function jumpSec(d){
+  if (!curSecs.length) return;
+  if (secIdx >= 0) curSecs[secIdx].forEach(m => m.classList.remove('cursec'));
+  secIdx = (secIdx + d + curSecs.length) % curSecs.length;
+  curSecs[secIdx].forEach(m => m.classList.add('cursec'));
+  curSecs[secIdx][0].scrollIntoView({block:'start', behavior:'smooth'});
+}
+
+/* ---- selection capture -----------------------------------------------------
+   Offsets are computed against the raw text, not the marked-up DOM, so a stored
+   span is comparable to stage 2's own match offsets regardless of highlighting. */
+function textOffset(container, node, off){
+  const w = document.createTreeWalker(container, NodeFilter.SHOW_TEXT);
+  let n, acc = 0;
+  while ((n = w.nextNode())){
+    if (n === node) return acc + off;
+    acc += n.nodeValue.length;
+  }
+  return -1;
+}
+function getSel(box){
+  const s = window.getSelection();
+  if (!s || s.rangeCount === 0 || s.isCollapsed) return null;
+  const r = s.getRangeAt(0);
+  if (!box.contains(r.commonAncestorContainer)) return null;
+  const a = textOffset(box, r.startContainer, r.startOffset);
+  const b = textOffset(box, r.endContainer, r.endOffset);
+  if (a < 0 || b < 0 || b <= a) return null;
+  return {start:a, end:b, text:s.toString()};
+}
+
+/* ---- answering ------------------------------------------------------------ */
+function activeEl(){ return document.querySelector('.q.active'); }
+function activate(el){
+  if (!el) return;
+  document.querySelectorAll('.q.active').forEach(x=>x.classList.remove('active'));
+  el.classList.add('active');
+  highlight(el.dataset.pmcid, el.dataset.item);
+}
+function tidy(s){ return s.replace(/\s+/g,' ').trim(); }
+
+function paint(el){
+  const q = el.dataset.q, v = ANS[q];
+  const tag = el.querySelector('.ans');
+  const grab = el.querySelector('.grab');
+  const list = el.querySelector('.spans');
+  const moreBox = el.querySelector('.morewrap');
+  const doneBtn = el.querySelector('[data-act="done"]');
+
+  if (!v){
+    el.classList.remove('done'); tag.textContent = '';
+    grab.classList.remove('on'); list.innerHTML = '';
+    moreBox.classList.remove('on'); doneBtn.style.display = 'none';
+    return;
+  }
+  if (v.answer === 'marked'){
+    grab.classList.add('on');
+    moreBox.classList.toggle('on', !el.classList.contains('done'));
+    doneBtn.style.display = el.classList.contains('done') ? 'none' : '';
+    list.innerHTML = v.spans.map((s,i)=>
+      '<li><span>' + esc(tidy(s.text)) + '</span>'
+      + '<button type="button" class="quiet x" data-act="drop" data-i="' + i + '">'
+      + 'Remove</button></li>').join('');
+    el.querySelector('.morebox').checked = !!v.more;
+    const n = v.spans.length;
+    tag.textContent = n === 1 ? '\u201C' + tidy(v.spans[0].text).slice(0,52) + '\u201D'
+                              : n + ' marked' + (v.more ? ', more not marked' : '');
+  } else {
+    grab.classList.remove('on'); list.innerHTML = '';
+    moreBox.classList.remove('on'); doneBtn.style.display = 'none';
+    tag.textContent = v.answer === 'not_stated' ? 'Not stated' : 'Unclear';
+  }
+  el.classList.toggle('done', !!v.done);
+}
+function mark(el){
+  const box = document.getElementById('m_' + el.dataset.pmcid);
+  const sel = getSel(box);
+  if (!sel){ flash('Select the words in the Methods text first, then press this.'); return; }
+  const q = el.dataset.q;
+  const v = ANS[q] && ANS[q].answer === 'marked'
+    ? ANS[q] : (ANS[q] = {answer:'marked', spans:[], more:false, done:false});
+  v.answer = 'marked'; v.done = false;
+  const key = tidy(sel.text).toLowerCase();
+  if (!v.spans.some(s=>tidy(s.text).toLowerCase() === key)){
+    v.spans.push({text:sel.text, start:sel.start, end:sel.end});
+  } else {
+    flash('You already marked that one.');
+  }
+  window.getSelection().removeAllRanges();
+  paint(el); refresh();
+}
+function dropSpan(el, i){
+  const v = ANS[el.dataset.q];
+  if (!v) return;
+  v.spans.splice(i, 1);
+  if (!v.spans.length) delete ANS[el.dataset.q];
+  paint(el); refresh();
+}
+function finish(el){
+  const v = ANS[el.dataset.q];
+  if (!v || !v.spans.length) return;
+  v.more = el.querySelector('.morebox').checked;
+  v.done = true;
+  paint(el); refresh(); nextOpen(el);
+}
+function plain(el, a){
+  ANS[el.dataset.q] = {answer:a, spans:[], more:false, done:true};
+  paint(el); refresh(); nextOpen(el);
+}
+function reopen(el){
+  const v = ANS[el.dataset.q];
+  if (v && v.answer === 'marked') v.done = false; else delete ANS[el.dataset.q];
+  paint(el); activate(el); refresh();
+  el.scrollIntoView({block:'center', behavior:'smooth'});
+}
+function nextOpen(from){
+  const all = [...document.querySelectorAll('[data-q]')];
+  for (let k = all.indexOf(from)+1; k < all.length; k++){
+    if (!ANS[all[k].dataset.q]){
+      activate(all[k]);
+      all[k].scrollIntoView({block:'center', behavior:'smooth'});
+      return;
+    }
+  }
+}
+function guide(on, item){
+  document.getElementById('guide').classList.toggle('on', on);
+  document.getElementById('scrim').classList.toggle('on', on);
+  if (on){
+    const el = activeEl();
+    const sel = document.getElementById('ask_item');
+    if (sel) sel.value = item || (el ? el.dataset.item : sel.value);
+  }
+}
+
+/* ---- rules assistant -------------------------------------------------------
+   Definitions only. The paper text is never sent, and a question carrying a long
+   verbatim run from the Methods pane is refused here rather than upstream, because
+   the cheapest place to keep the gold standard clean is before the request leaves
+   the browser. */
+function pastedFromPaper(q){
+  const boxes = [...document.querySelectorAll('.methods')];
+  const s = q.replace(/\s+/g,' ').trim();
+  if (s.length < 60) return false;
+  for (const b of boxes){
+    const hay = (b.dataset.raw || '').replace(/\s+/g,' ');
+    for (let i = 0; i + 60 <= s.length; i += 10){
+      if (hay.indexOf(s.slice(i, i+60)) >= 0) return true;
+    }
+  }
+  return false;
+}
+async function ask(){
+  const out = document.getElementById('ask_out');
+  const q = document.getElementById('ask_q').value.trim();
+  const item = document.getElementById('ask_item').value;
+  if (!q){ out.textContent = 'Type a question about the rule first.'; return; }
+  if (pastedFromPaper(q)){
+    out.textContent = 'That looks like text from the paper. This assistant only '
+      + 'explains the rules, and deciding what a paper says is the job the study is '
+      + 'measuring. Ask what the rule means instead.';
+    return;
+  }
+  if (!ENDPOINT){ out.textContent = 'No endpoint configured, so the assistant is off. '
+      + 'The rules above are the reference.'; return; }
+  const d = DEFS[item] || ['','',''];
+  // Send the page's whole rule set, not just the selected item. Each page carries only its batch's items; all 74 v2 items together are about 6,100 tokens
+  // and it is what lets the assistant answer the questions reviewers actually ask,
+  // which are comparative: how is acquisition software different from
+  // quantification software, does a lot number count as a catalog number.
+  const all = 'Rubric ' + RUBRIC + '. ' + NOTE + '\n' + Object.entries(DEFS)
+    .map(([k,v])=> v[0] + ' :: ' + v[1] + ' :: mark: ' + v[2]).join('\n');
+  out.textContent = 'Thinking...';
+  try{
+    const r = await fetch(ENDPOINT, {method:'POST',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body: JSON.stringify({action:'assist', batch:BATCH.batch,
+        reviewer: document.getElementById('rev').value.trim(),
+        item, item_label:d[0], definition:d[1], rule:d[2],
+        all_rules: all, question:q})});
+    const t = (await r.text()).trim();
+    if (t.indexOf('ASSIST_OK') === 0) out.textContent = t.slice(9).trim();
+    else if (t.indexOf('ASSIST_OFF') === 0) out.textContent =
+      'The assistant is switched off for this study. The rules above are the reference.';
+    else out.textContent = 'The assistant is unavailable. The rules above are the reference.';
+  }catch(e){
+    out.textContent = 'The assistant is unavailable. The rules above are the reference.';
+  }
+}
+let flashT = null;
+function flash(msg){
+  const h = document.getElementById('hint');
+  h.textContent = msg; h.classList.add('on');
+  clearTimeout(flashT);
+  flashT = setTimeout(()=>h.classList.remove('on'), 2600);
+}
+
+/* ---- submit --------------------------------------------------------------- */
+/* One row per span, so a question answered with eight RRIDs is eight rows sharing a
+   judgement_id. n_spans is carried on every row so the scorer can tell a truncated
+   submission from a complete one without regrouping first. */
+function collect(){
+  const rows = [];
+  document.querySelectorAll('[data-q]').forEach(el=>{
+    const v = ANS[el.dataset.q];
+    const base = {judgement_id: el.dataset.q, pmcid: el.dataset.pmcid,
+                  item: el.dataset.item, rubric_version: RUBRIC};
+    if (!v || v.answer !== 'marked'){
+      rows.push(Object.assign({}, base, {answer: v ? v.answer : '', span_index: 0,
+        span_text: '', span_start: -1, span_end: -1, span_len: 0,
+        n_spans: 0, more_unmarked: ''}));
+      return;
+    }
+    v.spans.forEach((s,i)=>{
+      rows.push(Object.assign({}, base, {answer:'marked', span_index: i,
+        span_text: s.text, span_start: s.start, span_end: s.end,
+        span_len: (s.text||'').length, n_spans: v.spans.length,
+        more_unmarked: v.more ? 1 : 0}));
+    });
+  });
+  return {batch: BATCH.batch, rubric_version: RUBRIC,
+          reviewer: document.getElementById('rev').value.trim(),
+          submitted_at: new Date().toISOString(),
+          minutes: Math.round((Date.now()-T0)/60000), rows};
+}
+function download(){
+  const p = collect();
+  const head = 'batch,rubric_version,reviewer,submitted_at,judgement_id,pmcid,item,answer,'
+             + 'span_index,span_text,span_start,span_end,span_len,n_spans,more_unmarked\n';
+  const q = s => '"' + String(s==null?'':s).replace(/"/g,'""') + '"';
+  const body = p.rows.map(r=>[p.batch,p.rubric_version,p.reviewer,p.submitted_at,r.judgement_id,r.pmcid,
+      r.item,r.answer,r.span_index,r.span_text,r.span_start,r.span_end,r.span_len,
+      r.n_spans,r.more_unmarked]
+      .map(q).join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([head+body], {type:'text/csv'}));
+  a.download = 'A6_' + p.batch + '_' + (p.reviewer||'anon').replace(/\W+/g,'_') + '.csv';
+  a.click();
+}
+async function send(){
+  const st = document.getElementById('status');
+  if (!ENDPOINT){ st.innerHTML = '<b>No endpoint set.</b> Use Download CSV.'; return; }
+  st.textContent = 'Sending...';
+  try{
+    const r = await fetch(ENDPOINT, {method:'POST',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body: JSON.stringify(collect())});
+    const t = await r.text();
+    if (t.indexOf('OK') >= 0){
+      st.innerHTML = '<b>Submitted.</b> Thank you, you can close this tab.';
+      document.getElementById('send').disabled = true;
+      try{ localStorage.removeItem(KEY); }catch(e){}
+    } else {
+      st.innerHTML = '<b>Rejected.</b> ' + esc(t.slice(0,140)) + ' Use Download CSV.';
+    }
+  }catch(e){
+    st.innerHTML = '<b>Send failed.</b> Use Download CSV and email the file.';
+  }
+}
+
+/* ---- wiring --------------------------------------------------------------- */
+document.addEventListener('click', e=>{
+  const btn = e.target.closest('button[data-act]');
+  if (btn){
+    const el = btn.closest('[data-q]');
+    const a = btn.dataset.act;
+    if (a === 'mark') mark(el);
+    else if (a === 'done') finish(el);
+    else if (a === 'drop') dropSpan(el, parseInt(btn.dataset.i, 10));
+    else if (a === 'reopen') reopen(el);
+    else plain(el, a);
+    return;
+  }
+  const head = e.target.closest('.q.done .qname');
+  if (head){ reopen(head.closest('[data-q]')); return; }
+  const q = e.target.closest('[data-q]');
+  if (q && !q.classList.contains('done')) activate(q);
+});
+document.addEventListener('input', e=>{ if (e.target.id === 'rev') refresh(); });
+document.addEventListener('keydown', e=>{ if (e.key === 'Escape') guide(false); });
+document.addEventListener('mouseup', ()=>{
+  const el = activeEl();
+  if (!el) return;
+  const box = document.getElementById('m_' + el.dataset.pmcid);
+  if (box && getSel(box)) flash('Press "Use highlighted text" on the open question.');
+});
+window.addEventListener('DOMContentLoaded', ()=>{
+  document.querySelectorAll('.methods').forEach(b=>{ b.dataset.raw = b.textContent; });
+  const n = restore();
+  const first = [...document.querySelectorAll('[data-q]')].find(el=>!ANS[el.dataset.q]);
+  activate(first || document.querySelector('[data-q]'));
+  refresh();
+  if (n) document.getElementById('status').innerHTML =
+    '<b>Restored ' + n + ' saved answer' + (n>1?'s':'') + '</b> from this browser.';
+});
+window.addEventListener('beforeunload', e=>{
+  if (answered() > 0 && !document.getElementById('send').disabled){
+    e.preventDefault(); e.returnValue = '';
+  }
+});
+</script></body></html>

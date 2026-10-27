@@ -1,0 +1,2789 @@
+<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Track F methods review, v2batch_170</title><style>
+:root{
+--primary:#533afd; --primary-deep:#4434d4; --primary-press:#2e2b8c;
+--primary-soft:#665efd; --primary-subdued:#b9b9f9; --brand-dark-900:#1c1e54;
+--canvas:#ffffff; --canvas-soft:#f6f9fc; --canvas-cream:#f5e9d4;
+--hairline:#e3e8ee; --hairline-input:#a8c3de;
+--ink:#0d253d; --ink-secondary:#273951; --ink-mute:#64748d; --on-primary:#ffffff;
+--r-xs:4px; --r-sm:6px; --r-md:8px; --r-lg:12px; --r-xl:16px; --r-pill:9999px;
+--sh1:rgba(0,55,112,.08) 0 1px 3px;
+--sh2:rgba(0,55,112,.08) 0 8px 24px, rgba(0,55,112,.04) 0 2px 6px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--canvas);color:var(--ink);
+font-family:Inter,"SF Pro Display",system-ui,-apple-system,"Segoe UI",sans-serif;
+font-weight:300;font-size:15px;line-height:1.4;
+font-feature-settings:"ss01";-webkit-font-smoothing:antialiased}
+.mesh{position:absolute;inset:0 0 auto;height:280px;z-index:0;pointer-events:none;
+background:
+ radial-gradient(60% 120% at 8% 40%, #f5e9d4 0%, rgba(245,233,212,0) 60%),
+ radial-gradient(50% 120% at 30% 30%, #ffd9b0 0%, rgba(255,217,176,0) 62%),
+ radial-gradient(55% 130% at 55% 45%, #cdc4fb 0%, rgba(205,196,251,0) 62%),
+ radial-gradient(50% 120% at 76% 30%, #533afd 0%, rgba(83,58,253,0) 60%),
+ radial-gradient(55% 120% at 96% 55%, #ea2261 0%, rgba(234,34,97,0) 62%);
+opacity:.30;filter:blur(18px)}
+.wrap{max-width:1200px;margin:0 auto;padding:40px 24px 104px;position:relative;z-index:1}
+h1{font-size:32px;font-weight:300;letter-spacing:-.64px;line-height:1.1;margin:0 0 6px}
+h2{font-size:10px;font-weight:400;letter-spacing:.1px;text-transform:uppercase;
+color:var(--ink-mute);margin:0}
+.sub{color:var(--ink-secondary);font-size:15px;margin:0 0 24px;max-width:62ch}
+.card{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-lg);
+padding:24px;margin-bottom:14px;box-shadow:var(--sh1)}
+.card.cream{background:var(--canvas-cream);border-color:transparent;box-shadow:none}
+.card h3{font-size:18px;font-weight:300;letter-spacing:0;margin:0 0 10px}
+.note{color:var(--ink-secondary);font-size:15px}
+.note b{font-weight:400}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px}
+.num{font-feature-settings:"tnum","ss01";letter-spacing:-.42px}
+.pill{display:inline-block;background:var(--primary-subdued);color:var(--primary-deep);
+font-size:10px;font-weight:400;letter-spacing:.1px;text-transform:uppercase;
+padding:4px 8px;border-radius:var(--r-pill)}
+.paper-h{display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+flex-wrap:wrap;margin-bottom:4px}
+.split{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:24px;
+align-items:start}
+/* clears the sticky action bar, which is about 60px tall */
+.col-text{position:sticky;top:80px}
+@media (max-width:1023px){.split{grid-template-columns:1fr}.col-text{position:static}}
+.methods{background:var(--canvas-soft);border:1px solid var(--hairline);
+border-radius:var(--r-md);padding:18px 20px;min-height:320px;
+overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;
+font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;line-height:1.7;
+color:var(--ink-secondary);margin:10px 0 0;user-select:text;cursor:text;
+height:calc(100vh - 296px)}
+@media (max-width:1023px){.methods{height:46vh}}
+.methods mark{background:var(--canvas-cream);color:inherit;border-radius:var(--r-xs);
+padding:1px 0}
+.methods mark.cur{background:var(--primary-subdued)}
+.methods .sec{background:rgba(83,58,253,.07);border-radius:var(--r-xs)}
+.methods .sec.cursec{background:rgba(83,58,253,.14)}
+.methods ::selection{background:var(--primary-soft);color:#fff}
+.tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:12px;
+font-size:13px;color:var(--ink-mute);letter-spacing:-.39px}
+.tools .aid{margin-left:auto;font-size:11px;font-weight:300}
+button{font-family:inherit;font-size:14px;font-weight:400;line-height:1;
+padding:8px 16px;border-radius:var(--r-pill);border:1px solid var(--primary);
+background:var(--primary);color:var(--on-primary);cursor:pointer}
+button:hover{background:var(--primary-deep);border-color:var(--primary-deep)}
+button:active{background:var(--primary-press);border-color:var(--primary-press)}
+button.sec{background:var(--canvas);color:var(--primary);border-color:var(--primary)}
+button.sec:hover{background:var(--canvas-soft)}
+button.quiet{background:transparent;color:var(--ink-mute);border-color:var(--hairline)}
+button.quiet:hover{background:var(--canvas-soft);color:var(--ink)}
+button:disabled{opacity:.4;cursor:not-allowed}
+input[type=text]{width:100%;background:var(--canvas);color:var(--ink);
+font-family:inherit;font-size:15px;font-weight:300;padding:8px 12px;
+border-radius:var(--r-sm);border:1px solid var(--hairline-input)}
+input[type=text]:focus{outline:none;border-color:var(--primary)}
+.q{border:1px solid var(--hairline);border-radius:var(--r-lg);padding:18px 20px;
+margin-bottom:10px;background:var(--canvas)}
+.q.active{border-color:var(--primary);box-shadow:var(--sh1)}
+.q.done{padding:12px 16px;background:var(--canvas-soft);box-shadow:none}
+.q.done .qdef,.q.done .qhow,.q.done .acts,.q.done .grab{display:none}
+.q.done .qname{cursor:pointer;margin:0}
+.qname{display:flex;justify-content:space-between;gap:12px;align-items:baseline;
+font-size:18px;font-weight:300;letter-spacing:0;margin-bottom:6px}
+.q.done .qname{font-size:15px;color:var(--ink-secondary)}
+.qname .ans{font-size:13px;color:var(--ink-mute);letter-spacing:-.39px;
+white-space:nowrap;max-width:52%;overflow:hidden;text-overflow:ellipsis;text-align:right}
+.qdef{color:var(--ink-secondary);font-size:15px;margin-bottom:10px}
+.qhow{background:var(--canvas-soft);border-radius:var(--r-md);padding:10px 12px;
+font-size:13px;color:var(--ink-secondary);letter-spacing:-.39px;margin-bottom:12px}
+.qhow b{font-weight:400;color:var(--ink)}
+.qhow .eg{display:block;margin-top:5px;color:var(--ink-mute)}
+.acts{display:flex;gap:8px;flex-wrap:wrap}
+.grab{margin-top:11px;display:none}
+.grab.on{display:block}
+.grab .cap{font-size:10px;text-transform:uppercase;letter-spacing:.1px;
+color:var(--ink-mute);margin-bottom:5px}
+.grab blockquote{margin:0;background:var(--canvas-cream);border-radius:var(--r-md);
+padding:10px 12px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+font-size:13px;color:var(--ink);line-height:1.6}
+/* one row per marked span; an antibody table can produce eight */
+.spans{list-style:decimal;margin:0;padding:0 0 0 22px}
+.spans li{background:var(--canvas-cream);border-radius:var(--r-md);
+padding:7px 10px;margin-bottom:5px;display:flex;gap:10px;align-items:baseline;
+font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;
+color:var(--ink);line-height:1.55}
+.spans li span{flex:1;overflow-wrap:anywhere}
+.spans li .x{padding:2px 9px;font-size:11px;flex:none;font-family:inherit}
+.morewrap{display:none;align-items:center;gap:8px;margin-top:8px;
+font-size:13px;color:var(--ink-secondary);letter-spacing:-.39px;cursor:pointer}
+.morewrap.on{display:flex}
+.morewrap input{accent-color:var(--primary);width:16px;height:16px;cursor:pointer}
+.q.done .spans li .x{display:none}
+/* Action bar pinned to the TOP. Submit lives here rather than at the foot of a
+   30-minute page, so it is reachable without scrolling once a batch is finished. */
+.bar{position:sticky;top:0;z-index:6;background:var(--canvas);
+border-bottom:1px solid var(--hairline);box-shadow:var(--sh1);
+margin:0 -24px 20px;padding:12px 24px;
+display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.bar .grow{flex:1 1 220px;min-width:140px}
+.prog{height:4px;border-radius:var(--r-pill);background:var(--hairline);overflow:hidden}
+.prog i{display:block;height:100%;background:var(--primary);width:0;transition:width .2s}
+.count{font-size:14px;color:var(--ink-secondary);font-feature-settings:"tnum";
+letter-spacing:-.42px;white-space:nowrap}
+.status{font-size:13px;color:var(--ink-mute);letter-spacing:-.39px;flex-basis:100%}
+.status b{color:var(--ink);font-weight:400}
+.hint{position:fixed;z-index:12;background:var(--brand-dark-900);color:#fff;
+font-size:13px;padding:8px 14px;border-radius:var(--r-pill);box-shadow:var(--sh2);
+left:50%;transform:translateX(-50%);bottom:28px;
+pointer-events:none;opacity:0;transition:opacity .15s}
+.hint.on{opacity:1}
+
+/* Guide. The rules are needed on question 40 as much as on question 1, so they
+   live behind a button that is always in reach rather than scrolled past once. */
+.scrim{position:fixed;inset:0;z-index:10;background:rgba(13,37,61,.34);
+display:none}
+.scrim.on{display:block}
+.guide{position:fixed;top:0;right:0;bottom:0;z-index:11;width:min(560px,100%);
+background:var(--canvas);box-shadow:var(--sh2);overflow:auto;
+padding:28px 28px 64px;transform:translateX(100%);transition:transform .18s ease-out}
+.guide.on{transform:none}
+.guide h2{margin-bottom:14px}
+.guide h3{font-size:20px;font-weight:300;letter-spacing:-.2px;margin:26px 0 8px}
+.guide h3:first-of-type{margin-top:10px}
+.guide p{color:var(--ink-secondary);margin:0 0 10px}
+.guide .close{position:absolute;top:20px;right:24px}
+.guide table{border-collapse:collapse;width:100%;margin-top:6px}
+.guide td{border-bottom:1px solid var(--hairline);padding:8px 10px 8px 0;
+vertical-align:top;font-size:13px;color:var(--ink-secondary)}
+.guide td:first-child{color:var(--ink);white-space:nowrap;padding-right:16px}
+.guide blockquote{margin:8px 0 0;padding:10px 12px;background:var(--canvas-cream);
+border-radius:var(--r-md);font-size:13px;color:var(--ink)}
+</style></head><body><div class='mesh'></div><div class='wrap'><div class='bar'><span class='count' id='count'>0 answered</span><span class='grow'><span class='prog'><i id='bar'></i></span></span><button type='button' class='quiet' onclick='guide(true)'>Guide</button><button class='sec' onclick='download()'>Download CSV</button><button id='send' onclick='send()' disabled>Submit</button><span class='status' id='status'></span></div><h1>Western blot methods review</h1><p class='sub'><span class='num'>8</span> papers, <span class='num'>10</span> questions, about <span class='num'>28</span> minutes. For each paper you read one Methods section, then say whether that text states each of a short list of details. You never type a value: you select the words in the text. Press <b>Guide</b> at any point for the rules.</p><div class='card'><h2>Your name or initials</h2><p class='note' style='margin:6px 0 10px'>Only used to tell reviewers apart when two people code the same batch.</p><input type='text' id='rev' placeholder='for example BH' autocomplete='off'></div><div class='card cream'><h3>The three answers</h3><div class='note'><b>Select the words in the Methods text, then press Use highlighted text.</b> The exact words you selected are what gets recorded. If the paper gives several, mark each one and they stack up in a list; press <b>Done, next</b> when the list is complete.<br><b>Not stated.</b> The Methods text does not give this detail.<br><b>Unclear.</b> You cannot tell either way. These are set aside rather than counted, so it is a safe answer when you are stuck.<br><br><b>What counts as a western blot.</b> Western blot means proteins separated on a gel, transferred to a membrane and detected with an antibody. An OxyBlot counts. A dot blot or slot blot, of RNA or of protein, does not; neither does a capillary system such as Wes or Jess, which has no membrane, or a membrane probed only with streptavidin or a lectin, which uses no antibody. Items marked &#x27;Western blot only&#x27; do not count the same thing described for another assay in the paper: qPCR, immunofluorescence, IHC, flow cytometry, ELISA, mass spectrometry, or a gel that was stained rather than blotted. Judge the text the page shows, including any figure legend printed in it; a detail found only in a legend or supplement that is not shown is not stated. A method given only by citation (&#x27;as previously described [12]&#x27;) is not stated: mark only what the text itself says. The Shortcut citation item is the exception: it records the citation phrase itself. Some PDFs drop the micro sign or print it as m (&#x27;50 g&#x27;, &#x27;25 mg&#x27; for micrograms); rule on the intended unit.<br><br>Every question carries its own <b>What to mark</b> rule with a worked example. Follow it rather than your instinct: consistency between reviewers matters more here than any single choice. Full rules under <b>Guide</b>.</div></div><div class='card'><div class='paper-h'><h2>Paper <span class='num'>1</span> of <span class='num'>8</span></h2><span class='pill'>PMC4422415</span></div><div class='note' style='font-size:13px;color:var(--ink-mute);margin-bottom:6px'> · <span class='num'>year unknown</span></div><div class='split'><div class='col-text'><div class='methods' id='m_PMC4422415'>
+Cell Culture, Reagents and Drug Treatments
+Mice heterozygous for the Klf4 alleles (Klf4+/-) on a
+C57BL/6 background were crossbred [47]. MEFs that
+are wild-type (Klf4+/+), heterozygous (Klf4+/-), or null
+(Klf4-/-) for Klf4 were derived from day 13.5 embryos.
+MEFs were subsequently cultured in Dulbecco’s modi-
+fied Eagle’s medium (DMEM) supplemented with 10%
+fetal bovine serum and 1% penicillin-streptomycin at
+37 °C in atmosphere containing 5% CO2. Cells were
+passed every 3 days at a density of 106 cells per 10-cm
+dish following the 3 T3 protocol. All experiments were
+performed on spontaneously immortalized primary
+MEFs post-senescence after passage 20 at 50-70% conflu-
+ence. For starvation experiments MEFs were incubated for
+the indicated time in EBSS. Rapamycin and chloroquine
+diphosphate (CQ) were used to inhibit mTOR and
+autophagy respectively. EBSS (E2888), chloroquine di-
+phosphate and rapamycin were purchased from (Sigma
+Aldrich St. Louis, MO).
+Liu et al. Molecular Cancer (2015) 14:101 
+Page 9 of 13
+ siRNA Transfection
+Klf4+/+ MEFs were grown to 60% confluency in a 6-well
+plate before siRNA transfection. siRNA against Klf4 was
+obtained as Silencer® Select siRNA against Klf4 (Life
+Technologies, Grand Island, NY, USA) and dissolved to
+a stock solution of 50 μM with water. MEFs were trans-
+fected with up to 10 nM siRNA against Klf4 or negative
+control siRNA provided by the manufacturer using Lipo-
+fectamine 3000 (Life Technologies, Grand Island, NY,
+USA) as the transfection reagent following the manufac-
+turer’s protocol after 24 hrs for collection for analysis.
+Plasmid Transfection
+To overexpress Klf4, MEFs were transiently transfected
+with 4 μg DNA plasmids containing Klf4-GFP or GFP as
+a control in 6-well plate. Lipofectamine 3000 reagent
+(Life Technologies, Grand Island, NY, USA) was used
+following manufacturer’s protocol. Cells were photo-
+graphed and collected for immunoblotting after indicated
+time. Transfection efficiency was examined under an
+Olympus IX51 microscope for GFP fluorescence 24 hrs
+post transfection. To study the role of KLF4 in autophagy,
+we transiently transfected Klf4+/+ and Klf4-/-MEFs with
+EGFP-LC3 plasmids and cells were treated with either
+DMSO or rapamycin for 6 hrs. The percentage of cells
+with punctate pattern of EGFP-LC3B was counted by
+fluorescence microscopy. The EGFP-LC3 was obtained
+from Addgene, Incorporated (plasmid 11546) [48] and
+constructed in the laboratory of K. Kirkegaard, Stanford
+University. Transfection efficiency was about 40% by
+visualizing GFP signal under fluorescent microscope.
+Transfection resulted in an overexpression of KLF4 in
+both Klf4+/+ and Klf4-/-MEFs as indicated by Western
+blot (Additional file 2 Figure S2). The overexpression of
+Klf4 was comparable to a previous report [14].
+Western blot analysis
+Cell protein extraction and Western blot analyses were
+performed using standard procedures. Briefly, protein
+samples were prepared by lysing cells with 100 mM
+Tris-HCl, pH 6.8, 2% SDS, 100 mM dithiothreitol,
+0.01% bromphenol blue, and 10% glycerol and heating to
+98 °C for 5 min to denature the proteins. The proteins
+were loaded into Mini-PROTEAN® TGXTMPrecast Gels
+(Bio-Rad Laboratories, Hercules, CA) in Tri/Glycine/
+SDS buffer (Bio-Rad Laboratories, Hercules, CA). After
+electrophoresis, the SDS-polyacrylamide gel was transferred
+to a nitrocellulose membrane in Tris/glycine transfer
+Figure 7 Diagraphic illustration of involvement of Klf4 in autophagy to prevent DNA damage induced apoptosis. This illustration outlines the
+regulation of autophagy in Klf4 proficient and deficient cells during stress and places our results in the context of known and potential relationships
+between KLF4, mTOR, autophagy, DNA damage and apoptosis. Based on the present study and as previously shown in [35], in wild-type MEFs, KLF4
+is induced under stress and might induce autophagy in mTOR dependent or independent manners. Autophagy then removes damaged cellular
+components and prevents DNA damage as well as apoptosis (A). On the other hand, in MEFs lacking Klf4, autophagy induction is impaired due to
+mTOR hyperactivity and other unknown mechanisms. As a result, under starvation stress impaired autophagy promotes DNA damage and leads to
+increased apoptosis (B). KLF4 might induce autophagy by negatively regulating mTOR. However, KLF4 may also regulate autophagy in an
+mTOR-independent mechanism, possibly involving regulations of autophagy-related genes such as Atg7.
+Liu et al. Molecular Cancer (2015) 14:101 
+Page 10 of 13
+ buffer (Bio-Rad Laboratories, Hercules, CA) with 10%
+methanol. The membranes were immunoblotted with the
+following primary antibodies against: LC3, KLF4, β-Actin
+(Abcam, Cambridge, MA, USA), p21 (BD Pharmingen,
+Franklin Lakes, NJ, USA), and phospho-p70S6K and γ-
+H2AX (Cell Signaling, Danvers, MA, USA). The blots
+were then incubated with the appropriate horseradish
+peroxidase-conjugated secondary antibodies for 1 h at
+room temperature. Anti-rabbit secondary antibody
+and anti-mouse secondary antibody were purchased
+from Cell Signaling (Danvers, MA, USA) and Abcam
+(Cambridge, MA, USA), respectively. The antibody-
+antigen complex was visualized by an Immun-StarTMHRP
+Chemiluminescence Kit and ChemiDocTMXRS+ System
+(Bio-Rad Laboratories, Hercules, CA). The intensities of
+the bands were quantified using volume tools in Gel
+Imager program by normalizing the band intensity of pro-
+tein of interest to that of β-Actin.
+Trypan Blue Assay
+MEFs with indicated treatments were trypsinized and re-
+suspended in PBS. Resuspended MEFs were mixed with
+0.4% Trypan Blue solution (Sigma Aldrich St. Louis,
+MO) and let stain for 5 min at room temperature. The
+number of stained MEFs was then quantified with a
+hemocytometer under bright field under a microscope.
+Flow Cytometry
+Flow cytometry to quantify apoptotic cell population was
+performed as previously described [10]. Briefly, Klf4+/+ and
+Klf4-/-MEFs were plated in 6-well plates at 105 cells/well.
+The next day cells were treated with full media, 10 μM CQ,
+EBSS or both 10 μM CQ and EBSS. After 8 hours treatment,
+cells were rinsed in PBS, trypsinized, and pelleted. Cells were
+fixed in 70% ethanol in PBS and incubated -20 °C overnight.
+The fixed cells were pelleted and resuspended in PBS that
+contain 50 mg/ml propidium iodide, 50 mg/ml RNase A,
+0.1% Triton X-100 and 0.1 mM ethylene diaminetetraacetic
+acid at room temperature for 30 min before analysis. Cell-
+cycle profile analysis was performed on analyzed with a BD
+AccuriTMD Biosciences C6 Flow Cytometer (San Jose, CA,
+USA). Cellular debris was gated out of the analysis using for-
+ward and side scatter (Additional file 3 Figure S3). Apoptotic
+cells were identified by their sub-G1 DNA content.
+Immunostaining
+Immunostaining was carried out as previously described
+with modification [14]. MEFs grown on chamber slides
+were washed briefly with PBS. They were then fixed with
+3.7% methanol-free formaldehyde for 30 min at room
+temperature. MEFs were washed three times with PBS
+and incubated with blocking solution (3% bovine serum
+albumin (BSA), 0.2% Triton X-100 in PBS) for 1 h at room
+temperature. Rabbit anti-γ-H2AX primary antibody (Cell
+Signaling) diluted in blocking solution was incubated at
+room temperature for an hour. Primary antibody was de-
+tected with Alexa Fluor 488- conjugated goat anti-rabbit
+IgG antibody (Santa Cruz) for 1 h at room temperature.
+Cells were then washed once and counterstained with
+DAPI (Life Technologies) for 5 min at room temperature
+in the dark. Finally cells were washed three times,
+mounted in Prolong Antifade kit (Molecular Probes), and
+visualized with a Zeiss 710 confocal laser scanning micro-
+scope (Carl Zeiss, Thornwood, NY). The validity of the
+immunostaining signal was confirmed by the negative
+control, which was not incubated in primary antibody,
+and the positive control, which was treated with etoposide
+to induce DNA damage (Additional file 4 Figure S4).
+Quantitative real-time PCR analysis
+Total RNA from cultured Klf4+/+ and Klf4-/-MEFs was iso-
+lated using RNeasy1 Mini Kit (Qiagen, Valencia, CA) accord-
+ing to the manufacturer’s protocol. RNA was subjected to
+gDNA elimination columns (Qiagen, Valencia, CA) in order
+to remove any contaminating genomic DNA. cDNA was
+prepared from 500 ng of RNA and amplified with Omnis-
+cript RT Kit (Qiagen) and polyT primer (Integrated DNA
+Technologies, Coralville, IA). Synthesized cDNA was sub-
+jected for RT-qPCR analysis using SYBR® Green PCR Master
+Mix for 40 cycles (Life Technologies) following manufac-
+turer’s protocol. The expression of Cdkn1a or Atg7 was nor-
+malized to the expression level of β-Actin. Relative fold
+change in gene expression level was calculated by comparing
+the normalized gene expression in Klf4-/-MEFs to that in
+Klf4+/+ MEFs, or comparing the Klf4-transfected MEFs to
+GFP-transfected MEFs. The gene expression levels of Klf4+/+
+or GFP-transfected MEFs were set to 1. Data shown repre-
+sents two independent experiments, each performed in tripli-
+cates. PCR reactions were performed using the following
+primers purchased from Integrated DNA Technologies
+(Coralville, IA). Atg7 F: 5’ TCT GGG AAG CCA TAA AGT
+CAG G 3’; Atg7 R: 5’ GCG AAG GTC AGG AGA A 3’;
+Cdkn1a F: 5’ ATC ACC AGG ATT GGA CAT GG 3’;
+Cdkn1a R: 5’ CGG TGT CAG AGT CTA GGG GA 3’;
+β-Actin F: 5’ ATG GAG GGG AAT ACA GCC C 3’; β-Actin
+R: 5’ TTC TTT GCA GCT CCT TCG TT 3’.
+Statistics
+All experiments were done independently at least three
+times unless otherwise indicated. Student’s t-test was
+used to analyze statistical significance. P-values lower
+than 0.05 were considered significant.
+Additional files
+Additional file 1: Figure S1. Morphology and relative number of cells
+in MEFs. Klf4+/+ and Klf4-/-MEFs incubated in full-media (FM) were
+allowed to seed for 24 hours. Cells then were photographed using
+Liu et al. Molecular Cancer (2015) 14:101 
+Page 11 of 13
+ Olympus IX51 microscope at 2, 4, 8, 12, and 24 hours. Showing is relative
+numbers of cells under different confluency.
+Additional file 2: Figure S2. Klf4-GFP plasmid overexpression in MEFs.
+Transfection resulted in an overexpression of KLF4 in MEFs as indicated
+by western blot (A) wild-type (B) Klf4-null. We compared the levels of
+KLF4 in Klf4+/+ and Klf4-/-MEFs that transfected with either Klf4-GFP or
+GFP as a control. The expression of KLF4 is highly increased in both Klf4
++/+ and Klf4-/-MEFs that transfected with Klf4-GFP as compared to
+GFP-control-transfected Klf4+/+ and Klf4-/-MEFs (Lane A1 and Lane B3).
+Endogenous levels of Klf4 showed at 55 KD where as Klf4 conjugated
+with GFP showed at 82 KD (A). Materials and Methods Plasmid were
+constructed as previously described in [14].
+Additional file 3: Figure S3. Flow cytometry analysis of MEFs. Flow
+cytometry studies were performed in MEFs as described in Materials and
+Methods. Briefly, Klf4+/+ and Klf4-/-MEFs were plated in 6-well plates at
+105 cells/well. The next day cells were treated with full media, 10 μM CQ,
+EBSS or both 10 μM CQ and EBSS. Cellular debris was gated out of the analysis
+using forward and side scatter to prevent against cellular debris from interfering
+with the quality of our results. Klf4+/+ (A - D) and Klf4-/-(E - H).
+Additional file 4: Figure S4. Control for immunofluorescence labeling.
+Immunofluorescence studies were performed in MEFs as described in
+Materials and Methods. Cells were counterstained with DAPI to visualize the
+nuclei. MEFs were exposed to etoposide for 5 hours and collected for
+γH2AX (A) immunostaining and (B) western blot. MEFs treated with
+etoposide for 5hrs to acquired greater levels of DNA damage as compared
+with DMSO treated control MEFs as indicated by γH2AX (lanes 1 and 2). An
+increase in γH2AX immunostaining was also observed as positive control.
+The validity of the immunostaining signal was confirmed by the negative
+control, which was not incubated in primary antibody.
+Abbreviations
+BSA: Bovine serum albumin; CQ: Chloroquine Diphosphate; DAPI:
+4’,6-Diamidino-2-phenylindol; DMEM: Dulbecco’s modified Eagle’s
+Medium; DMSO: Dimethyl sulfoxide; EBSS: Earle’s Balanced Salt Solution;
+FBS: Fetal bovine serum; GFP: Green fluorescent protein; KLF4: Krüppel-like
+factor 4; LC3: Light chain 3; MEFs: Mouse embryonic fibroblasts;
+mTOR: Mammalian target of rapamycin; PBS: Phosphate buffered saline;
+ROS: Reactive oxygen species; ATG: Autophagy-related genes.;
+Cdkn1a: Cyclin-dependent kinase inhibitor 1A.
+Competing interests
+None of the authors had any competing financial interests in relation to the
+work described.
+Author’s contributions
+CL carried out the all the experimental studies, participated in the design of
+the study and drafted the manuscript. EPD and CS. participated in siRNA
+transfections and in western blots. MW carried out EBSS treatment and
+microscope imaging. MS participated in plasmid transfections, flow
+cytometry and statistical analysis. EH conceived of the study, participated in
+its design and coordination, carried out cell transfections, immune-staining,
+microscope imaging, and Western blots, and drafted the manuscript. All
+authors read and approved the final manuscript.
+</div><div class='tools'><button type='button' class='quiet' onclick='jumpSec(1)'>Blot section</button><button type='button' class='quiet' onclick='jump(-1)'>Prev</button><button type='button' class='quiet' onclick='jump(1)'>Next</button><span id='hits_PMC4422415' class='num'></span><span class='aid'>shading is a search aid, not an answer</span></div></div><div class='col-q'><div class='q' data-q='v2|PMC4422415|blinded_quantification' data-pmcid='PMC4422415' data-item='blinded_quantification'><div class='qname'><span>Blinded quantification stated</span><span class='ans'></span></div><div class='qdef'>A statement that the blot's band quantification or image analysis was done blind to group or treatment. Blinding of another assay, of animal allocation, or of the study as a whole without naming the blot analysis does not count. Western blot only.</div><div class='qhow'><b>What to mark.</b> Mark the statement.<span class='eg'>In <i>densitometry was performed by an investigator blinded to treatment group</i> mark the whole phrase. Nothing to mark in <i>histology was scored by a blinded pathologist</i>.</span></div><div class='acts'><button type='button' data-act='mark'>Use highlighted text</button><button type='button' class='sec' data-act='done' style='display:none'>Done, next</button><button type='button' class='sec' data-act='not_stated'>Not stated</button><button type='button' class='quiet' data-act='unclear'>Unclear</button></div><div class='grab'><div class='cap'>Marked so far, add as many as the paper has</div><ol class='spans'></ol><label class='morewrap'><input type='checkbox' class='morebox'>There are more of these than I marked</label></div></div><div class='q' data-q='v2|PMC4422415|denaturation_time_temp' data-pmcid='PMC4422415' data-item='denaturation_time_temp'><div class='qname'><span>Denaturation time and temperature</span><span class='ans'></span></div><div class='qdef'>The temperature and time at which the blot's samples were heated before loading, both stated; 'boiled' states the temperature, so 'boiled for 5 min' counts. 'Boiled' or 'heated' without a time does not count, and neither does heating in elution buffer. Western blot only.</div><div class='qhow'><b>What to mark.</b> Mark the temperature and time together.<span class='eg'>In <i>heated at 95 &deg;C for 5 min</i> or <i>boiled for 5 min</i> mark the whole phrase. Nothing to mark in <i>boiled in Laemmli buffer</i>.</span></div><div class='acts'><button type='button' data-act='mark'>Use highlighted text</button><button type='button' class='sec' data-act='done' style='display:none'>Done, next</button><button type='button' class='sec' data-act='not_stated'>Not stated</button><button type='button' class='quiet' data-act='unclear'>Unclear</button></div><div class='grab'><div class='cap'>Marked so far, add as many as the paper has</div><ol class='spans'></ol><label class='morewrap'><input type='checkbox' class='morebox'>There are more of these than I marked</label></div></div></div></div></div><div class='card'><div class='paper-h'><h2>Paper <span class='num'>2</span> of <span class='num'>8</span></h2><span class='pill'>PMC8646857</span></div><div class='note' style='font-size:13px;color:var(--ink-mute);margin-bottom:6px'> · <span class='num'>year unknown</span></div><div class='split'><div class='col-text'><div class='methods' id='m_PMC8646857'>
+Study population 
+Details of the design, methods, and study participants in 
+the China Kadoorie Biobank study have been previously 
+described.15 Briefly, the baseline survey was done 
+between June, 2004, and July, 2008, in ten (five urban and 
+five rural) geo­graphically diverse areas across China 
+(Qingdao, Haikou, Harbin, Suzhou, Liuzhou, Henan, 
+Sichuan, Hunan, Gansu, and Zhejiang) and enrolled 
+512 715 adults aged 30-79 years. The ten regions were 
+selected with the aim to maximise the diversity from the 
+geographical locations, socioeconomic characteristics, 
+risk exposures, and disease patterns, while considering 
+the quality of death and disease registries and local 
+capacity. In each study area, a regional coordinating 
+centre and survey team were set up and all permanent 
+residents aged 30-79 years identified from local 
+residential records were invited to participate. Extensive 
+data were collected through a laptop-based questionnaire 
+(eg, socio­demo­graphic, lifestyle and dietary factors, and 
+medical history) and physical measurements (eg, blood 
+pressure and adiposity), along with the collection of a 
+10 mL blood sample for long-term storage. Ethics 
+approval was obtained from relevant international, 
+national, and local ethics committees (in the UK, Oxford 
+Tropical Research Ethics Committee; in China, the 
+Chinese Centre for Disease Control and Prevention 
+Ethical Review Committee and the Chinese Academy of 
+Medical Sciences and Peking Union Medical College 
+Ethical Committee). All participants provided written 
+informed consent.
+Follow-up of participants in the China Kadoorie 
+Biobank study was done through linkage, via unique 
+personal identification numbers, to established mor­tality 
+and morbidity registries (for cancer, stroke, ischaemic 
+heart disease, and diabetes) that were already available in 
+the study areas since the beginning of the baseline 
+survey, and to the nationwide health insurance system, 
+which records any episodes of patients being admitted to 
+and staying in hospital as inpatients. By Jan 1, 2017, 
+44 037 (8·6%) participants had died, 4781 (&lt;1%) were lost 
+to follow-up, and 27 903 (5·4%) developed cancer, 
+including 3464 gastric cancers (International Classification 
+of Disease 10 [ICD-10]: C16). For any reported cancer 
+cases, systematic validation was done through a review of 
+the original medical records (including histopathological 
+reports) retrieved from hospitals. Among the 1355 rep­
+orted gastric cancer cases that were adjudicated, 
+1246 (92%) were confirmed, and among the confirmed 
+cases with pathology results available, 1060 (85%) of 
+1246 were adenocarcinomas.
+Design of case-cohort study 
+To reduce the potential effects of lower H pylori antibody 
+concentrations due to gastric atrophy, the selection 
+of incident gastric cancer cases were confined to 
+participants who were alive and with no history of cancer 
+2 years after study entry. All 437 reported or confirmed 
+CGC cases (ICD-10: C16·0) were selected, and we 
+randomly selected 500 cases from the 762 confirmed 
+NCGC (of 2035 reported) cases. Since CGC arises in the 
+oesophageal-gastric junction and is often difficult to 
+distinguish from oesophageal adenocarcinoma, which is 
+rare in China, we also included all confirmed oe­
+sophageal adenocarcinoma cases (n=27). A subcohort of 
+500 participants was sampled from the modified baseline 
+cohort (ie, participants who were alive with no history of 
+cancer 2 years after study entry) using stratified random 
+sampling with the sizes of the strata based on the 
+proportions of age categories and sex of all selected 
+participants with gastric cancer (appendix p 2). This 
+modified baseline subcohort included approximately 
+100 000 previously genotyped participants who were 
+randomly selected from the whole cohort.
+Immunoblot assay 
+A qualitative western blot kit assay, HelicoBlot 2.1 
+(MP Diagnostics; Bordeaux, France), was used to detect 
+IgG antibodies to H pylori proteins in the baseline plasma 
+samples retrieved from storage in liquid nitrogen. The 
+assay detects seven diagnostic antibodies binding to 
+H pylori proteins separated on a nitrocellulose membrane 
+and has been shown to have a sensitivity of 96% and a 
+specificity of 93% for the detection of H pylori infections 
+in populations in Europe.16 The immunoblot assay results 
+were 
+independently 
+classified 
+and 
+reviewed 
+by 
+two laboratory staff (one of which was DC) who were 
+masked to the baseline information and case status of the 
+samples. Each H pylori biomarker band was classified as 
+positive, negative, or ambiguous. These results were then 
+used to define H pylori seropositivity according to 
+See Online for appendix
+ Articles
+e891 
+www.thelancet.com/public-health Vol 6 December 2021
+two different criteria. The clinical criteria, as defined 
+by the manufacturer of the western blot kit, were the 
+presence of one or more of the 89kD (vacuolating 
+cytotoxin), 37kD, or 35kD bands; or both the 30kD (urease 
+enzyme light subunit) and 19·5kD bands; or both the 
+116kD (cytotoxin-associated antigen) and the current 
+infection marker bands. For this study, we modified the 
+criteria by removing the requirement to have the current 
+infection marker band alongside the cytotoxin-associated 
+antigen band (ie, the cytotoxin-associated antigen band 
+alone can define seropositivity). This choice was made for 
+two reasons: first, the current infection marker band is 
+more likely to be absent in patients with atrophic stomach 
+or precancerous lesions; and second, the presence of 
+antibodies to cytotoxin-associated antigen is the most 
+sensitive marker of a past infection,17 which makes it 
+relevant for investigating the role of H pylori infection in 
+patients progressing towards cancer. These modified 
+criteria are thereafter referred to as epidemiological 
+criteria (appendix p 3).
+Statistical analysis 
+Seroprevalence estimates and their 95% CIs were 
+calculated among the NCGC, CGC, and subcohort 
+groups. Spearman&#x27;s correlations between H pylori 
+biomarkers were calculated. Cox proportional hazards 
+models were fitted using the pseudo-partial likelihood 
+for the Borgan III estimator18 to estimate hazard 
+ratios (HRs) for risk of NCGC, CGC, and oesophageal 
+adenocarcinoma associated with H pylori infection, both 
+overall and by individual H pylori biomarkers, with 
+adjustments for age (numeric), sex, individual study 
+regions, and education (six categories: no formal school, 
+primary school, middle school, high school, technical 
+school or college, and university). Time in the study 
+(time from 2 years after entry into the study to cancer 
+diagnosis, loss to follow-up, death because of other 
+causes, or Jan 1, 2017, whichever occurred first) was 
+used as the timescale in the model. Models were also 
+fitted additionally and sequentially adjusting for other 
+gastric cancer risk factors, including smoking, alcohol 
+drinking, a family history of cancer, body-mass index, 
+and the consumption of some dietary factors 
+(eg, preserved vegetables or fresh fruits). We fitted Cox 
+regression models with piecewise constant time-varying 
+coefficients using the Prentice estimator, with strati­
+fication by the design stratification variables (age groups 
+and sex) and adjustment for age (years), individual 
+study regions, and education. We addi­tionally assessed 
+the proportional hazards assumption using Schoenfeld 
+residuals.
+We did sensitivity analyses by assuming that all 
+ambiguous bands were either seropositive or sero­
+negative. Further analyses were done in subgroups 
+defined by age (30-59 and 60-79 years), sex, area (rural or 
+urban), education (two groups: no formal education or 
+primary school, and middle school or higher), and body-
+mass index (&lt;25 or ≥25 kg/m2); and among men only, by 
+regular smoking and alcohol drinking. HRs were also 
+calculated for different gastric cancer histopathological 
+subtypes and by the time since blood collection 
+(individuals with ambiguous H pylori status were 
+NCGC (n=499)
+CGC (n=436)
+Subcohort (n=500)
+Demographic factors
+Age (years)
+59·0 (9·5)
+61·2 (8·6)
+59·1 (9·9)
+Sex
+Men
+327 (66%)
+325 (75%) 
+347 (69%)
+Women
+172 (34%)
+111 (25%)
+153 (31%)
+Urban residents
+351 (70%)
+159 (36%)
+252 (50%)
+≥6 years of education
+225 (45%)
+141 (32%)
+217 (43%)
+Household income (&gt;¥20 000 per year)
+231 (46%)
+132 (30%)
+210 (42%)
+Lifestyle factors
+Current regular smoking
+Men
+230 (70%)
+186 (57%)
+202 (58%)
+Women
+5 (3%)
+0
+6 (4%)
+Current regular alcohol drinking
+Men
+134 (41%)
+89 (27%)
+111 (32%)
+Women
+2 (1%)
+0
+7 (5%)
+Physical activity (MET-h per day)
+19·5 (15·2)
+18·1 (15·5)
+17·9 (14·0)
+Medical history and health status
+Poor self-rated health at baseline
+46 (9%)
+53 (12%)
+55 (11%)
+Diabetes (self-reported or screen 
+detected)
+32 (6%)
+25 (6%)
+44 (9%)
+A history of peptic ulcer
+31 (6%)
+23 (5%)
+27 (5%)
+A history of cirrhosis or chronic 
+hepatitis
+3 (1%)
+3 (1%)
+6 (1%)
+A history of CHD, stroke, or TIA
+28 (6%)
+31 (7%)
+52 (10%)
+A history of emphysema or bronchitis
+12 (2%)
+18 (4%)
+21 (4%)
+Anthropometry and blood pressure
+Body mass index (kg/m2)
+23·6 (3·4)
+24·0 (3·5)
+23·7 (3·5)
+Underweight (&lt;18·5 kg/m2)
+25 (5%)
+14 (3%)
+26 (5%)
+Normal (18·5-24·9 kg/m2)
+314 (63%)
+266 (61%)
+301 (60%)
+Overweight (25·0-29·9 kg/m2)
+136 (27%)
+135 (31%)
+150 (30%)
+Obese (≥30 kg/m2)
+24 (5%)
+21 (5%)
+23 (5%)
+Waist circumference (cm)
+81·1 (10·1)
+82·3 (10·2)
+81·4 (10·3)
+SBP (mm Hg)
+135·3 (22·8)
+138·0 (23·1)
+135·8 (22·5)
+Daily dietary consumption
+Rice
+337 (68%)
+183 (42%)
+358 (72%)
+Wheat
+221 (44%)
+271 (62%)
+188 (38%)
+Meat
+174 (35%)
+69 (16%)
+150 (30%)
+Poultry
+6 (1%)
+0
+2 (0%)
+Dairy
+86 (17%)
+41 (9.4)
+64 (12.8)
+Fresh vegetables
+474 (95%)
+424 (97%)
+481 (96%)
+Soybean
+24 (5%)
+14 (3%)
+18 (4%)
+Preserved vegetables
+160 (32%)
+105 (24%)
+86 (17%)
+Fresh fruit
+125 (25%)
+32 (7%)
+97 (19%)
+Spicy food
+86 (17%)
+41 (9%)
+122 (24%)
+Data are mean (SD) or number (%). CGC=cardia gastric cancer. CHD=coronary heart disease. MET-h=metabolic 
+equivalent of task-hours. NCGC=non-cardia gastric cancer. SBP=systolic blood pressure. TIA=transient ischaemic attack.
+Table 1: Baseline characteristics of patients with gastric cancer (NCGC and CGC) and subcohort 
+participants
+ Articles
+www.thelancet.com/public-health Vol 6 December 2021 
+e892
+excluded from this analysis). To facilitate comparisons 
+with previous studies, additional sensitivity analyses 
+were done using the clinical criteria to define H pylori 
+seropositivity.
+Population attributable fractions (PAFs) were calculated 
+as PAF=Pc (R-1) / R, where Pc is the observed 
+seroprevalence among the cases and R is the estimated 
+HR associated with H pylori infection in the study.2 The 
+number of new gastric cancer cases attri­butable to 
+H pylori infection was estimated by multiplying the PAF 
+by the national incidence rates of gastric cancer in 
+China in 2018.19 Statistical analysis was done with R 
+(version 4.0.2).
+Role of the funding source 
+The funder of the study had no role in study design, data 
+collection, data analysis, data interpretation, or writing of 
+the report.
+</div><div class='tools'><button type='button' class='quiet' onclick='jumpSec(1)'>Blot section</button><button type='button' class='quiet' onclick='jump(-1)'>Prev</button><button type='button' class='quiet' onclick='jump(1)'>Next</button><span id='hits_PMC8646857' class='num'></span><span class='aid'>shading is a search aid, not an answer</span></div></div><div class='col-q'><div class='q' data-q='v2|PMC8646857|blinded_quantification' data-pmcid='PMC8646857' data-item='blinded_quantification'><div class='qname'><span>Blinded quantification stated</span><span class='ans'></span></div><div class='qdef'>A statement that the blot's band quantification or image analysis was done blind to group or treatment. Blinding of another assay, of animal allocation, or of the study as a whole without naming the blot analysis does not count. Western blot only.</div><div class='qhow'><b>What to mark.</b> Mark the statement.<span class='eg'>In <i>densitometry was performed by an investigator blinded to treatment group</i> mark the whole phrase. Nothing to mark in <i>histology was scored by a blinded pathologist</i>.</span></div><div class='acts'><button type='button' data-act='mark'>Use highlighted text</button><button type='button' class='sec' data-act='done' style='display:none'>Done, next</button><button type='button' class='sec' data-act='not_stated'>Not stated</button><button type='button' class='quiet' data-act='unclear'>Unclear</button></div><div class='grab'><div class='cap'>Marked so far, add as many as the paper has</div><ol class='spans'></ol><label class='morewrap'><input type='checkbox' class='morebox'>There are more of these than I marked</label></div></div><div class='q' data-q='v2|PMC8646857|substrate_incubation_time' data-pmcid='PMC8646857' data-item='substrate_incubation_time'><div class='qname'><span>Substrate incubation time</span><span class='ans'></span></div><div class='qdef'>How long the membrane was incubated in the detection substrate before imaging. An exposure or imaging time does not count. Western blot only.</div><div class='qhow'><b>What to mark.</b> Mark the time.<span class='eg'>In <i>incubated with ECL for 1 min</i> mark <b>1 min</b>. Nothing to mark in an exposure time.</span></div><div class='acts'><button type='button' data-act='mark'>Use highlighted text</button><button type='button' class='sec' data-act='done' style='display:none'>Done, next</button><button type='button' class='sec' data-act='not_stated'>Not stated</button><button type='button' class='quiet' data-act='unclear'>Unclear</button></div><div class='grab'><div class='cap'>Marked so far, add as many as the paper has</div><ol class='spans'></ol><label class='morewrap'><input type='checkbox' class='morebox'>There are more of these than I marked</label></div></div></div></div></div><div class='card'><div class='paper-h'><h2>Paper <span class='num'>3</span> of <span class='num'>8</span></h2><span class='pill'>PMC11585898</span></div><div class='note' style='font-size:13px;color:var(--ink-mute);margin-bottom:6px'> · <span class='num'>year unknown</span> <span class='pill'>no Methods heading found, full text shown</span></div><div class='split'><div class='col-text'><div class='methods' id='m_PMC11585898'>Original Research
+Histone-acetyl epigenome regulates TGF-β pathway-associated 
+chemoresistance in colorectal cancer
+Xianglong Tian a,1,*, Guihua Liu b,1, Linhua Ji c,1, Yi Shen a, Junjun Gu a, Lili Wang a, 
+Jiali Ma d,*, Zuguang Xia e,f,*, Xinghua Li a,*
+a Department of Gastroenterology, Shanghai Eighth People’s Hospital, Xuhui Branch of Shanghai Sixth People’s Hospital, 20030, China
+b Department of General Practice, Minhang District Hongqiao Community Health Service Center, Shanghai, 201103, China
+c Department of Gastrointestinal Surgery, Renji Hospital, School of Medicine, Shanghai Jiao Tong University, Shanghai 200127, China
+d Department of Gastroenterology, Tongren Hospital, Shanghai Jiao Tong University School of Medicine, Shanghai, 200336, China
+e Department of Medical Oncology, Fudan University Shanghai Cancer Center, Shanghai, 200032, China
+f Department of Oncology, Shanghai Medical College, Fudan University, Shanghai, 200032, China
+A R T I C L E I N F O
+Keywords:
+Colorectal cancer
+TGF-β signaling pathway
+epigenetic modification
+chemoresistance
+HDAC4
+A B S T R A C T
+TGF-β signaling pathway has been demonstrated to be closely related to chemoresistance, which is the major 
+cause of recurrence and poor outcome in colorectal cancer (CRC), however, the comprehensive epigenetic 
+landscape that functionally implicates in the regulation of TGF-β pathway-associated chemoresistance has not yet 
+well established in CRC. In our study, chromatin immunoprecipitation sequencing (ChIP-seq) and Western blot 
+were employed to investigate epigenetic modifications for histones in response to TGF-β1 intervene. We found 
+that the activation of the TGF-β pathway was characterized by genome-wide high levels of H3K9ac and H3K18ac. 
+Mechanistically, the activation of the TGF-β signaling pathway leads to the downregulation of the deacetylase 
+HDAC4, resulting in the upregulation of H3K9ac and H3K18ac. Consequently, this cascade induces oxaliplatin 
+chemoresistance in CRC by triggering the anti-apoptotic PI3K/AKT signaling pathway. Our in vivo experiment 
+results confirmed that overexpression of HDAC4 significantly enhances the sensitivity of CRC to oxaliplatin 
+chemotherapy. Moreover, the expression level of HDAC4 was positively correlated with patients’ prognosis in 
+CRC. Our data suggest that histone-acetyl modification demonstrates a crucial role in modulating TGF-β 
+pathway-associated chemoresistance in CRC, and HDAC4 would be a biomarker for prognostic prediction and 
+potential therapeutic target for treatment in CRC.
+Introduction
+Colorectal cancer (CRC) is one of the most prevalent malignancies 
+globally, with a particularly grim prognosis for patients diagnosed at 
+AJCC stage IV, where the 5-year survival rate is merely 12.5 % [1,2]. 
+Although chemotherapy, particularly with oxaliplatin as the first-line 
+agent for metastatic CRC, has been widely adopted, the challenge of 
+tumor recurrence due to chemoresistance remains significant [3,4]. 
+Chemoresistance is now recognized as a major contributor to treatment 
+failure, particularly in metastatic cancer patients, underscoring the 
+urgent need to investigate the underlying mechanisms driving this 
+resistance [5].
+Chemoresistance in tumors is not solely dictated by genetic alter­
+ations-such as amplification, translocation, deletion, or mutation-but 
+also by epigenetic changes [6,7]. Epigenetic reprogramming, which can 
+lead to drug-tolerant states, plays a crucial role in this process and is 
+notably reversible [8-10]. It has been established that global aberrant 
+epigenetic modifications are common in various cancers [11-13], and 
+the targeted manipulation of these epigenetic marks has emerged as a 
+promising therapeutic strategy [14,15]. However, while histone 
+Abbreviations: ChIP-seq, Chromatin immunoprecipitation sequencing; CRC, colorectal cancer; EMT, epithelial to mesenchymal transition; GEO, Gene Expression 
+Omnibus; GSEA, Gene Set Enrichment Analysis; IHC, immunohistochemistry; RFS, recurrence-free survival; RNA-Seq, high-throughput mRNA sequencing; RT-PCR, 
+real-time PCR.
+* Corresponding authors.
+E-mail addresses: tianypk@alumni.sjtu.edu.cn (X. Tian), MJL2018@shtrhospital.com (J. Ma), zuguang_xia@163.com (Z. Xia), lixinghua2002@aliyun.com (X. Li). 
+1 Contributed equally.
+Contents lists available at ScienceDirect
+Translational Oncology
+journal homepage: www.elsevier.com/locate/tranon
+https://doi.org/10.1016/j.tranon.2024.102166
+Received 8 May 2024; Received in revised form 8 October 2024; Accepted 27 October 2024 
+Translational Oncology 51 (2025) 102166 
+1936-5233/© 2024 The Authors. Published by Elsevier Inc. This is an open access article under the CC BY-NC-ND license ( http://creativecommons.org/licenses/by- 
+nc-nd/4.0/ ). 
+ modifications and DNA methylation have been implicated in the regu­
+lation of various signaling pathways in cancer [16], the specific role of 
+epigenetic mechanisms in regulating the TGF-β signaling pathway in 
+CRC remains incompletely understood.
+The TGF-β signaling pathway is critical in tumorigenesis, influencing 
+processes such as carcinoma cell invasion, metastasis, chemoresistance, 
+and immune evasion [17-19]. In CRC, the CMS4 subgroup, character­
+ized by mesenchymal features and significant TGF-β activation, is 
+associated with relatively poor outcomes [20]. While it is 
+well-documented that TGF-β contributes to chemoresistance through 
+mechanisms such as epithelial-to-mesenchymal transition (EMT) and 
+other molecular pathways [19,21], research has shown that its activa­
+tion triggers SMAD complex activation, which regulates target gene 
+expression by recruiting epigenetic regulators like histone and DNA 
+modifiers [22]. Moreover, cell-type-specific DNA and histone modifi­
+cation patterns add another regulatory layer by influencing gene 
+accessibility via TGF-β/SMAD3 [23]. Previous studie shows that TGF-β 
+activation disrupts the GATA4-JMJD3 interaction, blocking H3K27 
+demethylation and impairing gene expression in cardiac reprogram­
+ming; however, similar findings in CRC are scarce [24].
+In our investigation, we conducted a genome-scale examination of 
+histone modification profiles associated with the TGF-β signaling 
+pathway, aiming to elucidate its role in the regulation of oxaliplatin 
+chemoresistance in CRC. This endeavor seeks to uncover potential 
+mechanisms linking drug resistance to the TGF-β signaling pathway and 
+offers a foundation for identifying new therapeutic targets to enhance 
+chemoresistance in CRC.
+Material &amp; methods
+Clinical specimens
+Paraffin-fixed colorectal cancer tissues were randomly obtained from 
+154 CRC patients between 2017 and 2022 at Shanghai Renji Hospital. 
+Written informed consents were obtained from all participants in this 
+study. Our follow-up of these patients began in 2012 with a minimum 
+follow-up time of no less than half a year. All the patients were classified 
+into two groups based on tumor recurrence; the patients were termed as 
+CRC recurrent group if relapsed during the time of following up, and the 
+other patients belonged to CRC nonrecurrent group. Our study was 
+implemented by following the provisions of the Declaration of Helsinki 
+of 1975. Ethical consent was granted from the ethics committee of Renji 
+Hospital,Shanghai Jiao Tong University School of Medicine.
+Cell lines
+Human colon cancer cell lines SW480 (RRID:CVCL_0546) and 
+HCT116 (RRID:CVCL_0291) were purchased from ATCC, and have been 
+authenticated using short tandem repeat profiling by Beijing Microread 
+Genetics Co., Ltd. All experiments were performed with mycoplasma- 
+free cells.
+Animal study
+All animal procedures were conducted in accordance with the Na­
+tional Institutes of Health Guide for the Care and Use of Laboratory 
+Animals (NIH Publications No. 8023, revised 1978) and received 
+approval from the Shanghai Jiao Tong University School of Medicine 
+Animal Care and Use Committee.
+In our research, male BALB/c nude mice (4-5 weeks old) were used 
+(Experimental Animal Centre, SIBS). The colorectal cancer xenograft 
+models were built through injecting SW480 cells (3 × 106) subcutane­
+ously into the right axilla of these mice. The mice were randomly 
+divided into different groups 5 days later after subcutaneous 
+inoculation.
+To explore the role of HDAC4 in TGF-β1 associated chemoresistance 
+in vivo, 4 groups were set in the study xenograft models; each group 
+consisted of an experimental subgroup and a control subgroup. Groups 
+were as follow: i) empty viral vector group, ii) HDAC4 overexpression 
+adenovirus group, iii) TGF-β1 intervention group, iv) TGF-β1 and 
+HDAC4 overexpression adenovirus group. All 4 experimental subgroups 
+were treated with oxaliplatin, while 4 corresponding control subgroups 
+were not; they were set as to be the baseline to eliminate the effect of 
+TGF-β1 on tumor proliferation, as shown in Table S1.
+The tumor growth inhibitory rate was calculated by the formula: (Ve- 
+Vc)/Ve × 100 %, where “Ve” and “Vc” were the tumor volume in 
+experiment subgroup and control subgroup, respectively. Tumor volume 
+was calculated by the formula: a × b2/2, where “a” and “b” represented 
+the width and length of the tumors, respectively. The volumes of tumors 
+were measured twice per week with calipers (in millimeters), and the 
+tumor volumes data were presented as means±SD.
+TGF-β1 was given by multipoint intratumoral injection, 100 ng each 
+time, once a week for three weeks. The relevant adenovirus vectors were 
+given by multipoint intratumoral injection, twice per week for three 
+weeks. Chemotherapeutic agent oxaliplatin (7.5mg/kg) was adminis­
+tered by intraperitoneal injection, twice a week for three weeks.
+The concentrations of TGF-β1 and oxaliplatin used in our experi­
+ments were selected based on previous studies. TGF-β1 was adminis­
+tered at 10 ng/mL every other day in vitro, as demonstrated by Sun 
+et al., who showed that this dosage effectively induces epithelial-to- 
+mesenchymal transition [25]. Similarly, the concentration of oxalipla­
+tin in our experiments was informed by earlier research,which found 
+that these levels effectively inhibit tumor cell proliferation both in vivo 
+and in vitro. In our study, we further optimized the oxaliplatin dose to 
+balance its efficacy with minimized toxicity [26,27].
+The conventional experimental techniques in our study, including 
+quantitative real-time PCR
+Western blot analysis, Immunohistochemical Staining (IHC), RNA- 
+seq and CHIP-seq, etc. were detailed in Table S2. The CHIP-seq data 
+and RNA-seq data in our study are accessible through GEO Series 
+accession number GSE141702 and GSE137779, respectively.
+Statistical analysis
+All statistical analyses were performed using R software (version 
+3.4.2) (http://cran.r-project.org). DAVID analysis was used to generate 
+the associated biological pathways (https://david.ncifcrf.gov/). For 
+correlation analysis, R package (PerformanceAnalytics) was introduced 
+to calculate the correlation coefficient and P-value, and the value of IHC 
+score was taken the square root to meet the requirement of normal 
+distribution. As to the analysis of clinicopathologic features, the Pear­
+son’s Chi-squared test was performed. The recurrence-free survival was 
+estimated using the Kaplan-Meier method, and the log-rank test was 
+used to evaluate the differences between survival curves. A t-test was 
+employed to compare differences between the two groups under various 
+treatments. This includes evaluating the effect of TGF-β intervention on 
+HDAC4 expression, assessing the impact of HDAC4 knockdown or 
+overexpression on oxaliplatin-induced inhibition of colorectal cancer 
+cell proliferation and apoptosis, and comparing tumor growth suppres­
+sion in xenografts across different interventions. P-values &lt;0.05 were 
+considered to be of significant difference, and all P-values were two- 
+sided unless otherwise specified.
+Results
+The activation of the TGF-β pathway is characterized by hyperacetylation 
+of H3K9 and H3K18
+In order to confirm the relevance of the TGF-β signaling pathway to 
+chemoresistance in CRC, we interrogated previously published Gene 
+X. Tian et al. 
+Translational Oncology 51 (2025) 102166 
+2 
+ Expression Omnibus (GEO) data. Jensen et al. constructed sub-cell lines 
+of colon cancer with acquired resistance to oxaliplatin and the gene 
+expression profiles of the parental and resistant cell lines were accessed 
+through GSE42387 [28]. Further analysis through Gene Set Enrichment 
+Analysis (GSEA) showed that the TGF-β pathway was significantly 
+activated in the group of resistant cell lines (Fig. 1A). To verify this 
+finding, we mined another data GSE28702, which consisted of 83 CRC 
+patients who receipted FOLFOX therapy [29]. We compared the gene 
+profiles of the patients with response to chemotherapy to that of the 
+no-response ones through GSEA; consistent to the result above, the 
+TGF-β pathway was found to significantly enrich in the no-response 
+group (Supplementary Fig 1). These findings indicated that the TGF-β 
+signaling pathway may play a central role in chemoresistance in CRC.
+To probe the epigenome related to TGF-β signaling pathway, we 
+applied TGF-β1 to colorectal cancer cells to mimic the activation of this 
+pathway. TGF-β1 initially binds to the surface receptors of colorectal 
+cancer cells, thereby phosphorylates downstream Smad proteins, which 
+are translocated into the nucleus to regulate transcription [30]. As 
+shown in Supplementary Fig 2, after TGF-β1 intervention, the expression 
+levels of phosphorylated Smad2 and Smad3 were significantly increased 
+in SW480 and HCT116 cells, indicating the activation of this pathway.
+SW480 cells were divided into two subgroups based on whether TGF- 
+β1 intervention was performed, and they were term as TGF-β1 group and 
+normal control group (NC) for ease of description. ChIP-seq was applied 
+on the two subgroups, where antibodies for various histone modifica­
+tions were used to interrogate the epigenetic landscape. The peak- 
+calling algorithm was used to map bound DNA regions (CHIP peaks) 
+to the genome. The globe epigenetic differences were assessed by 
+comparing ChIP-seq read densities (RPM, reads per million) between 
+TGF-β1 group and NC group, as shown in Table S3 (raw data accessible 
+via GEO: GSE141702). The quantitative levels of various epigenetic 
+marks in defined genomic regions (±50 kb around TSS) were shown in 
+Fig. 1B. We found that the levels of H3K9ac and H3K18ac were signif­
+icantly increased in TGF-β1 group compared with the NC group. How­
+ever, the levels of other histone modification marks were quantitatively 
+similar. Western blot was also applied to investigate the expression 
+levels of histone marks in SW480 and HCT116 cells. As shown in Fig. 1C, 
+western blot analysis confirmed the increased expression of H3K9ac and 
+H3K18ac in TGF-β1 group, and no significant differences were present 
+for other epigenetic marks.
+To investigate the reliability of our data, the molecular functional 
+enrichment analysis was performed to identify the predominant bio­
+logical themes among the target genes of histone marks using ChIP­
+seeker package (R software 3.4.2). It is well known that TGF-β1 
+intervention can induce EMT transition, accompanying with the changes 
+of cell adhesion [31]. As shown in Supplementary Fig 3, the target genes 
+of H3K18ac were closely involved in the function of cell molecular 
+adhesion binding, and growth factor binding, etc. Conversely, few bio­
+logical processes were identified through analyzing the target genes of 
+H3K27ac, suggesting that this epigenetic mark might play a minor role 
+in the activation of TGF-β1 signaling pathway. We have demonstrated 
+the significant differences in the levels of H3K9ac and H3K18ac asso­
+ciated with TGF-β1 signaling pathway, and the functional enrichment 
+analysis of target genes of H3K18ac partially reflected the activation of 
+this signaling pathway, indicating the reliability of our CHIP-seq data. 
+Our experimental data revealed that the activation of TGF-β1 signaling 
+pathway was characterized by a broad epigenetic change-relative high 
+expression of H3K9ac and H3K18ac. These findings indicated that the 
+acetylation modification of H3K9 and H3K18 probably underlay the 
+biological functions associated with TGF-β1 pathway, the detailed 
+mechanism of which warrants further investigation.
+The acetylation status of the genome is orchestrated by the expres­
+sion of histone acetyltransferases or histone deacetylases. The global up- 
+regulation of histone acetylation modification after the activation of the 
+TGF-β signaling pathway raised the possibility that the differential 
+expression of specific histone acetyltransferases or histone deacetylases 
+may involve in the modulation of TGF-β-associated chemoresistance in 
+CRC. To test this hypothesis, high-throughput mRNA sequencing (RNA- 
+Seq) was performed to compare the expression profile between SW480 
+cells treated with or without TGF-β1. TGF-β1 treatment downregulated 
+2891 gene expressions and upregulated 2998 gene expressions in SW480 
+cells (adjusted p-value &lt;0.05, raw data accessible via GEO: 
+GSE137779). RNA-seq analysis revealed that, among the current known 
+histone acetyltransferases, only Gcn5 was upregulated (1/15), but the 
+difference was not statistically significant. Further analysis of deacety­
+lases indicated that HDAC4, HDAC9, and SIRT7 were downregulated (3/ 
+21), with statistically significant differences, as shown in Table S4. 
+Western blot and real-time PCR (RT-PCR) showed that HDAC4 was 
+significantly downregulated after TGF-β1 intervention (Fig. 1D). More­
+over, the expression of HDAC4 was closely related to the modulation of 
+histone acetylation modification. Down-regulation of HDAC4 was 
+demonstrated to upregulate the acetylation levels of H3K9 and H3K18 
+(Fig. 1E), while ectopic overexpression of HDAC4 showed the opposite 
+results (Fig. 1F). However, no significant upregulation of H3K9ac and 
+H3K18ac was found after knockdown of HDAC9 or SIRT7 (Supple­
+mentary Fig 4). These findings indicated that the activation of the TGF-β 
+signaling pathway led to the hyperacetylation of H3K9 and H3K18 via 
+modulating the expression of HDAC4, which may play a momentous role 
+in TGF-β-associated chemoresistance.
+Histone deacetylase HDAC4 negatively regulates chemoresistance to 
+oxaliplatin
+Our previous findings have shown that HDAC4 regulates TGF- 
+β-associated epigenetic modifications, leading us to hypothesize that 
+HDAC4 may play a crucial role in TGF-β-related chemoresistance. In 
+support of this hypothesis, the effect of HDAC4 knockdown on chemo­
+resistance to oxaliplatin was first analyzed in SW480 and HCT116 cells. 
+In CCK-8 assay, after knockdown the expression of HDAC4 using siRNA 
+specific for HDAC4, the inhibition rate of oxaliplatin on cell proliferation 
+lowered significantly in SW480 cells (Fig. 2A) and HCT116 cells 
+(Fig. 2B) compared to the normal control (NC).
+To further confirm the above experimental results, we applied flow 
+cytometry to detect cell apoptosis in colorectal cancer cells. HDAC4 
+knockdown can decrease the oxaliplatin-induced cell apoptosis signifi­
+cantly in SW480 (Fig. 2C&amp;E) and HCT116 cells (Fig. 2D&amp;F). The 
+expression of apoptotic proteins was investigated by western blot. When 
+oxaliplatin was not administrated, knockdown of HDAC4 had no sig­
+nificant effect on cell apoptosis in SW480 cells. As shown in Fig. 2G, 
+PARP, caspase 3, caspase 7, caspase 9 and their cleavage products 
+(cleaved-PARP, cleaved-caspase3, and cleaved-caspase9) had no sig­
+nificant change compared si-HDAC4 SW480 cells with NC-siRNA cells 
+either. When treated with oxaliplatin, the cleavage products of these 
+apoptotic markers were significantly decreased in HDAC4 knockdown 
+group, similar results could be seen in HCT116 cells (Fig. 2H), indicating 
+that down-regulation of HDAC4 induced chemoresistance to oxaliplatin.
+Ectopic overexpression of HDAC4 showed the opposite effect on drug 
+resistance in SW480 and HCT116 cells. CCK-8 assay and flow cytometry 
+were performed to investigate cell proliferation and apoptosis. Over­
+expression of HDAC4 significantly enhanced the chemosensitivity to 
+oxaliplatin. Compared with control vector group, the growth inhibition 
+rate of the cells with HDAC4 overexpression was significantly higher 
+(see Fig. 3A&amp;B); and flow cytometry assay showed that overexpression 
+of HDAC4 significantly increased oxaliplatin-induced cell apoptosis in 
+SW480 cells (Fig. 3C&amp;E) and HCT116 cells (Fig. 3D&amp;F). The apoptotic 
+proteins were also analyzed by western blot, and the cleavage products 
+of these apoptotic markers were significantly increased in the HDAC4 
+overexpression group compared with the control vector group in SW480 
+and HCT116 cells (Fig. 3G&amp;H).
+These findings support a tumor suppressor role for HDAC4, and its 
+epigenetic role of global acetylation modification may be an important 
+mechanism underlying the chemoresistance to oxaliplatin associated 
+X. Tian et al. 
+Translational Oncology 51 (2025) 102166 
+3 
+ Fig. 1. The global epigenetic modification of histones associated with TGF-β pathway. (A) Gene Set Enrichment Analysis (GSEA) shows the enrichment of Reactome 
+TGF Beta Signaling Pathway in GSE42387. (B) Comparison of global levels of various histone marks in normal control (NC) cells of SW480 and TGF-β1-treated cells 
+by CHIP-seq (genomic region -50,000 to +50,000 relative to TSS). (C) Western blot analysis was performed on histone proteins of normal control (NC) cells of 
+SW480 and TGF-β1-treated cells for the indicated histone modifications. (D) The expression level of HDAC4 after TGF-β1 intervention in SW480 and HCT116 was 
+assessed by RT-PCR and Western blot, respectively. Western blot analysis of the genomic acetylation modification of histones was performed after knockdown of 
+HDAC4 (E) or overexpression of HDAC4 (F) in HCT116and SW480 cells.
+X. Tian et al. 
+Translational Oncology 51 (2025) 102166 
+4 
+ Fig. 2. The effect of knockdown of HDAC4 on cell proliferation and apoptosis induced by oxaliplatin. CCK-8 was performed to investigate the inhibition rate of cell 
+proliferation in SW480 (A) and HCT116 (B) cells. Cell apoptosis was assessed by flow cytometry in SW480 (C) and HCT116 (D) cells. Western blot was performed to 
+test the apoptotic marks (caspases, PARP and the cleaved products) in SW480 (E) and HCT116 (F) cells.
+X. Tian et al. 
+Translational Oncology 51 (2025) 102166 
+5 
+ Fig. 3. The effect of overexpression of HDAC4 on cell proliferation and apoptosis induced by oxaliplatin. CCK-8 was performed to investigate the inhibition rate of 
+cell proliferation in SW480 (A) and HCT116 (B) cells. Cell apoptosis was assessed by flow cytometry in SW480 (C) and HCT116 (D) cells. Western blot was performed 
+to test the apoptotic marks (caspases, PARP and the cleaved products) in SW480 (E) and HCT116 (F) cells.
+X. Tian et al. 
+Translational Oncology 51 (2025) 102166 
+6 
+ with TGF-β pathway.
+Chemoresistance associated with TGF-β pathway is dependent on histone 
+deacetylase HDAC4
+Activation of the TGF pathway led to down-regulation of HDAC4, 
+and further experiments confirmed that HDAC4 regulated chemo­
+resistance to oxaliplatin, so we hypothesized that HDAC4 plays a crucial 
+role in TGF-β-associated chemoresistance. To confirm whether the TGF- 
+β-associated chemoresistance is regulated by HDAC4, we conducted to 
+investigate the effect of overexpression of HDAC4 on chemoresistance in 
+the context of activation of the TGF-β signaling pathway.
+Studies have demonstrated the TGF-β mediated drug resistance in 
+tumors [21]. Our data showed consistent results through CCK-8 assay in 
+colorectal cancer cells. Different concentrations of oxaliplatin were 
+administrated to TGF-β1-treated SW480 and HCT116 cells. As shown in 
+Fig. 4A&amp;C, the growth inhibition rate of cells in TGF-β1 group was 
+significantly lower than the NC group. Conversely, overexpression of 
+HDAC4 in TGF-β1-treated colorectal cancer cells could enhance the 
+chemosensitivity to oxaliplatin Fig. 4B&amp;D, and the differences were 
+statistically significant. Flow cytometry was also applied to detect cell 
+apoptosis induced by oxaliplatin. Cell apoptosis decreased significantly 
+in the TGF-β1-treated SW480 and HCT116 cells, however, over­
+expression of HDAC4 abolished the TGF-β1-induced drug resistance, 
+thus the apoptosis proportion increased significantly when over­
+expressing of HDAC4 in SW480 (Fig. 4E) and HCT116 (Supplementary 
+Fig 5A) cells. The apoptotic proteins were investigated by western blot, 
+which showed that the inhibitory effect of TGF-β1 on the 
+chemotherapy-induced 
+apoptotic 
+marks 
+(Cleaved-Caspases 
+and 
+Cleaved-PARP) was abolished by overexpression of HDAC4 in SW480 
+cells (Fig. 4F) and HCT116 cells (Supplementary Fig 5B). These data 
+supported the key role of HDAC4 in TGF-β1-induced chemoresistance.
+The modulation of chemoresistance through HDAC4 was further 
+investigated in vivo. In the CRC xenograft mouse models, SW480 cells 
+and TGF-β1-pretreated SW480 cells were inoculated into nude mice, 
+followed by treatment with adenovirus, and/or TGF-β1, and/or oxali­
+platin, and other manipulations. Compared with the group treated with 
+control adenovirus vector, HDAD4 overexpression adenovirus increased 
+the chemosensitivity significantly; the group treated with TGF-β1 and 
+control adenovirus vector had the lowest tumor growth inhibitory rate, 
+but TGF-β1-induced chemoresistance was restored by overexpression of 
+HDAC4 in the nude mouse models, and the difference was significant, as 
+shown by reduced tumor volume (Fig. 4G) and tumor weight (Fig. 4H, 
+and Table S5).
+Histone deacetylase HDAC4 induces chemoresistance via negatively 
+regulating PI3K/AKT signaling pathway
+We have revealed that down-regulation of HDAC4 played a crucial 
+role in TGF-β pathway-induced chemoresistance, and HDAC4 was also 
+implicated in the TGF-β-associated epigenetic modification. Therefore, 
+the correlation between epigenetic modification and chemoresistance 
+needed to be clarified. Epigenetic modifications of histones occur at the 
+genome level, and the “histone code”, as a widely accepted hypothesis, 
+proposes that the combination of various epigenetic modifications of 
+histones is involved in many biological processes [32]. We thus hy­
+pothesized that the hyperacetylation of H3K9 and H3K18 induced by 
+down-regulation of HDAC4 may lead to the aberrant regulation of some 
+important biological signaling pathways, whereby results in chemo­
+resistance to oxaliplatin.
+We have demonstrated that knockdown of HDAC4 increased acety­
+lation levels of H3K9 and H3K18, meanwhile led to chemoresistance to 
+oxaliplatin, suggesting that the target genes of H3K9ac and H3K18ac 
+may be regulated by HDAC4, thereby involved in the role of chemo­
+resistance to oxaliplatin. Increased levels of histone acetylation are 
+generally associated with transcriptional activation [33], so a panel of 
+genes that were upregulated in SW480 cells after TGF-β1 intervention 
+were selected (Foldchange &gt;0.4, p &lt; 0.05); the target genes of H3K9ac 
+and H3K18ac were obtained from our CHIP-seq data of histones. At last, 
+the intersection of these upregulated genes and the target genes of 
+H3K9ac and H3K18ac was selected, which was proposed to be regulated 
+by HDAC4 (Fig. 5A and Table S6).
+Pathway enrichment analysis by DAVID showed that TGF-β signaling 
+pathway was significantly activated, which is consistent with our 
+expectation. As to the signaling pathways related to drug resistance, the 
+anti-apoptotic pathway (PI3K/AKT) was also significantly activated 
+(Fig. 5B). Numerous studies have confirmed its strong association with 
+chemotherapy resistance [34], and the PI3K/AKT pathway inhibitor, 
+Alpelisib, has been approved for the treatment of breast cancer [35], 
+highlighting its clinical relevance. Thus we hypothesized that the 
+epigenetic mechanism underlying chemoresistance induced by 
+down-regulation of HDAC4 may be associated with the activation of the 
+PI3K-AKT signaling pathway.
+To test the correlation between HDAC4 and PI3K/AKT signaling 
+pathway, western blot assay was applied to investigate the expression of 
+some key proteins (AKT and p-AKT) in PI3K/AKT signaling pathway. In 
+this pathway, phosphatidylinositol 3-kinase (PI3 K) can phosphorylate 
+PIP2, then AKT is phosphorylated into its activated form (p-AKT) by 
+PIP3 [36]. Western blot analysis showed that p-AKT expression was 
+significantly increased after knockdown of HDAC4, while the expression 
+of total-AKT was not significantly different in the context of oxaliplatin 
+intervention. In contrast, overexpression of HDAC4 inhibited p-AKT 
+expression in SW480 cells and HCT116 cells (Fig. 5C). These findings 
+indicated that the activation of PI3K/AKT signaling pathway was 
+regulated by HDAC4. We further investigated the role of PI3K/AKT 
+signaling pathway in TGF-β1-induced chemoresistance. Western blot 
+revealed that administration of oxaliplatin to the TGF-β1-pretreated 
+colorectal cancer cells increased the expression levels of p-AKT, sug­
+gesting that this pathway was activated by TGF-β1. Conversely, over­
+expression of HDAC4 in TGF-β1-pretreated colorectal cancer cells 
+inhibited the activation of this signaling pathway (Fig. 5D), indicating 
+that chemoresistance induced by TGF-β1 was closely associated with the 
+activation of PI3K/AKT signaling pathway, which was regulated by the 
+expression of HDAC4.
+Histone deacetylase HDAC4 is not involved in the regulation of EMT 
+transition
+TGF-β1 is a strong inducer of EMT, and in our experiment, we also 
+found the occurrence of EMT transition after TGF-β1 intervention in 
+vitro. After the TGF-β1 intervention, SW480 changed to spindle-shaped. 
+Western blot assay confirmed that the expression of epithelial marker E- 
+cadherin and Occludin were downregulated, while mesenchymal 
+markers and transcription factors (N-cadherin, VIM, ZEB1, and SNAI1) 
+were upregulated (Supplementary Fig 6A&amp;B). EMT transition has been 
+considered to be closely related to drug resistance, so the relationship 
+needed to be clarified between EMT transition and epigenetic modifi­
+cation abnormalities caused by TGF-β1 intervention. Our experiment 
+data confirmed that TGF-β1 stimulation led to down-regulation of 
+HDAC4 expression and resulted in increased levels of histone acetyla­
+tion. Although the cells showed chemoresistance to oxaliplatin after 
+down-regulation of HDAC4 in SW480, however, we did not found 
+obvious morphological changes; and the key epithelial marker CDH1 did 
+not decrease after knockdown of HDAC4 in SW480 cells (Supplementary 
+Fig 6C&amp;D). These results suggest that HDAC4-mediated epigenetic 
+modification may be independent of EMT transition induced by TGF-β1, 
+which warrants further investigation.
+Correlation between the TGF-β pathway, HDAC4, PI3K/AKT pathway in 
+CRC and the prognostic value of HDAC4 for CRC patients
+To investigate the clinical correlation between TGF-β signaling 
+X. Tian et al. 
+Translational Oncology 51 (2025) 102166 
+7 
+ Fig. 4. The role of HDAC4 on TGF-β-mediated chemoresistance. The inhibition of cell proliferation induced by oxaliplatin was assessed by CCK-8. The inhibition rate 
+of cell proliferation after TGF-β1 intervention in SW480 and HCT116 cells (A,C); The inhibition rate of cell proliferation after overexpression of HDAC4 in TGF-β1- 
+treated SW480 and HCT116 cells (B, D). Flow cytometry was performed to test cell apoptosis induced by oxaliplatin in 4 groups of SW480 cells (E), namely, normal 
+control group, TGF-β1-treated group, the group of transfection of control vector in TGF-β1-pretreated cells and the group of transfection of HDAC4-plamid in TGF-β1- 
+pretreated cells. Western blot was performed to test the apoptotic marks (caspases, PARP and the cleaved products) after different treatments in SW480 (F).The 
+xenograft tumors were separated and weighted at the end of experiments (G). The growth inhibitory rates after oxaliplatin treatment were calculated using tumor 
+volumes. Statistical analysis of growth inhibitory rates in different groups, n = 5, ANOVA, P &lt; 0.05 (H).
+X. Tian et al. 
+Translational Oncology 51 (2025) 102166 
+8 
+ pathway and HDAC4 and PI3K/AKT signaling pathway in CRC, we 
+collected colorectal cancer tissues from 154 patients in Renji Hospital, 
+among them, there were 79 recurrent CRC samples and 75 cases without 
+recurrence. We performed IHC staining for TGF-β1, HDAC4, and p-AKT 
+in these tissues (Table S7). The representative images were shown in 
+Fig. 6A. We found that the samples expressing a high level of TGF-β1 
+tended to have low expression of the HDAC4, and high expression of p- 
+AKT; Correlation analysis showed that TGF-β1 expression was nega­
+tively correlated with HDAC4 and positively with p-AKT expression 
+(Fig. 6B). These data indicated that TGF-β signaling pathway correlated 
+Fig. 5. HDAC4 induces chemoresistance via negatively regulating PI3K/AKT signaling pathway. DAVID analysis was performed to identify the potential signaling 
+pathways. Venn Diagram of genes between the target genes of H3K9ac and H3K18ac and the up-regulated genes after TGF-β1 intervention (A); Bar graph of the 
+signling pathways of DAVID analysis (the logarithm of p value) (B). Western blot was performed to test the expression of p-AKT and total-AKT induced by oxaliplatin 
+after knockdown or overexpression of HDAC4 in SW480 and HCT116 cells (C). The expression of p-AKT and total-AKT were investigated by western blot in SW480 
+and HCT116 cells, which were intervened with TGF-β1, transfected with HDAC4-plasmid or control vector, and treated with oxaliplatin (D). Schematic represen­
+tation for the epigenetic mechanism of HDAC4 that regulates TGF-β pathway-associated chemoresistance to oxaliplatin in human colorectal cancer (E).
+X. Tian et al. 
+Translational Oncology 51 (2025) 102166 
+9 
+ Fig. 6. Association between TGF-β pathway, HDAC4 and PI3K/AKT pathway, and the prognostic value of HDAC4 in colorectal cancer. Representative images of 
+proteins expression of TGF-β1, HDAC4, and p-AKT by IHC staining in colorectal cancers in Renji cohort, n = 154 (A); Correlation analysis among TGF-β1, HDAC4, and 
+p-AKT expression based on the IHC scores (B). Comparison of the expression of HDAC4 between recurrent group and nonrecurrent group in Renji cohort based on the 
+IHC score using Chi-squared Test (C). X-tile plots were performed to determine the optimum cutoff value of HDAC4 expression in GSE17536 (D). Recurrence free 
+survival was analyzed and compared between patients with high and low HDAC4 expression in GSE17536 (E) and GSE14333 (F).
+X. Tian et al. 
+Translational Oncology 51 (2025) 102166 
+10 
+ with the modulation of HDAC4 and PI3K/AKT pathway in colorectal 
+cancer.
+We found that HDAC4 played a pivotal role in TGF-β signaling 
+pathway and modulated chemoresistance to oxaliplatin in CRC. There­
+fore, we speculated that the expression level of HDAC4 was related to 
+the recurrence of CRC, and may affect the prognosis of CRC patients. The 
+expression levels of HDAC4 were detected in CRC samples with or 
+without recurrence by IHC. The patients were categorized into HDAC4 
+low expression group and HDAC4 high expression group based on the 
+IHC scores. An IHC score of &lt;6 belonged to the group of low expression 
+and a score of 6 or greater was considered as high expression. As shown 
+in Fig. 6C, relative more patients with low expression of HDAC4 were 
+found in the CRC recurrent group and the expression levels of HDAC4 
+was significantly different between the CRC recurrent group and 
+nonrecurrent group.
+To observe the effect of HDAC4 expression on the survival of CRC 
+patients, previously published gene expression microarray data from the 
+Gene Expression Omnibus (GEO) was used. We first investigated the 
+prognostic value of HDAC4 in GSE17536, where patients were classified 
+into high- or low-HDAC4 group with an optimum cutoff value of -0.6 
+using X-tile plots, where the expression value of HDAC4 was normalized 
+(Fig. 6D). The Kaplan-Meier survival analysis demonstrated that the two 
+groups had significantly different recurrence-free survival (RFS) (HR =
+0.27, 95 % CI = 0.14-0.54, P &lt; 0.0001; Fig. 6E). To confirm the prog­
+nostic value of HDAC4, it was further validated in other datasets 
+(GSE14333) using the same cutoff point (HR = 0.39, 95 % CI =
+0.21-0.73, P = 0.0021; Fig. 6F). These data suggested that high level of 
+HDAC4 was a protective factor, and the CRC patients with low expres­
+sion of HDAC4 were more likely to relapse, which may attribute to its 
+role in modulation of chemoresistance.
+Discussion
+Global epigenetic abnormities have been widely analyzed in various 
+cancers, and epigenetic mechanisms are demonstrated to play a key role 
+in cell biology [15,37,38]. Previous studies mainly focused on the epi­
+genome of the whole tumor or some particular cell populations. How­
+ever, the epigenetic mechanisms underlying the concrete signaling 
+pathway implicated in cancers are still unclear. We intended to inves­
+tigate whether genome-wide epigenetic modifications were functionally 
+present during the activation of the TGF-β signaling pathway in CRC. In 
+our study, distinct epigenetic changes were found to occur in response to 
+the activation of the TGF-β signaling pathway in CRC, which was 
+characterized by the global hyperacetylation of H3K9 and H3K18. 
+Mechanistically, these epigenetic changes were orchestrated by the 
+histone deacetylase HDAC4, which functioned as a tumor suppressor 
+through up-regulating the anti-apoptotic pathway (PI3K/AKT) to induce 
+chemoresistance to oxaliplatin in CRC.
+Previous research indicates that the transformation induced by EMT 
+is intricately linked to heightened tumor stemness and drug resistance 
+[39,40]. Additionally, studies have revealed that TGF-β can induce 
+chemotherapy resistance through other mechanisms, such as driving 
+metabolic reprogramming of tumors [41], regulation of drug uptake and 
+efflux [42], and inhibition of apoptosis [43]. However, its functionally 
+epigenetic mechanism underlying these processes remains incompletely 
+explored. Therefore, our study aims to illuminate a novel perspective on 
+understanding chemoresistance in CRC.
+Histone modification plays a crucial role in transcriptional regula­
+tion by influencing the chromatin conformation [44]. Hyperacetylation 
+of histones typically contributes to transcriptional activation by loos­
+ening the chromosome structure, facilitating the binding of transcription 
+factors. Research by Molina et al. suggested that H3K9ac acts as a bar­
+rier, preventing the spreading of heterochromatin and the inactivation 
+of kinetochores at human centromeres [45]. Genome-wide analyses 
+have demonstrated that H3K9ac and H3K14ac occupy the promoters of 
+a majority of protein-coding genes in human embryonic stem cells [46]. 
+Similarly, studies in acute myeloid leukemia and non-small cell lung 
+cancer also showed that H3K9ac and H3K27ac localized on the pro­
+moters of actively transcribed genes and led to carcinogenesis [47,48]. 
+H3K9ac has also been implicated in drug resistance. Researches revealed 
+a notable correlation between H3K9ac expression and drug resistance in 
+glioblastoma, where increased promoter H3K9 acetylation (H3K9ac) 
+was associated with elevated transcriptional levels of MGMT, contrib­
+uting to glioblastoma resistance to TMZ [49,50]. These findings are 
+consistent with our study, where we found that a high level of H3K9ac 
+was necessary for TGF-β1-associated chemoresistance to oxaliplatin.
+H3k18ac was also related to transcription activation and was 
+demonstrated to be implicated in thyroid tumorigenesis via the modu­
+lation of DBC1/SIRT1 axis, wherein the transcription of DBC1, an 
+endogenous inhibitor of SIRT1, was repressed by deacetylation of 
+H3K18ac [51]. High expression of TGF-β1 has been linked to poor 
+prognosis and drug resistance in CRC [17,20], and we have demon­
+strated the global hyperacetylation of H3K18ac accompanied with the 
+activation of TGF-β signaling pathway, although its epigenetic status has 
+not been confirmed in the clinical specimens. Thus, we can infer that the 
+hyperacetylation of H3K18 may be associated with the chemoresistance 
+and the dismal outcome for CRC patients; however, there was still 
+contradictory evidence for the prognostic value of epigenetic patterns in 
+cancers. Seligson et al. found that lower global/cellular levels of 
+H3K18ac and H3K4me2 predicted a higher risk of prostate cancer 
+recurrence [52], and low level of H3K18ac was a sign of poor prognosis 
+in pancreatic adenocarcinoma [53]. This discrepancy might mainly 
+attribute to the intrinsic heterogeneity of tumors; in another way, what 
+we have focused on was the global epigenome related to a biological 
+signaling pathway in CRC, rather than the epigenetic abnormalities 
+between different tumors. As to the prognostic value of epigenetic pat­
+terns in CRC, including TGF-β signaling pathway-associated epigenome, 
+still warrants further investigation.
+The hypothesis of “Histone code” implicated in the epigenetic 
+regulation has been widely accepted, whereby the combination of 
+various modifications to the histones leads to the modulation of different 
+biological processes [54]. The histone acetylation is a dynamic and 
+specific process, which is modulated by histone acetyltransferase (HAT) 
+and histone deacetylase (HDAC) synergistically. However, the system­
+atic understanding in this field has been hindered due to the complexity 
+of the epigenetic mechanism. In our study, HDAC4 was demonstrated to 
+play a crucial role in the regulation of H3K9ac and H3K18ac in the 
+context of TGF-β signaling pathway, which might shed new light on the 
+understanding of molecular mechanism associated with chemo­
+resistance. The discrepancy in epigenetic regulation warrants further 
+investigation.
+Our experimental data showed that HDAC4 was significantly down- 
+regulated after the activation of the TGF-β signaling pathway. HDAC4 
+belongs to class II HDACs and has no deacetylase activity alone. 
+Therefore, HDAC4 can be regarded as a regulatory factor, which regu­
+lates transcription through bridging the enzymatically active SMRT/ 
+N-CoR-HDAC3 complex [55]. Previous research suggests that HDAC4 
+is involved in various cancers, impacting cancer development and drug 
+resistance by influencing the acetylation of histones or non-histone 
+proteins, primarily transcription factors. For instance, a study has 
+shown that HDAC4 can deacetylate glutaminase, promoting lung cancer 
+progression [56]. In ovarian cancer, HDAC4 can induce resistance to 
+platinum drugs by regulating acetylation modification of STAT1 [57]. 
+Additionally, HDAC4 exerts an effect of activating p38 MAPK signaling 
+through the autophagic degradation of MEKK3, facilitating gastric 
+cancer growth and metastasis [58]
+Importantly, the chemoresistance associated with HDAC4 showed 
+significant tumor specificity. In colon cancer, knockdown of HDAC4 
+induced chemoresistance to 5-fluorouracil [59]; Wei et al. also found 
+that knockdown of HDAC4 inhibited melatonin-induced apoptosis in 
+colorectal cancer cells [60]. These studies were consistent with our 
+experimental results. We have demonstrated that low expression of 
+X. Tian et al. 
+Translational Oncology 51 (2025) 102166 
+11 
+ HDAC4 induced hyperacetylation of H3K9 and H3K18, and then led to 
+chemoresistance to oxaliplatin via modulating PI3K/AKT signaling 
+pathway. We also found that the recurrent CRC patients had relatively 
+low expression of HDAC4. Moreover, patients with a low expression of 
+HDAC4 were prone to have poor relapse-free survival by analyzing two 
+GEO data. However, in other tumors, such as ovarian cancer, lung 
+cancer, etc., drug resistance was closely related to the high expression of 
+HDAC4. Knockdown of HDAC4 increased the sensitivity to chemother­
+apeutic agents [57,61]. Significant differences in the role of HDAC4 
+among different tumors suggest that its regulatory mechanism might be 
+context-dependent; so it is of paramount clinical significance to further 
+dissect its molecular mechanism in the context of current epigenetic 
+therapy.
+In our study, HDAC4 was found to be downregulated after the acti­
+vation of the TGF-β signaling pathway and then activated the PI3K/AKT 
+signaling pathway via epigenetic modification. The role of anti- 
+apoptosis related to PI3K/AKT signaling pathway was one of the 
+important mechanisms underlying chemoresistance [34,62]. The TGF-β 
+signaling pathway is closely related to the PI3K-AKT signaling pathway 
+with complex mutual interactions. On the one hand, TGF-β signaling 
+pathway activation can motivate the PI3K-AKT pathway directly or 
+indirectly. Studies revealed that TGF-β could induce AKT phosphoryla­
+tion, and then downstream effector molecules of AKT, were all activated 
+independent of the classical SMAD pathway [63]. Besides the direct 
+interaction, the PI3K-AKT pathway could also be activated by inhibiting 
+the 
+expression of 
+the 
+tumor suppressor 
+gene 
+PTEN 
+in 
+a 
+microRNA-dependent manner after the activation of the TGF-β pathway 
+[64,65]. On the other hand, TGF-β pathway can be regulated by 
+PI3K-AKT pathway as well. AKT could directly interact with SMAD3 to 
+block phosphorylation of SMAD3, thereby inhibiting the apoptosis 
+induced by TGF-β/SMAD pathway [65]. The epigenetic regulatory 
+mechanism mediated by HDAC4 has been identified through our study 
+between TGF-β and PI3K/AKT pathway, which will contribute to further 
+exploration of the crosstalk between these two biological signaling 
+pathways.
+Recent studies have highlighted the intricate relationship between 
+TGF-β and immunity. TGF-β plays a regulatory role in the development, 
+activation, proliferation, differentiation, and apoptosis of T cells, 
+exerting control over nearly every stage of the immune response elicited 
+by tumors [66,67]. Moreover, TGF-β has been shown to induce immune 
+escape in tumors by influencing tumor dendritic cells [18]. Targeting 
+TGF-β presents an opportunity to overcome immune evasion in tumors 
+[68]. In the future, there is a need for further investigation into the 
+epigenetic mechanisms of TGF-β in regulating tumor immune response
+Our research mainly focuses on the epigenetic regulatory mechanism 
+associated with TGF-β pathway (Fig 5E), and we have made a pre­
+liminary exploration on drug resistance in TGF-β-related CRC patients, 
+hoping to provide a new perspective and theoretical basis for the 
+treatment of CRC.
+Disclosure
+Funding information
+This project was supported by grants from the Shanghai Changning 
+Science and Technology Committee (CNKW2022Y01) and the National 
+Natural Science Foundation of China (Grant No.82060040).
+Ethics statement
+The study was approved by the Ethical Committee of Renji Hospital, 
+Shanghai Jiao Tong University School of Medicine (KY2023-061-C) 
+according to Helsinki Declaration II. Written consent was provided from 
+each participant before taking part in the study. Animal Study was 
+approved by Ethical Committee of Shanghai Sixth People′s Hospital 
+Affiliated to Shanghai Jiao Tong University School of Medicine 
+(2023-0550).
+Consent for publication
+All authors have approved the manuscript for submission. This 
+manuscript has been reviewed by the co-authors only and has not been 
+reviewed by external colleagues.
+Data availability
+The CHIP-seq data and RNA-seq data in our study are accessible 
+through GEO Series accession number GSE141702 and GSE137779, 
+respectively.
+CRediT authorship contribution statement
+Xianglong Tian: Writing - review &amp; editing, Supervision, Method­
+ology, Conceptualization. Guihua Liu: Writing - original draft, Vali­
+dation, Methodology, Data curation. Linhua Ji: Validation, Resources, 
+Project administration, Data curation. Yi Shen: Methodology, Data 
+curation. Junjun Gu: Investigation, Data curation. Lili Wang: Valida­
+tion, Investigation. Jiali Ma: Writing - review &amp; editing, Methodology, 
+Funding acquisition, Data curation. Zuguang Xia: Writing - review &amp; 
+editing, Funding acquisition, Conceptualization. Xinghua Li: Writing - 
+review &amp; editing, Supervision, Conceptualization.
+Declaration of competing interest
+The authors declare that they have no known competing financial 
+interests or personal relationships that could have appeared to influence 
+the work reported in this paper.
+Acknowledgments
+Not applicable
+Supplementary materials
+Supplementary material associated with this article can be found, in 
+the online version, at doi:10.1016/j.tranon.2024.102166.
+References
+[1] L. Garcia-Martinez, et al., Epigenetic mechanisms in breast cancer therapy and 
+resistance, Nat. Commun. 12 (1) (2021) 1786.
+[2] R. Siegel, C. Desantis, A. Jemal, Colorectal cancer statistics, 2014, CA Cancer J. 
+Clin. 64 (2) (2014) 104-117.
+[3] M.J.G. Bond, et al., First-line systemic treatment strategies in patients with initially 
+unresectable colorectal cancer liver metastases (CAIRO5): an open-label, 
+multicentre, randomised, controlled, phase 3 study from the Dutch Colorectal 
+Cancer Group, Lancet Oncol. 24 (7) (2023) 757-771.
+[4] C. Zhang, et al., Platinum-based drugs for cancer therapy and anti-tumor strategies, 
+Theranostics. 12 (5) (2022) 2115-2132.
+[5] B. Li, et al., Surmounting cancer drug resistance: new insights from the perspective 
+of N(6)-methyladenosine RNA modification, Drug Resist. Updat. 53 (2020) 
+100720.
+[6] N. Zhou, et al., DLBCL-associated NOTCH2 mutations escape ubiquitin-dependent 
+degradation and promote chemoresistance, Blood 142 (11) (2023) 973-988.
+[7] M.R. Ippolito, et al., Gene copy-number changes and chromosomal instability 
+induced by aneuploidy confer resistance to chemotherapy, Dev. Cell 56 (17) (2021) 
+2440-2454, e6.
+[8] S.X. Pfister, A. Ashworth, Marked for death: targeting epigenetic changes in cancer, 
+Nat. Rev. Drug Discov. 16 (4) (2017) 241-263.
+[9] F. Li, et al., Regulation of cisplatin resistance in bladder cancer by epigenetic 
+mechanisms, Drug Resist. Updat. 68 (2023) 100938.
+[10] G.D. Guler, et al., Repression of Stress-Induced LINE-1 Expression Protects Cancer 
+Cell Subpopulations from Lethal Drug Exposure, Cancer Cell 32 (2) (2017) 
+221-237, e13.
+[11] W.M. Grady, M. Yu, S.D. Markowitz, Epigenetic Alterations in the Gastrointestinal 
+Tract: Current and Emerging Use for Biomarkers of Cancer, Gastroenterology 160 
+(3) (2021) 690-709.
+[12] L. Sun, H. Zhang, P. Gao, Metabolic reprogramming and epigenetic modifications 
+on the path to cancer, Protein Cell 13 (12) (2022) 877-919.
+X. Tian et al. 
+Translational Oncology 51 (2025) 102166 
+12 
+ [13] S. Zhao, C.D. Allis, G.G. Wang, The language of chromatin modification in human 
+cancers, Nat. Rev. Cancer 21 (7) (2021) 413-430.
+[14] S.J. Hogg, et al., Targeting the epigenetic regulation of antitumour immunity, Nat. 
+Rev. Drug Discov. 19 (11) (2020) 776-800.
+[15] J. Yang, et al., Epigenetic regulation in the tumor microenvironment: molecular 
+mechanisms and therapeutic targets, Signal. Transduct. Target. Ther. 8 (1) (2023) 
+210.
+[16] G. Jung, et al., Epigenetics of colorectal cancer: biomarker and therapeutic 
+potential, Nat. Rev. Gastroenterol. Hepatol. 17 (2) (2020) 111-130.
+[17] J. Massague, TGFbeta in Cancer, Cell 134 (2) (2008) 215-230.
+[18] P. Sharma, et al., Hyperglycosylation of prosaposin in tumor dendritic cells drives 
+immune escape, Science 383 (6679) (2024) 190-200.
+[19] X. Wang, P.J.A. Eichhorn, J.P. Thiery, TGF-beta, EMT, and resistance to anti-cancer 
+treatment, Semin. Cancer Biol. 97 (2023) 1-11.
+[20] J. Guinney, et al., The consensus molecular subtypes of colorectal cancer, Nat. 
+Med. 21 (11) (2015) 1350-1356.
+[21] M. Turati, et al., TGF-beta mediated drug resistance in solid cancer, Cytokine 
+Growth Factor Rev. 71-72 (2023) 54-65.
+[22] J. Bai, Q. Xi, Crosstalk between TGF-beta signaling and epigenome, Acta Biochim. 
+Biophys. Sin. (Shanghai) 50 (3) (2018) 322.
+[23] A. Tufegdzic Vidakovic, et al., Context-Specific Effects of TGF-beta/SMAD3 in 
+Cancer Are Modulated by the Epigenome, Cell Rep. 13 (11) (2015) 2480-2490.
+[24] A.S. Riching, et al., Suppression of canonical TGF-beta signaling enables GATA4 to 
+interact with H3K27me3 demethylase JMJD3 to promote cardiomyogenesis, 
+J. Mol. Cell Cardiol. 153 (2021) 44-59.
+[25] J.H. Yuan, et al., A long noncoding RNA activated by TGF-beta promotes the 
+invasion-metastasis cascade in hepatocellular carcinoma, Cancer Cell 25 (5) (2014) 
+666-681.
+[26] Z. Liu, et al., TLR 7/8 agonist reverses oxaliplatin resistance in colorectal cancer via 
+directing the myeloid-derived suppressor cells to tumoricidal M1-macrophages, 
+Cancer Lett. 469 (2020) 173-185.
+[27] J.F. Lin, et al., Phosphorylated NFS1 weakens oxaliplatin-based chemosensitivity of 
+colorectal cancer by preventing PANoptosis, Signal. Transduct. Target. Ther. 7 (1) 
+(2022) 54.
+[28] N.F. Jensen, et al., Establishment and characterization of models of chemotherapy 
+resistance in colorectal cancer: towards a predictive signature of chemoresistance, 
+Mol. Oncol. 9 (6) (2015) 1169-1185.
+[29] S. Tsuji, et al., Potential responders to FOLFOX therapy for colorectal cancer by 
+Random Forests analysis, Br. J. Cancer 106 (1) (2012) 126-132.
+[30] J. Massague, D. Sheppard, TGF-beta signaling in health and disease, Cell 186 (19) 
+(2023) 4007-4037.
+[31] B. Bakir, et al., EMT, MET, Plasticity, and Tumor Metastasis, Trends. Cell Biol. 30 
+(10) (2020) 764-776.
+[32] G. Millan-Zambrano, et al., Histone post-translational modifications - cause and 
+consequence of genome function, Nat. Rev. Genet. 23 (9) (2022) 563-580.
+[33] A. Goudarzi, et al., Dynamic Competing Histone H4 K5K8 Acetylation and 
+Butyrylation Are Hallmarks of Highly Active Gene Promoters, Mol. Cell 62 (2) 
+(2016) 169-180.
+[34] R. Liu, et al., PI3K/AKT pathway as a key link modulates the multidrug resistance 
+of cancers, Cell Death. Dis. 11 (9) (2020) 797.
+[35] P.J. Kaboli, et al., Chemoresistance in breast cancer: pI3K/Akt pathway inhibitors vs 
+the current chemotherapy, Am. J. Cancer Res. 11 (10) (2021) 5155-5183.
+[36] A. Glaviano, et al., PI3K/AKT/mTOR signaling transduction pathway and targeted 
+therapies in cancer, Mol. Cancer 22 (1) (2023) 138.
+[37] S. Pal, J.K. Tyler, Epigenetics and aging, Sci. Adv. 2 (7) (2016) e1600584.
+[38] D.M. Avella Patino, et al., Epigenetic Regulation of Cancer Immune Cells, Semin. 
+Cancer Biol. 83 (2022) 377-383.
+[39] Y. Huang, W. Hong, X. Wei, The molecular mechanisms and therapeutic strategies 
+of EMT in tumor progression and metastasis, J. Hematol. Oncol. 15 (1) (2022) 129.
+[40] G. Pan, et al., EMT-associated microRNAs and their roles in cancer stemness and 
+drug resistance, Cancer Commun. (Lond) 41 (3) (2021) 199-217.
+[41] B. Costanza, et al., Transforming growth factor beta-induced, an extracellular 
+matrix interacting protein, enhances glycolysis and promotes pancreatic cancer cell 
+migration, Int. J. Cancer 145 (6) (2019) 1570-1584.
+[42] B.M. Webb, et al., TGF-beta/activin signaling promotes CDK7 inhibitor resistance 
+in triple-negative breast cancer cells through upregulation of multidrug 
+transporters, J. Biol. Chem. 297 (4) (2021) 101162.
+[43] N. Ungerleider, et al., TGFbeta signaling confers sorafenib resistance via induction 
+of multiple RTKs in hepatocellular carcinoma cells, Mol. Carcinog. 56 (4) (2017) 
+1302-1311.
+[44] T.H. Kim, et al., Correlating histone acetylation with nucleosome core particle 
+dynamics and function, Proc. Natl. Acad. Sci. u S. a 120 (15) (2023) e2301063120.
+[45] O. Molina, et al., Epigenetic engineering reveals a balance between histone 
+modifications and transcription in kinetochore maintenance, Nat. Commun. 7 
+(2016) 13334.
+[46] M.G. Guenther, et al., A chromatin landmark and transcription initiation at most 
+promoters in human cells, Cell 130 (1) (2007) 77-88.
+[47] L. Wan, et al., ENL links histone acetylation to oncogenic gene expression in acute 
+myeloid leukaemia, Nature 543 (7644) (2017) 265-269.
+[48] W. Mi, et al., YEATS2 links histone acetylation to tumorigenesis of non-small cell 
+lung cancer, Nat. Commun. 8 (1) (2017) 1088.
+[49] L. Ye, et al., Identification of TMZ resistance-associated histone post-translational 
+modifications in glioblastoma using multi-omics data, CNS. Neurosci. Ther. 30 (3) 
+(2024) e14649.
+[50] E. Nie, et al., Fstl1/DIP2A/MGMT signaling pathway plays important roles in 
+temozolomide resistance in glioblastoma, Oncogene 38 (15) (2019) 2706-2721.
+[51] H. Li, et al., SIRT7 promotes thyroid tumorigenesis through phosphorylation and 
+activation of Akt and p70S6K1 via DBC1/SIRT1 axis, Oncogene (2018).
+[52] D.B. Seligson, et al., Global levels of histone modifications predict prognosis in 
+different cancers, Am. J. Pathol. 174 (5) (2009) 1619-1628.
+[53] A. Manuyakorn, et al., Cellular histone modification patterns predict prognosis and 
+treatment response in resectable pancreatic adenocarcinoma: results from RTOG 
+9704, J. Clin. Oncol. 28 (8) (2010) 1358-1365.
+[54] E.E. Gardner, J.T. Poirier, C.M. Rudin, Histone Code Aberrancies in Small Cell Lung 
+Cancer, J. Thorac. Oncol. 12 (4) (2017) 599-601.
+[55] W. Fischle, et al., Enzymatic activity associated with class II HDACs is dependent 
+on a multiprotein complex containing HDAC3 and SMRT/N-CoR, Mol. Cell 9 (1) 
+(2002) 45-57.
+[56] T. Wang, et al., Deacetylation of Glutaminase by HDAC4 contributes to Lung 
+Cancer Tumorigenesis, Int. J. Biol. Sci. 18 (11) (2022) 4452-4465.
+[57] E.A. Stronach, et al., HDAC4-regulated STAT1 activation mediates platinum 
+resistance in ovarian cancer, Cancer Res. 71 (13) (2011) 4412-4422.
+[58] W.J. Zang, et al., HDAC4 promotes the growth and metastasis of gastric cancer via 
+autophagic degradation of MEKK3, Br. J. Cancer 127 (2) (2022) 237-248.
+[59] B. Song, et al., Mechanism of chemoresistance mediated by miR-140 in human 
+osteosarcoma and colon cancer cells, Oncogene 28 (46) (2009) 4065-4074.
+[60] J.Y. Wei, et al., Melatonin induces apoptosis of colorectal cancer cells through 
+HDAC4 nuclear import mediated by CaMKII inactivation, J. Pineal. Res. 58 (4) 
+(2015) 429-438.
+[61] C. Kaewpiboon, et al., Upregulation of Stat1-HDAC4 confers resistance to etoposide 
+through enhanced multidrug resistance 1 expression in human A549 lung cancer 
+cells, Mol. Med. Rep. 11 (3) (2015) 2315-2321.
+[62] Y. Jin, et al., Activation of PI3K/AKT Pathway Is a Potential Mechanism of 
+Treatment Resistance in Small Cell Lung Cancer, Clin. Cancer Res. 28 (3) (2022) 
+526-539.
+[63] S. Lamouille, R. Derynck, Cell size and invasion in TGF-beta-induced epithelial to 
+mesenchymal transition is regulated by activation of the mTOR pathway, J. Cell 
+Biol. 178 (3) (2007) 437-451.
+[64] H. Xia, L.L. Ooi, K.M. Hui, MicroRNA-216a/217-induced epithelial-mesenchymal 
+transition targets PTEN and SMAD7 to promote drug resistance and recurrence of 
+liver cancer, Hepatology 58 (2) (2013) 629-641.
+[65] M. Kato, et al., TGF-beta activates Akt kinase through a microRNA-dependent 
+amplifying circuit targeting PTEN, Nat. Cell Biol. 11 (7) (2009) 881-889.
+[66] W. Chen, TGF-beta Regulation of T Cells, Annu. Rev. Immunol. 41 (2023) 483-512.
+[67] E. Batlle, J. Massague, Transforming Growth Factor-beta Signaling in Immunity 
+and Cancer, Immunity. 50 (4) (2019) 924-940.
+[68] D. Peng, et al., Targeting TGF-beta signal transduction for fibrosis and cancer 
+therapy, Mol. Cancer 21 (1) (2022) 104.
+X. Tian et al. 
+Translational Oncology 51 (2025) 102166 
+13 
+</div><div class='tools'><button type='button' class='quiet' onclick='jumpSec(1)'>Blot section</button><button type='button' class='quiet' onclick='jump(-1)'>Prev</button><button type='button' class='quiet' onclick='jump(1)'>Next</button><span id='hits_PMC11585898' class='num'></span><span class='aid'>shading is a search aid, not an answer</span></div></div><div class='col-q'><div class='q' data-q='v2|PMC11585898|loading_control_validated' data-pmcid='PMC11585898' data-item='loading_control_validated'><div class='qname'><span>Loading control validated</span><span class='ans'></span></div><div class='qdef'>A statement that the loading control or normalizing signal was checked, shown or tested to be unchanged across the conditions compared. Naming the control, or normalizing to it, alone does not count. Western blot only.</div><div class='qhow'><b>What to mark.</b> Mark the statement.<span class='eg'>In <i>GAPDH did not differ between groups (Supplementary Fig. S2)</i> mark the whole phrase. Nothing to mark in <i>normalized to GAPDH</i>.</span></div><div class='acts'><button type='button' data-act='mark'>Use highlighted text</button><button type='button' class='sec' data-act='done' style='display:none'>Done, next</button><button type='button' class='sec' data-act='not_stated'>Not stated</button><button type='button' class='quiet' data-act='unclear'>Unclear</button></div><div class='grab'><div class='cap'>Marked so far, add as many as the paper has</div><ol class='spans'></ol><label class='morewrap'><input type='checkbox' class='morebox'>There are more of these than I marked</label></div></div></div></div></div><div class='card'><div class='paper-h'><h2>Paper <span class='num'>4</span> of <span class='num'>8</span></h2><span class='pill'>PMC4915881</span></div><div class='note' style='font-size:13px;color:var(--ink-mute);margin-bottom:6px'> · <span class='num'>year unknown</span></div><div class='split'><div class='col-text'><div class='methods' id='m_PMC4915881'>
+The study protocol was approved by the institutional
+review board of the Tumor Hospital of Guangxi Medical
+University, Nanning, China.
+HCC Cell Lines and Cell Culture
+The human HCC cell lines HCCLM3 and Huh7 were
+purchased from the Liver Cancer Institute of Zhongshan Hos-
+pital, Fudan University (Shanghai, China). Cells were cultured
+in high-glucose Dulbecco’s modified Eagle medium (DMEM;
+Gibco, California, USA) containing 10% (v/v) fetal bovine
+serum (FBS; Gibco) and 1 penicillin/streptomycin (Gibco).
+Cultures were incubated at 378C in a humidified atmosphere
+containing 5% CO2.
+SP Cell Analysis
+To identify and isolate SP fractions and main population
+(MP) fractions, cells were adjusted to a concentration of
+1  106 cells/mL in high-glucose DMEM supplemented with
+5% FBS, then incubated at 378C for 90 min with 6 mg/mL
+Hoechst 33342 dye (Sigma, Missouri, USA) alone or in the
+presence of 50 mM verapamil (Sigma). Cell suspensions were
+washed with cold phosphate-buffered saline (PBS), then cen-
+trifuged and resuspended in high-glucose DMEM supplemented
+with 5% FBS and 7-amino-actinomycin D (1 mg/L; Invitrogen,
+California, USA) in order to label dead cells. Cells were filtered
+through a 40-mm cell strainer (BD Falcon, califorina, USA) to
+obtain single-cell suspensions, maintained at 48C before
+analysis, then sorted by a FACSComp flow cytometer (BD).
+All experiments were done in triplicate.
+Spheroid Formation Assay
+Isolated SP and MP cells were suspended in serum-free
+DMEM/F12 medium containing B27 supplement (1:50; Invitro-
+gen),20ng/mLepidermalgrowthfactor(Invitrogen),and20ng/mL
+basic fibroblast growth factor (Invitrogen). Cells were cultured
+for 2 weeksat a densityof 2000cells/well inultra-low-attachment
+6-well plates (Corning, Massachusetts, USA). Spheroids were
+counted and photographed under a microscope (Nikon, Tokyo,
+Japan). All experiments were performed in triplicate.
+Cell Viability Assay
+To determine cell viability, the Cell Counting Kit 8 (CCK8;
+Dojindo, Kumamoto, Japan) was used according to the
+manufacturer’s instructions. Briefly, 5  103 cells/well were
+seeded into 96-well plates and incubated overnight. Drugs were
+applied at different concentrations and left on cells for 24 or
+48 hr. Then CCK8 reagent was added to the cultures, they were
+incubated for 4 hr, and the plates were analyzed on a microplate
+reader (Thermo, Massachusetts, USA).
+Tumorigenicity Assay
+Varying numbers of SP and MP cells (5  103 to 5  105)
+were suspended in a 1:1 (v/v) mixture of 200 mL PBS and
+Matrigel (BD, USA). The suspensions were injected subcu-
+taneously into 6-week-old male nude mice under anesthesia:
+each mouse received an injection of SP cells on the left side of
+the back, and an injection of MP cells on the right side of the
+back. Tumor growth was monitored weekly for 4 weeks.
+Analysis of Putative Stem Cell Markers by Flow
+Cytometry
+We analyzed SP and MP cells for expression of the putative
+CSC markers ABCG2, CD133, CD90, EpCAM, CD13, and
+CD44. Cells were first incubated with Hoechst 33342. Excess
+dye was removed by resuspending 1  106 cells/mL in high-
+glucose DMEM with 2% FBS. Cells were incubated in the dark
+at 48C for 30 min with fluorescence-conjugated monoclonal
+antibodies, including mouse anti-human ABCG2-PE (Miltenyi,
+Bergisch Gladbach, Germany), CD133-PE (Miltenyi), EpCAM-
+PE (Miltenyi), CD13-PE (BD), CD90-APC (BD), and CD44-
+FITC (BD). Isotype-matched mouse antibodies served as con-
+trols. Samples were analyzed using a FACSComp flow cyt-
+ometer (BD) and Flowjo software (Treestar, California, USA).
+Representative data from 3 independent experiments are shown.
+Migration and Invasion Assays
+Cell migration was analyzed using Transwell cell culture
+chambers (8 mm pore size; Corning), and cell invasion was
+analyzed using the same Transwell chambers precoated with
+Matrigel (Corning). Briefly, cells (5  104 cells/chamber) were
+resuspended in FBS-free medium and added to the upper
+chamber of the Transwell plates. Medium containing 10%
+FBS was added to the well, and cultures were incubated for
+24 hr. Cells that migrated and invaded to the lower surface were
+fixed with methanol for 5 min at room temperature, stained for
+10 min with Giemsa solution (ZSGQ-BIO, Beijing, China), and
+counted at 200 magnification from 5 fields of each filter to
+obtain an average. All experiments were done in triplicate.
+Creation of a Stable HCCLM3 Cell Line
+Overexpressing COX-2
+A lentiviral vector expressing green fluorescent protein
+(LV-GFP) was purchased from Shanghai Cancer Institute
+(Shanghai, China) and used to construct a lentiviral vector
+constitutively overexpressing COX-2 (LV-COX-2-GFP). This
+expression construct or the empty vector LV-GFP was trans-
+fected into HCCLM3 cells, which were then cultured for more
+than 2 weeks in the presence of 500 mg/mL G418 (Invitrogen).
+A stable cell line overexpressing COX-2 was obtained and
+named HCCLM3-COX-2. The corresponding negative control
+cell line was named HCCLM3-NC.
+Quantitative Real-Time PCR
+Total RNA was extracted from cells using TRIzol (Invi-
+trogen) according to the manufacturer’s instructions and used to
+Guo et al
+Medicine
+ Volume 94, Number 44, November 2015
+2 | www.md-journal.com
+Copyright # 2015 Wolters Kluwer Health, Inc. All rights reserved.
+ synthesize cDNA with the Prime Script RT Reagent Kit with
+gDNA Eraser (TaKaRa, Shiga, Japan). Then the cDNAwas used
+as template in quantitative real-time PCR (qRT-PCR) with the
+SYBR Green/ROX Master Mix in a 7300 RT-PCR System
+(Applied Biosystems, California, USA). Expression of target
+genes was determined using the 2-DDCt method and normalized
+to that of the housekeeping gene glyceraldehyde-3-phosphate
+dehydrogenase (GAPDH). Primers to amplify specific gene
+sequences are shown in Table 1. All experiments were per-
+formed in triplicate.
+Western Blotting
+Cells were lysed with Radio Immunoprecipitation Assay
+lysis buffer containing 1% Phenylmethanesulfonyl fluoride and
+proteins were harvested. Protein concentrations were measured
+using the bicinchoninic acid protein assay (Beyotime, Shanghai,
+China). All proteins were resolved on 10% sodium dodecyl
+sulfate-polyacrylamide gels and transferred to PVDF mem-
+branes. Membranes were blocked in 5% nonfat milk overnight
+at 48C and incubated overnight at 48C with antibodies against
+COX-2 (1:500; Abcam, Cambridge, UK), phosphatase and
+tensin homolog deleted on chromosome ten (PTEN) (1:1000;
+Abcam) or programmed cell death protein 4 (PDCD4) (1:1000;
+Cell Signaling Technology, Massachusetts, USA). Membranes
+were then incubated for 1 hr with the appropriate horseradish
+peroxidase-conjugated secondary antibody. After washing with
+Tris-Buffered Saline and Tween 20, proteins were detected by
+enhanced chemiluminescence (Thermo) and quantified using
+ImageLab 5.0 (BioRad, California, USA). Protein levels were
+normalized to the amount of GAPDH detected on the same blot.
+Representative data from 3 independent experiments are shown.
+Quantification of Prostaglandin E2
+Prostaglandin E2 (PGE2) concentration in culture medium
+was determined using an enzyme-linked immunosorbent assay
+kit following the manufacturer’s instructions (Cayman Chemi-
+cal, Michigan, USA). Briefly, 5  103 cells/well were seeded
+into 24-well plates and incubated for 24 hr with celecoxib at
+12.5, 25, or 50 mM.
+Statistical Analysis
+All analyses were performed using SPSS 19.0 (IBM,
+New York, USA). Data were reported as mean standard
+deviation.
+Differences
+between
+means
+were
+assessed
+for
+significance using Student t test or 1-way analysis of variance.
+The threshold for significance was defined as a 2-sided P&lt; 0.05.
+</div><div class='tools'><button type='button' class='quiet' onclick='jumpSec(1)'>Blot section</button><button type='button' class='quiet' onclick='jump(-1)'>Prev</button><button type='button' class='quiet' onclick='jump(1)'>Next</button><span id='hits_PMC4915881' class='num'></span><span class='aid'>shading is a search aid, not an answer</span></div></div><div class='col-q'><div class='q' data-q='v2|PMC4915881|normalization_stated' data-pmcid='PMC4915881' data-item='normalization_stated'><div class='qname'><span>Normalization stated</span><span class='ans'></span></div><div class='qdef'>How the blot's band intensities were normalized, with the reference named: to a loading control, to total protein, or phospho to total ('normalized to beta-actin' is enough; the arithmetic need not be spelled out). Expressing values relative to a control group alone does not count, and neither does naming a loading control without saying the bands were normalized to it, a statistics statement that names no assay, or a pooled reference sample used only to compare blots (between-blot normalization). Western blot only.</div><div class='qhow'><b>What to mark.</b> Mark the phrase that states the calculation.<span class='eg'>In <i>band intensities were normalized to beta-actin and expressed relative to control</i> mark <b>normalized to beta-actin</b>. Nothing to mark in <i>quantitated as percent of DMSO</i>, <i>GAPDH was used as a loading control</i>, or <i>gene expression was normalized to GAPDH</i> (qPCR).</span></div><div class='acts'><button type='button' data-act='mark'>Use highlighted text</button><button type='button' class='sec' data-act='done' style='display:none'>Done, next</button><button type='button' class='sec' data-act='not_stated'>Not stated</button><button type='button' class='quiet' data-act='unclear'>Unclear</button></div><div class='grab'><div class='cap'>Marked so far, add as many as the paper has</div><ol class='spans'></ol><label class='morewrap'><input type='checkbox' class='morebox'>There are more of these than I marked</label></div></div></div></div></div><div class='card'><div class='paper-h'><h2>Paper <span class='num'>5</span> of <span class='num'>8</span></h2><span class='pill'>PMC5867490</span></div><div class='note' style='font-size:13px;color:var(--ink-mute);margin-bottom:6px'> · <span class='num'>year unknown</span></div><div class='split'><div class='col-text'><div class='methods' id='m_PMC5867490'>
+Cell culture and chemicals. The human hepatoblastoma cell 
+line, HepG2, was obtained from the American Type Culture 
+Collection (Manassas, VA, USA). IGF-1R knockout HepG2 
+cells were constructed and conserved within the labora­
+tory. HepG2 cells were maintained in Dulbecco&#x27;s modified 
+Eagle&#x27;s medium (DMEM; Gibco, Thermo Fisher Scientific, 
+Inc., Waltham, MA, USA) supplemented with 10% fetal 
+bovine serum (FBS; Gibco, Thermo Fisher Scientific, Inc.), 
+100 U/ml penicillin and 100 μg/ml streptomycin at 37 ̊C in 
+an atmosphere containing 5% CO2. Curcumin and CoCl2 were 
+purchased from Sigma-Aldrich (Merck KGaA, Darmstadt, 
+Germany). Curcumin was dissolved in dimethylsulfoxide and 
+CoCl2 was dissolved in DMEM.
+Preparation of IGF-1R knockout cells. The candidate 20-base 
+guide (g)RNA sequences were derived from the IGF-1R genome 
+sequence (gene ID: 3480). The cDNA sequence was obtained 
+from Han&#x27;s lab (http://hanlab.xmu.edu.cn/cdna/Query.aspx, 
+No. 25207). The clustered regularly interspaced short palin­
+dromic repeats (CRISPR)/Cas9 design tool from Zhang&#x27;s lab 
+(crispr.mit.edu/) was used to search the functional gRNA 
+sequence (5&#x27;-GAG​AAC​TGC​ACG​GTG​ATC​GAG​GG-3&#x27;), 
+which contain the downstream 3&#x27;protospacer-adjacent motif 
+with GG dinucleotide (N20-NGG). According to the func­
+tional gRNA sequence, a pair of oligo DNA were designed 
+and synthesized (hIGF1R-QC-F, 5&#x27;-CAC​CGA​GAA​CTG​CAC​
+GGT​GAT​CGA-3&#x27;; hIGF1R-QC-R, 5&#x27;-AAA​CTC​GAT​CAC​
+CGT​GCA​GTT​CTC-3&#x27;). The complementary oligo DNA were 
+hybridized (50 ng) and then inserted to pGK1.1 (20 ng) (Genloci 
+Biotechnologies, Inc., Jiangsu, China; http://www.genloci.com) 
+and named pGK1.1-U6-IGF-1RgRNA. HepG2 cells were 
+seeded in a 24-well plate 24 h prior to transfection and trans­
+fected with the pGK1.1-U6-IGF-1RgRNA plasmid via the 
+electroporation method using a Neon® Transfection system 
+(Invitrogen; Thermo Fisher Scientific, Inc.) according to the 
+manufacturer&#x27;s protocol. Following transfection, the cells were 
+diluted into 10 96-well plates and incubated at 37 ̊C in an 
+atmosphere containing 5% CO2 for 2 weeks. The cells from 
+each 96-well plate were then transferred to 48-well plates and 
+incubated at 37 ̊C in an atmosphere containing 5% CO2 for 
+further incubation. After cell cultures were 70% confluent, 
+they were harvested and the genomic DNA was extracted 
+using DNA Extraction kits (Genloci Biotechnologies, 
+Inc.). PCR was conducted to amplify the target region with 
+genomic DNA derived from the cells. DNA polymerase (cat. 
+no. R060Q; Takara, Bio, Inc., Otsu, Japan) was use for PCR. 
+The following primer sequences were used: hIGF1R-seq-F: 
+5&#x27;-GTT​TAC​CCT​CTT​GTC​TCC​CT-3&#x27; and hIGF1R-seq-R: 
+5&#x27;-CGG​TAA​TGA​CCG​TGA​GCT​TG-3&#x27;. PCR was performed 
+using the following thermocycling conditions: 95 ̊C for 10 sec, 
+60 ̊C for 10 sec, 72 ̊C for 20 sec for 30 cycles. Amplicons were 
+sent to the Beijing Genomics Institute (Beijing, China) for 
+deep sequencing.
+Hypoxia and CoCl2 incubation. HepG2 cells were plated 
+in 96-well plates (5,000 cells/well) or 6-well plates 
+(3x105 cells/well) in DMEM supplemented with 10% FBS, 
+100 U/ml penicillin and 100 μg/ml streptomycin at 37 ̊C in an 
+atmosphere containing 5% CO2. Following 24 h, the medium 
+was changed to fresh serum-free DMEM with different 
+concentrations of CoCl2 (0, 50, 100, 150, 200 and 400 μM) for 
+different time periods (1, 2, 4, 6 and 8 h).
+Cell survival assay. HepG2 cells were plated in a 96-well plate 
+in 100 μl medium at a density of 5,000 cells/well and incubated 
+using standard culture conditions overnight. The medium was 
+removed carefully and the purple formazan was dissolved 
+with 150 μl dimethyl sulfoxide. Cell viability was determined 
+by an MTT assay (Sigma-Aldrich; Merck KGaA, Darmstadt, 
+Germany) according to the manufacturer&#x27;s protocol. The 
+optical density was determined at 570 nm by SpectraMax M2 
+(Molecular Devices, LLC, Sunnyvale, CA, USA).
+Western blot analysis. Total protein was isolated from 
+cells using a radioimmunoprecipitation buffer reagent (cat. 
+no. P0013B, Beyotime Institute of Biotechnology, Shanghai, 
+China). The lysates were ultrasonicated and centrifuged at 
+12,000 x g and at 4 ̊C for 10 min. Supernatants were collected 
+and stored at -70 ̊C. Protein concentrations were determined 
+using a Bicinchoninic Acid Protein Assay kit (Thermo Fisher 
+Scientific, Inc.) according to the manufacturer&#x27;s protocol. 
+Protein (50 μg per lane) was separated by 10% SDS-PAGE and 
+electroblotted onto a nitrocellulose membrane. The membrane 
+was blocked with Tris-buffered saline (TBS)/5% nonfat dry 
+milk at room temperature for 2 h and the membranes were 
+subsequently incubated with primary antibodies overnight at 
+4 ̊C. Following three washes with TBS+Tween-20 (TBST), 
+the membranes were incubated with goat polyclonal immu­
+noglobulin G horseradish peroxidase-conjugated secondary 
+antibodies (cat. no. sc-2004; 1:1,000; Santa Cruz Biotechnology, 
+Inc., Dallas, TX, USA) for 45 min at room temperature. The 
+membranes were washed with TBST three times prior to 
+visualization using a Western Blotting Luminol Reagent (cat. 
+no. sc-2048, Santa Cruz Biotechnology, Inc.). Image J 1.6 
+software (National Institutes of Health, Bethesda, MD, USA) 
+was used to detect and analyze the relative densitometry. The 
+primary antibodies used in the experiment were as follows: 
+Rabbit anti-IGF-1R (cat. no. 9750), rabbit anti-HIF-1α (cat. 
+no. 3716), rabbit anti-VEGF (cat. no. 2463), rabbit anti-Akt 
+(cat. no. 9272), rabbit anti-phosphorylated (p)-Akt (cat. 
+no. 5012), rabbit anti-extracellular signal-regulated kinases 
+(Erk1/2; cat. no. 4695), rabbit anti-p-Erk1/2 (cat. no. 4377) (all 
+1:1,000; Cell Signaling Technology, Inc., Danvers, MA, USA) 
+ EXPERIMENTAL AND THERAPEUTIC MEDICINE 15: 2922-2928, 2018
+2924
+and rabbit anti-β-actin (cat. no. sc-7210; 1:4,000; Santa Cruz 
+Biotechnology, Inc.).
+Statistical analysis. Data are presented as the mean ± standard 
+deviation and were analyzed using SPSS version 19.0 (IBM 
+Corp., Armonk, NY, USA). Differences between the groups 
+at each time point were examined for statistical significance 
+using one-way analysis of variance and a least significant 
+difference post-hoc comparison. The correlation between 
+HIF-1α and VEGF protein levels was evaluated statistically 
+using Pearson&#x27;s correlation coefficient analysis if the quantita­
+tive data had a normal distribution; if the data was not normally 
+distributed, the Spearman rank correlation coefficient analysis 
+was used. P&lt;0.05 was considered to indicate a statistically 
+significant difference.
+</div><div class='tools'><button type='button' class='quiet' onclick='jumpSec(1)'>Blot section</button><button type='button' class='quiet' onclick='jump(-1)'>Prev</button><button type='button' class='quiet' onclick='jump(1)'>Next</button><span id='hits_PMC5867490' class='num'></span><span class='aid'>shading is a search aid, not an answer</span></div></div><div class='col-q'><div class='q' data-q='v2|PMC5867490|sample_storage' data-pmcid='PMC5867490' data-item='sample_storage'><div class='qname'><span>Lysate storage stated</span><span class='ans'></span></div><div class='qdef'>How the blot's lysates or protein extracts were stored before loading: a storage temperature, with or without a duration ('lysates were stored at -80 °C until use'). Storage of tissue, cells, blood or other samples before lysis, and storage of antibodies or reagents, does not count. Western blot only.</div><div class='qhow'><b>What to mark.</b> Mark the words that state the storage.<span class='eg'>In <i>the supernatant was aliquoted and stored at -80 &deg;C</i> mark <b>stored at -80 &deg;C</b>. Nothing to mark in <i>tissues were snap-frozen in liquid nitrogen and stored at -80 &deg;C</i>.</span></div><div class='acts'><button type='button' data-act='mark'>Use highlighted text</button><button type='button' class='sec' data-act='done' style='display:none'>Done, next</button><button type='button' class='sec' data-act='not_stated'>Not stated</button><button type='button' class='quiet' data-act='unclear'>Unclear</button></div><div class='grab'><div class='cap'>Marked so far, add as many as the paper has</div><ol class='spans'></ol><label class='morewrap'><input type='checkbox' class='morebox'>There are more of these than I marked</label></div></div></div></div></div><div class='card'><div class='paper-h'><h2>Paper <span class='num'>6</span> of <span class='num'>8</span></h2><span class='pill'>PMC6770778</span></div><div class='note' style='font-size:13px;color:var(--ink-mute);margin-bottom:6px'> · <span class='num'>year unknown</span> <span class='pill'>no Methods heading found, full text shown</span></div><div class='split'><div class='col-text'><div class='methods' id='m_PMC6770778'>Nutrients 2019, 11, 2099; doi: 10.3390/nu11092099 
+www.mdpi.com/journal/nutrients 
+Supplementary Materials 
+1 
+Regulation of the Metal Transporters ZIP14 and 
+2 
+ZnT10 by Manganese Intake in Mice 
+3 
+Danielle M. Felber, Yuze Wu and Ningning Zhao * 
+4 
+Department of Nutritional Sciences, The University of Arizona, Tucson, AZ 85721; dmfelber@gmail.com; 
+5 
+yuzewu@email.arizona.edu; zhaonn@email.arizona.edu 
+6 
+* Correspondence: zhaonn@email.arizona.edu; Tel.: +1-520-621-9744
+7 
+List of materials included: Figures S1-S5 
+8 
+9 
+ Nutrients 2019, 11, 2099 
+S2 of S6 
+10 
+11 
+12 
+Figure S1. Metal Levels in Animal Diets. Metal levels measured by inductively coupled plasma mass 
+13 
+spectrometry (ICP-MS) in AIN-93G purified animal diets modified to contain 0.1 ppm, 20 ppm, or 
+14 
+2000 ppm Mn. (A) Mn levels. (B) Fe levels. (C) Zn levels. (D) Cu levels. Data expressed as mean ± 
+15 
+SEM. 
+16 
+17 
+18 
+19 
+ Nutrients 2019, 11, 2099 
+S3 of S6 
+20 
+21 
+Figure S2. Antibody Verification. (A) To confirm the specificity of our mZIP14 antibody, we 
+22 
+measured ZIP14 expression in the livers of a wildtype (WT) mouse, a Zip14 knockout (KO) mouse, 
+23 
+and two heterozygous (HZ) mice, using GAPDH as a loading control. We demonstrated strong signal 
+24 
+for the ZIP14 protein in the WT mouse, no signal in the KO mouse, and partial signal in the HZ mice, 
+25 
+verifying our anti-mZIP14 antibody. (B) As we do not currently have Znt10 KO mice, we confirmed 
+26 
+the specificity of this antibody by transfecting HEK293 cells with an empty vector (CON), and a vector 
+27 
+encoding mouse ZnT10 (mZnT10) with a FLAG epitope (mZnT10-FLAG). Cells were lysed 48 hours 
+28 
+after transfection and lysates were analyzed by immunoblotting (IB) with anti-FLAG or anti-mZnT10 
+29 
+antibodies. Both β-ACTIN and GAPDH were used as loading controls. 
+30 
+31 
+ Nutrients 2019, 11, 2099 
+S4 of S6 
+32 
+33 
+34 
+35 
+Figure S3. Uncropped Western Blot Images for Figure S2. 
+36 
+37 
+38 
+39 
+40 
+41 
+42 
+43 
+44 
+ Nutrients 2019, 11, 2099 
+5S of S6 
+45 
+46 
+47 
+Figure S4. Uncropped Western Blot Images for Figure 6. 
+48 
+49 
+50 
+51 
+ Nutrients 2019, 11, 2099 
+S6 of S6 
+52 
+53 
+54 
+Figure S5. Uncropped Western Blot Images for Figure 7. 
+55 
+56 
+57 
+</div><div class='tools'><button type='button' class='quiet' onclick='jumpSec(1)'>Blot section</button><button type='button' class='quiet' onclick='jump(-1)'>Prev</button><button type='button' class='quiet' onclick='jump(1)'>Next</button><span id='hits_PMC6770778' class='num'></span><span class='aid'>shading is a search aid, not an answer</span></div></div><div class='col-q'><div class='q' data-q='v2|PMC6770778|antibody_validation' data-pmcid='PMC6770778' data-item='antibody_validation'><div class='qname'><span>Antibody validation stated</span><span class='ans'></span></div><div class='qdef'>A statement that an antibody's specificity was checked experimentally: knockdown or knockout, a blocking peptide, overexpression, or a positive and a negative control sample stated as checking the antibody's specificity. Routine assay controls, normal serum or no-primary substitutions, isotype controls, a single band at the expected size, a vendor's claim, or a citation alone does not count. Counts for an antibody used in any assay, not only the blot.</div><div class='qhow'><b>What to mark.</b> Mark the statement.<span class='eg'>In <i>antibody specificity was confirmed in PAX6 knockdown cells</i> mark the whole phrase. Nothing to mark in <i>a single band was detected at the expected molecular weight</i>, <i>the primary antibody was replaced with normal rabbit serum as a negative control</i>, or <i>validated by the manufacturer</i>.</span></div><div class='acts'><button type='button' data-act='mark'>Use highlighted text</button><button type='button' class='sec' data-act='done' style='display:none'>Done, next</button><button type='button' class='sec' data-act='not_stated'>Not stated</button><button type='button' class='quiet' data-act='unclear'>Unclear</button></div><div class='grab'><div class='cap'>Marked so far, add as many as the paper has</div><ol class='spans'></ol><label class='morewrap'><input type='checkbox' class='morebox'>There are more of these than I marked</label></div></div></div></div></div><div class='card'><div class='paper-h'><h2>Paper <span class='num'>7</span> of <span class='num'>8</span></h2><span class='pill'>PMC7798341</span></div><div class='note' style='font-size:13px;color:var(--ink-mute);margin-bottom:6px'> · <span class='num'>year unknown</span></div><div class='split'><div class='col-text'><div class='methods' id='m_PMC7798341'>
+Cell culture and cell treatment
+Chondrocytes were obtained from Beijing ZEPING &amp;
+Technology Co., Ltd. (Beijing, China). Chondrocytes
+were cultured in DMEM medium containing 20% fetal
+bovine serum (FBS; Gibco, USA) under 37 °C with
+humid atmosphere of 5% CO2. Second generation of
+chondrocytes in good condition was divided into control
+group, LPS group, and LPS + ATP group. Cells in con-
+trol group were normally cultured. Cells in LPS group
+were treated with 1 μg/mL LPS for 24 h. Cells in LPS +
+ATP group were treated with 1 μg/mL LPS for 24 h and
+then treated with 5.5 mmol/L ATP for 4 h.
+CCK-8 assay
+After chondrocytes were treated with LPS or LPS/ATP,
+chondrocytes were seeded into a 96-well plate (5000
+cells/well) for 24 h culture. After the medium was chan-
+ged, 10% CCK-8 solution of 100 μL was added to each
+well, and incubated in the incubator for 1 h. The absorb-
+ance at 450 nm was detected with a microplate micro-
+scope, and the cell proliferation rate was calculated.
+ELISA assay
+Supernatant of chondrocytes was collected by centrifugal
+tube, which was centrifuged and transferred to sterilized
+tubes. Next, Col II ELISA kit, IL-1β ELISA kit, IL-18
+ELISA kit, and MMP-13 ELISA kit were used to detect
+the secretion of Col II, IL-1β, IL-18, and MMP-13 of
+chondrocytes. All experimental operations were per-
+formed in accordance with the instructions.
+Cell transfection
+Chondrocytes in logarithmic phase were cultured over-
+night in 6-well plates (5 × 104 cells/well). Next day,
+mimic NC, miR-107 mimic-#1 and miR-107 mimic-#2
+were respectively transfected into chondrocytes with Li-
+pofectamine® 2000 reagent. After chondrocytes were
+treated with LPS and ATP, chondrocytes were respect-
+ively transfected with mimic NC and miR-107 mimic.
+Culture medium was changed 6 h after transfection, and
+cells were collected 24 h after transfection.
+RT-qPCR analysis
+Total RNA was extracted with the trizol (Thermo Fisher
+Scientific, USA) method. Next, according to the instruc-
+tions of the reverse transcription kit, moderate amount
+of RNA was reversely transcribed into cDNA, which was
+then mixed with the SYBR Green. Finally, cDNA was
+amplified with the 7500 RT-PCR system (Applied Bio-
+systems, USA). The expression of targeted genes was
+calculated with the 2-ΔΔCt method.
+Qian et al. Journal of Orthopaedic Surgery and Research (2021) 16:40 
+Page 2 of 8
+ TUNEL assay
+Chondrocytes in each group with good growth after
+transfection were selected. Cell slide of each group was
+fixed with 4% polyformaldehyde for 30 min and washed
+with PBS for 5 min. Then, 0.1% Triton X-100 was used
+to penetrate the cell membranes and cells were washed
+with PBS again. The apoptosis of chondrocytes was stud-
+ied via TUNEL Apoptosis Kit (Invitrogen), with employ-
+ment of DAPI (Koritai Biotechnology, Beijing, China) for
+dying. Cells were then observed and captured by fluores-
+cence microscopy (Olympus, Tokyo, Japan).
+Western blot analysis
+After removing the medium, chondrocytes were washed
+twice with PBS and then the cells were lysed with lysis
+buffer. The collected proteins were determined by BCA
+method. Twenty micrograms of protein samples were
+loaded, separated with the 10% SDS-PAGE gel (Beyo-
+time, China), and transferred to the PVDF membranes
+(Millipore, USA). Then, membranes were sealed with 5%
+skim milk for 1 h and incubated with the primary anti-
+bodies overnight at 4 °C. The primary anti-bodies used
+are Col II, IL-1β, IL-18, MMP13, caspase-1, c-caspase-1,
+GSDMD-N, TLR4, and GAPDH. On the next day,
+horseradish peroxidase-conjugated secondary antibodies
+were added to membranes for 1 h culture at 25 °C. An
+appropriate amount of ECL developer was added for re-
+action for 1 min, and the ratio of gray value between the
+target protein and the internal GAPDH was analyzed by
+Image Lab Image processing software.
+Luciferase reporter assay
+A luciferase assay was performed to identify the inter-
+action between miR-107 and caspase-1. WT-CASP1
+(caspase-1) or MUT-CASP1 (caspase-1) was trans-
+fected
+into
+chondrocytes
+with
+miR-107
+mimic
+or
+mimic NC with Lipofectamine 2000 Reagent (Invitro-
+gen, Shanghai, China). Luciferase activity was detected
+after
+transfection
+using
+a
+dual-luciferase
+reporter
+assay system (Promega).
+Statistical analysis
+Statistical analysis of measurement data was performed
+using SPSS 20.0 statistical software, and the mean ±
+standard deviation was used for measurement of data
+analysis. One-way ANOVA was used for comparison be-
+tween groups, and LSD t test was used for pairwise com-
+parison between groups. P &lt; 0.05 was considered
+statistically significant.
+Fig. 1 Effects of LPS/ATP induction on chondrocytes. a The proliferation of chondrocytes treated with LPS and ATP was detected by CCK-8 assay.
+*P &lt; 0.05 and ***P &lt; 0.001 vs. control group. #P &lt; 0.05 and ###P &lt; 0.001 vs. LPS group. b The expression of Col II in supernatant of chondrocytes
+treated with LPS and ATP was detected by Col II ELISA assay. **P &lt; 0.01 and ***P &lt; 0.001 vs. control group. ##P &lt; 0.01 vs. LPS group. c The
+expression of IL-1β in supernatant of chondrocytes treated with LPS and ATP was detected by IL-1β ELISA assay. ***P &lt; 0.001 vs. control group.
+###P &lt; 0.001 vs. LPS group. d The expression of IL-18 in supernatant of chondrocytes treated with LPS and ATP was detected by IL-18 ELISA assay.
+**P &lt; 0.01 and ***P &lt; 0.001 vs. control group. ###P &lt; 0.001 vs. LPS group. e The expression of MMP-13 in supernatant of chondrocytes treated
+with LPS and ATP was detected by MMP-13 ELISA assay. ***P &lt; 0.001 vs. control group. ###P &lt; 0.001 vs. LPS group. f miR-107 expression in
+chondrocytes treated with LPS and ATP was analyzed by RT-qPCR analysis. *P &lt; 0.05 and ***P &lt; 0.001 vs. control group. ##P &lt; 0.01 vs. LPS group
+Qian et al. Journal of Orthopaedic Surgery and Research (2021) 16:40 
+Page 3 of 8
+ Results
+Effects of LPS/ATP induction on chondrocytes
+After chondrocytes were treated with single LPS, the
+proliferation of chondrocytes was increased at 48 h.
+After LPS-induced chondrocytes were treated with ATP,
+the proliferation of chondrocytes was decreased at 24 h
+and 48 h (Fig. 1a). Single LPS treatment for chondro-
+cytes downregulated the Col II expression while upregu-
+lated the expression of IL-1β, IL-18, and MMP-13. ATP
+treatment could further downregulate the Col II expres-
+sion and upregulate the expression of IL-1β, IL-18, and
+MMP-13 in supernatant of LPS-induced chondrocytes
+(Fig. 1b). The result in Fig. 1c indicated that miR-107 ex-
+pression was decreased in chondrocytes induced by LPS
+and further decreased in chondrocytes induced by LPS
+and ATP.
+miR-107 overexpression alleviates the effects of LPS/ATP
+induction on chondrocytes
+Chondrocytes were transfected with mimic NC, miR-107
+mimic-#1, and miR-107 mimic-#2, and miR-107 expres-
+sion was upregulated in miR-107 mimic-#1 and miR-107
+mimic-#2 groups, compared with mimic NC. miR-107
+expression in miR-107 mimic-#1 was the highest (Fig.
+2a). The proliferation of chondrocytes in LPS + ATP
+group and was decreased compared with control group.
+There was no obvious change in cell proliferation be-
+tween LPS + ATP group and LPS + ATP + mimic NC
+group, and miR-107 overexpression increased the prolif-
+eration of chondrocytes induced by LPS and ATP (Fig.
+2b). Treatment of LPS and ATP downregulated the Col
+II expression while upregulated the expression of IL-1β,
+IL-18, and MMP-13 in chondrocytes and chondrocytes
+transfected with mimic NC. miR-107 overexpression up-
+regulated the Col II expression and down-regulated the
+expression of IL-1β, IL-18, and MMP-13 in chondro-
+cytes induced by LPS and ATP (Fig. 2c).
+miR-107 overexpression decreases the pyroptosis of
+chondrocytes induced by LPS and ATP
+The pyroptosis of chondrocytes in LPS + ATP group
+was elevated compared with control group. Mimic NC
+did not obviously affect the pyroptosis of chondrocytes
+induced by LPS and ATP. However, miR-107 overex-
+pression decreased the pyroptosis of chondrocytes in-
+duced by LPS and ATP (Fig. 3).
+Fig. 2 miR-107 overexpression alleviates the effects of LPS/ATP induction on chondrocytes. a miR-107 expression in chondrocytes treated with
+LPS and ATP after transfection was analyzed by RT-qPCR analysis. ***P &lt; 0.001 vs. control group. ###P &lt; 0.001 vs. mimic NC group. ΔΔΔP &lt; 0.001 vs.
+miR-107 mimic-#1 group. b The proliferation of chondrocytes treated with LPS and ATP after transfection was detected by CCK-8 assay. ***P &lt;
+0.001 vs. control group. ###P &lt; 0.001 vs. LPS + ATP group. ΔΔΔP &lt; 0.001 vs. LPS + ATP + mimic NC group. c The expression of Col II in supernatant
+of chondrocytes treated with LPS and ATP after transfection was detected by Col II ELISA assay. **P &lt; 0.01 and ***P &lt; 0.001 vs. control group. ###P
+&lt; 0.001 vs. LPS + ATP group. ΔΔΔP &lt; 0.001 vs. LPS + ATP + mimic NC group. d The expression of IL-1β in supernatant of chondrocytes treated
+with LPS and ATP after transfection was detected by IL-1β ELISA assay. ***P &lt; 0.001 vs. control group. ###P &lt; 0.001 vs. LPS + ATP group. ΔΔΔP &lt;
+0.001 vs. LPS + ATP + mimic NC group. e The expression of IL-18 in supernatant of chondrocytes treated with LPS and ATP after transfection was
+detected by IL-18 ELISA assay. ***P &lt; 0.001 vs. control group. ###P &lt; 0.001 vs. LPS + ATP group. ΔΔΔP &lt; 0.001 vs. LPS + ATP + mimic NC group. f
+The expression of MMP-13 in supernatant of chondrocytes treated with LPS and ATP after transfection was detected by MMP-13 ELISA assay. **P
+&lt; 0.01 and ***P &lt; 0.001 vs. control group. ###P &lt; 0.001 vs. LPS + ATP group. ΔΔΔP &lt; 0.001 vs. LPS + ATP + mimic NC group
+Qian et al. Journal of Orthopaedic Surgery and Research (2021) 16:40 
+Page 4 of 8
+ miR-107 overexpression affects the expression of
+cartilage matrix and pyroptosis-associated proteins in
+chondrocytes induced by LPS and ATP
+The Col II expression was downregulated while the ex-
+pression of IL-1β, IL-18, and MMP-13 was upregulated
+in chondrocytes induced by LPS and ATP. Mimic NC
+had no obvious effect on the expression of the above
+proteins, and miR-107 overexpression upregulated the
+Col II expression while downregulated the expression of
+IL-1β, IL-18, and MMP-13 in chondrocytes induced by
+LPS and ATP (Fig. 4a). The expression of caspase-1, c-
+caspase-1, GSDMD-N, and TLR4 in chondrocytes in-
+duced by LPS and ATP was increased, which was not af-
+fected
+by
+mimic
+NC.
+miR-107
+overexpression
+downregulated the expression of caspase-1, c-caspase-1,
+GSDMD-N, and TLR4 in chondrocytes induced by LPS
+and ATP (Fig. 4b).
+miR-107 directly targets caspase-1
+The relative luciferase activity was obviously decreased
+when cells were co-transfected with miR-107 mimic and
+WT-CASP1, and it was not changed in cells co-
+transfected with miR-107 mimic and MUT-CASP1, indi-
+cating that miR-107 directly targeted caspase-1 (Fig. 5).
+</div><div class='tools'><button type='button' class='quiet' onclick='jumpSec(1)'>Blot section</button><button type='button' class='quiet' onclick='jump(-1)'>Prev</button><button type='button' class='quiet' onclick='jump(1)'>Next</button><span id='hits_PMC7798341' class='num'></span><span class='aid'>shading is a search aid, not an answer</span></div></div><div class='col-q'><div class='q' data-q='v2|PMC7798341|substrate_incubation_time' data-pmcid='PMC7798341' data-item='substrate_incubation_time'><div class='qname'><span>Substrate incubation time</span><span class='ans'></span></div><div class='qdef'>How long the membrane was incubated in the detection substrate before imaging. An exposure or imaging time does not count. Western blot only.</div><div class='qhow'><b>What to mark.</b> Mark the time.<span class='eg'>In <i>incubated with ECL for 1 min</i> mark <b>1 min</b>. Nothing to mark in an exposure time.</span></div><div class='acts'><button type='button' data-act='mark'>Use highlighted text</button><button type='button' class='sec' data-act='done' style='display:none'>Done, next</button><button type='button' class='sec' data-act='not_stated'>Not stated</button><button type='button' class='quiet' data-act='unclear'>Unclear</button></div><div class='grab'><div class='cap'>Marked so far, add as many as the paper has</div><ol class='spans'></ol><label class='morewrap'><input type='checkbox' class='morebox'>There are more of these than I marked</label></div></div></div></div></div><div class='card'><div class='paper-h'><h2>Paper <span class='num'>8</span> of <span class='num'>8</span></h2><span class='pill'>PMC8949535</span></div><div class='note' style='font-size:13px;color:var(--ink-mute);margin-bottom:6px'> · <span class='num'>year unknown</span></div><div class='split'><div class='col-text'><div class='methods' id='m_PMC8949535'>
+4.1. Materials
+SST14 was from Bachem AG (Bubendorf Switzerland); anti-VE-cadherin antibody was
+from Beckman Coulter (Krefeld, Germany); the RT-PCR and qPCR reagents were from
+Bimake (Housten, TX, USA); anti-phospho MYPT1 (T850) and anti-GAPDH antibodies
+were from Cell Signaling Technologies (Danvers, USA); the Complete® protease inhibitor
+cocktail was from Roche (Mannheim, Germany); ThinCert® polycarbonate membrane
+filters (6-well) were from Greiner Bio-One (Frickenhausen, Germany); Benzonase® was
+from Merck-Millipore (Darmstadt, Germany); the EC basal medium plus supplement pack
+was from PromoCell (Heidelberg, Germany); the HRP-conjugated anti-mouse IgG and
+-rabbit IgG antibodies were from Santa Cruz biotechnology (Heidelberg, Germany); human
+thrombin was from Sigma (Steinheim, Germany); Pierce® ECL solutions were from Thermo
+Scientific (Darmstadt, Germany); and forskolin was from Tocris Bioscience (Bristol, U.K.).
+All other chemicals were of the best available quality, usually of an analytical grade.
+4.2. Cell Culture
+The study conforms to the principles outlined in the “Declaration of Helsinki” (Car-
+diovascular Research 1997; 35: 2-3). HUVECs were isolated from umbilical cords obtained
+from the gynaecology department at University hospital Giessen after approval from the
+ethics committee of the hospital and informed consent was obtained from the patients. The
+cells were cultured, as previously described [23], in a complete EC culture medium (Cat
+# C-22010; PromoCell, Heidelberg, Germany) and used at passages 1-2. HUVECs were
+cultured in 6-well plates for Western blotting, 6-well filter inserts or 8-well electrode arrays
+for permeability assays, and 10 cm culture dishes for the pulldown assay.
+4.3. Experimental Protocols
+The basal medium used in the incubations was modified Tyrode’s solution (com-
+position in mM: 150 NaCl, 2.7 KCl, 1.2 KH2PO4, 1.2 MgSO4, 1.0 CaCl2, and 30.0 N-2-
+hydroxyethylpiperazine-N′-2-ethanesulfonic acid; pH 7.4, 37 ◦C). Agents were added as
+indicated. Stock solutions of SST14 and thrombin were prepared in water, U0126 and
+FSK in DMSO. Appropriate volumes of these solutions were added to the cells yielding
+final solvent concentrations ≤0.1% (vol/vol). Where the combination of drugs was used,
+inhibitors were added 30 min before adding the statins. The same final concentrations of
+water or DMSO were included in all respective control experiments.
+4.4. Immunocytochemistry and Fluorescence Microscopy
+Immunocytochemistry and confocal microscopy was performed, as previously de-
+scribed [17]. Briefly, HUVECs were grown until confluence on the glass cover slips. After
+treatment, the cells were fixed with methanol and blocked with blocking solution (5% BSA +
+5% FCS) for 1 h. The cells were incubated with the primary antibody overnight at 4 ◦C and
+with the secondary antibody for 1 h at RT. The cover slips were embedded in fluorescent
+mounting medium (CitiFluor, U.K.) and put onto glass slides. Images were obtained using
+a Zeiss LSM 710 (Zeiss, Jena, Germany) confocal microscope.
+4.5. Endothelial Monolayer Permeability
+The permeability of trypan blue-labelled albumin across the HUVEC monolayers was
+analysed, as previously described [23].
+ Int. J. Mol. Sci. 2022, 23, 3098
+10 of 12
+4.6. Western Blotting
+Western blotting was performed, as previously described [23]. The blots were imaged
+using Fusion-FX7 imager (VWR, Erlangen, Germany) and the unsaturated images were
+analysed using Quantity-One software (Bio-Rad, Feldkirchen, Germany). GAPDH from the
+same gel was used as a loading control for the normalisation of the respective protein signal.
+4.7. Cell Proliferation Assay
+The cell proliferation assay was performed by time-lapse live-cell imaging using the
+JuliTM Br system (NanoEnTek Inc., Seoul, Korea).
+4.8. cAMP-GloTM Assay
+The cAMP-GloTM assay (Promega GmbH, Walldorf, Germany) was performed accord-
+ing to the manufacturer’s instructions. Briefly, the cells were cultured in 96-well white
+cell culture plates at the density of 5 × 103 per well. After 24 h, the cells were treated
+with agonists/antagonists, as described in the respective figure legend, and the changes
+in cellular cAMP levels were analysed using the assay reagents. The luminescence was
+measured using a GloMax luminometer (Promega GmbH, Walldorf, Germany).
+4.9. Statistical Analysis
+The data are presented as the means (±S.E.M) of 3-5 experiments from independent
+cell preparations. The comparison between the two groups was performed by Student’s
+t-test and between multiple groups by one-way analysis of variance (ANOVA) followed by
+Tukey’s post hoc test using Graphpad Prism 6 software (Graphpad Inc., San Diego, CA,
+USA). The p-values of ≤0.05 were considered statistically significant.
+Author Contributions: Conceptualisation, M.A., P.F., Z.H. and R.S.; methodology, M.A. and H.I.;
+software, C.H.; validation, C.H., P.F. and R.S.; formal analysis, M.A.; investigation, M.A. and H.I.;
+resources, C.H. and R.S.; data curation, M.A. and R.S.; writing-original draft preparation, M.A.;
+writing-review and editing, P.F., Z.H. and R.S.; supervision, M.A and R.S.; project administration,
+M.A.; funding acquisition, M.A. and C.H. All authors have read and agreed to the published version
+of the manuscript.
+Funding: The study was supported by the University of Giessen Anschubfinanzierung grant to
+M.A. P.F. was supported by the National Research, Development and Innovation office of Hungary
+(Research Excellence Program TKP within the framework of the Therapeutic Development the-matic
+program of the Semmelweis University; National Heart Laboratory). PF is the vice-chair and RS is a
+Working Group leader of the COST EU-Cardioprotection action (CA16225). Z.H. was funded from
+the University of Pécs (project TKP2021-EGA-16) that was implemented with the support provided
+from the National Research, Development and Innovation Fund of Hungary, financed under the
+TKP2021-EGA funding scheme; the 2017-1.2.1-NKP-2017-00002 (NAP-2; National Brain Research
+Program) and the Loránd Eötvös Research Network.
+Institutional Review Board Statement: The study was conducted according to the guidelines of the
+Declaration of Helsinki, and approved by the Ethics Committee of Medical Faculty of Justus-Liebig
+University (Approval no. AZ132/09 dated 29 October 2009).
+Informed Consent Statement: Informed consent was obtained from all subjects involved in the study.
+Data Availability Statement: The data presented in this study are available within the manuscript.
+</div><div class='tools'><button type='button' class='quiet' onclick='jumpSec(1)'>Blot section</button><button type='button' class='quiet' onclick='jump(-1)'>Prev</button><button type='button' class='quiet' onclick='jump(1)'>Next</button><span id='hits_PMC8949535' class='num'></span><span class='aid'>shading is a search aid, not an answer</span></div></div><div class='col-q'><div class='q' data-q='v2|PMC8949535|dynamic_range_check' data-pmcid='PMC8949535' data-item='dynamic_range_check'><div class='qname'><span>Signal within dynamic range stated</span><span class='ans'></span></div><div class='qdef'>A statement that the blot's signal was checked to lie within the linear or dynamic range, or to be unsaturated: a loading or dilution series, an unsaturated-exposure check, or the imager's saturation indicator. 'Optimal exposure', or an exposure time alone, does not count. Western blot only.</div><div class='qhow'><b>What to mark.</b> Mark the statement.<span class='eg'>In <i>exposures were chosen so that no band was saturated</i> mark the whole phrase. Nothing to mark in <i>the optimal exposure was used</i>.</span></div><div class='acts'><button type='button' data-act='mark'>Use highlighted text</button><button type='button' class='sec' data-act='done' style='display:none'>Done, next</button><button type='button' class='sec' data-act='not_stated'>Not stated</button><button type='button' class='quiet' data-act='unclear'>Unclear</button></div><div class='grab'><div class='cap'>Marked so far, add as many as the paper has</div><ol class='spans'></ol><label class='morewrap'><input type='checkbox' class='morebox'>There are more of these than I marked</label></div></div></div></div></div></div><div class='scrim' id='scrim' onclick='guide(false)'></div><aside class='guide' id='guide'><button type='button' class='quiet close' onclick='guide(false)'>Close</button><h2>Guide</h2><h3>You do not type anything</h3><p>Select the words in the Methods text, then press <b>Use highlighted text</b>. The exact words you selected are what gets recorded.</p><p>Typing is what this design removes. Given a sentence like the one below, one person types RIPA, another types the whole parenthesis, a third types the clause. All three read the paper correctly and disagree in the data. Selecting removes that entirely.</p><blockquote>The cell total protein was isolated using RIPA (Applygen Technologies Inc., Beijing, China). Protease inhibitor (CWBIO, Shanghai, China) was added into the RIPA at a ratio of 1:100.</blockquote><p style='margin-top:10px'>For lysis buffer there, mark just <b>RIPA</b>, the first time it appears.</p><h3>How much to select</h3><p><b>The shortest phrase that states the detail.</b> Not the whole sentence when three words will do, and not the vendor, city or catalog number unless the question asks for them.</p><p>Every question shows a worked example under <b>What to mark</b>. Follow it rather than your instinct.</p><h3>When a paper gives several</h3><p>Many papers list a table of antibodies with eight RRIDs, eight catalog numbers and several vendors. <b>Mark them all.</b> Press <b>Use highlighted text</b> once per value and they stack up in a numbered list. Press <b>Done, next</b> when the list is complete.</p><p>If they sit in a contiguous table or a run-on list, selecting the whole block in one go is fine and much faster. You are marking where the evidence is, not counting.</p><p>The same value repeated does not need marking twice. A paper that uses 1:1000 for six antibodies has one dilution, not six.</p><p><b>If you stop before you have them all, tick 'There are more of these than I marked'.</b> That box matters more than it looks: without it, someone who stopped at five of eight cannot be told apart from someone who found everything, and the three they skipped would count against the extractor as mistakes it did not make.</p><h3>What counts</h3><p><b>Judge only what is written.</b> Not what the authors almost certainly did, and not what is standard practice in the field.</p><p><b>Judge the text shown.</b> The page shows the Methods section, and sometimes figure legends or the full text where no Methods heading was found. A detail in the text shown counts, legend included. A detail found only in a legend or supplementary file that is not shown is <b>Not stated</b>.</p><p><b>Unclear</b> is a real answer. It is set aside rather than counted either way, so use it when you are genuinely stuck rather than guessing.</p><h3>The shaded sentences</h3><p><b>The faint tint marks the western blot section</b>: sentences that name the blot, the gel, the membrane or its detection. It is the same for every question on a paper. <b>Blot section</b> jumps between its blocks. Other assays are left untinted, but an item can still be stated elsewhere, for example in a figure legend.</p><p><b>The warmer marks</b> are the sentences most likely to hold the answer to the open question, and <b>Prev</b> and <b>Next</b> step between them.</p><p>Both are search aids and nothing more. Fixed keyword rules pick them; they are never told the answer, they sometimes shade irrelevant sentences and sometimes miss the right one. Read around them, and judge only the text.</p><h3>Getting through a batch</h3><p>The Methods text stays pinned on the left while questions scroll on the right. Answers collapse to one line and the next question opens automatically. Click any collapsed line to change it.</p><p>Your work is saved in this browser as you go, so closing the tab loses nothing. <b>Submit</b> is at the top of the page and turns on once every question is answered and your initials are filled in.</p><h3>Every question, in one place</h3><table><tr><td>Blinded quantification stated</td><td>A statement that the blot's band quantification or image analysis was done blind to group or treatment. Blinding of another assay, of animal allocation, or of the study as a whole without naming the blot analysis does not count. Western blot only.<br><b>Mark:</b> Mark the statement. In <i>densitometry was performed by an investigator blinded to treatment group</i> mark the whole phrase. Nothing to mark in <i>histology was scored by a blinded pathologist</i>.</td></tr><tr><td>Denaturation time and temperature</td><td>The temperature and time at which the blot's samples were heated before loading, both stated; 'boiled' states the temperature, so 'boiled for 5 min' counts. 'Boiled' or 'heated' without a time does not count, and neither does heating in elution buffer. Western blot only.<br><b>Mark:</b> Mark the temperature and time together. In <i>heated at 95 &deg;C for 5 min</i> or <i>boiled for 5 min</i> mark the whole phrase. Nothing to mark in <i>boiled in Laemmli buffer</i>.</td></tr><tr><td>Substrate incubation time</td><td>How long the membrane was incubated in the detection substrate before imaging. An exposure or imaging time does not count. Western blot only.<br><b>Mark:</b> Mark the time. In <i>incubated with ECL for 1 min</i> mark <b>1 min</b>. Nothing to mark in an exposure time.</td></tr><tr><td>Loading control validated</td><td>A statement that the loading control or normalizing signal was checked, shown or tested to be unchanged across the conditions compared. Naming the control, or normalizing to it, alone does not count. Western blot only.<br><b>Mark:</b> Mark the statement. In <i>GAPDH did not differ between groups (Supplementary Fig. S2)</i> mark the whole phrase. Nothing to mark in <i>normalized to GAPDH</i>.</td></tr><tr><td>Normalization stated</td><td>How the blot's band intensities were normalized, with the reference named: to a loading control, to total protein, or phospho to total ('normalized to beta-actin' is enough; the arithmetic need not be spelled out). Expressing values relative to a control group alone does not count, and neither does naming a loading control without saying the bands were normalized to it, a statistics statement that names no assay, or a pooled reference sample used only to compare blots (between-blot normalization). Western blot only.<br><b>Mark:</b> Mark the phrase that states the calculation. In <i>band intensities were normalized to beta-actin and expressed relative to control</i> mark <b>normalized to beta-actin</b>. Nothing to mark in <i>quantitated as percent of DMSO</i>, <i>GAPDH was used as a loading control</i>, or <i>gene expression was normalized to GAPDH</i> (qPCR).</td></tr><tr><td>Lysate storage stated</td><td>How the blot's lysates or protein extracts were stored before loading: a storage temperature, with or without a duration ('lysates were stored at -80 °C until use'). Storage of tissue, cells, blood or other samples before lysis, and storage of antibodies or reagents, does not count. Western blot only.<br><b>Mark:</b> Mark the words that state the storage. In <i>the supernatant was aliquoted and stored at -80 &deg;C</i> mark <b>stored at -80 &deg;C</b>. Nothing to mark in <i>tissues were snap-frozen in liquid nitrogen and stored at -80 &deg;C</i>.</td></tr><tr><td>Antibody validation stated</td><td>A statement that an antibody's specificity was checked experimentally: knockdown or knockout, a blocking peptide, overexpression, or a positive and a negative control sample stated as checking the antibody's specificity. Routine assay controls, normal serum or no-primary substitutions, isotype controls, a single band at the expected size, a vendor's claim, or a citation alone does not count. Counts for an antibody used in any assay, not only the blot.<br><b>Mark:</b> Mark the statement. In <i>antibody specificity was confirmed in PAX6 knockdown cells</i> mark the whole phrase. Nothing to mark in <i>a single band was detected at the expected molecular weight</i>, <i>the primary antibody was replaced with normal rabbit serum as a negative control</i>, or <i>validated by the manufacturer</i>.</td></tr><tr><td>Signal within dynamic range stated</td><td>A statement that the blot's signal was checked to lie within the linear or dynamic range, or to be unsaturated: a loading or dilution series, an unsaturated-exposure check, or the imager's saturation indicator. 'Optimal exposure', or an exposure time alone, does not count. Western blot only.<br><b>Mark:</b> Mark the statement. In <i>exposures were chosen so that no band was saturated</i> mark the whole phrase. Nothing to mark in <i>the optimal exposure was used</i>.</td></tr></table><h3>Ask about a rule</h3><p>This answers questions about <b>what a rule means</b>, nothing else. It is never given the paper, it cannot see what you are reading, and it will refuse if you paste text and ask what the answer is. Deciding what a paper says is the whole job being measured here, so it has to stay yours.</p><p>Questions are logged with your initials, so ask freely and openly.</p><select id='ask_item' style='width:100%;margin-bottom:8px;padding:8px 12px;border-radius:var(--r-sm);border:1px solid var(--hairline-input);font-family:inherit;font-size:15px;font-weight:300;background:var(--canvas);color:var(--ink)'><option value='blinded_quantification'>Blinded quantification stated</option><option value='denaturation_time_temp'>Denaturation time and temperature</option><option value='substrate_incubation_time'>Substrate incubation time</option><option value='loading_control_validated'>Loading control validated</option><option value='normalization_stated'>Normalization stated</option><option value='sample_storage'>Lysate storage stated</option><option value='antibody_validation'>Antibody validation stated</option><option value='dynamic_range_check'>Signal within dynamic range stated</option></select><input type='text' id='ask_q' placeholder='for example: does a lot number count as a catalog number?' autocomplete='off'><div style='margin-top:8px'><button type='button' class='sec' onclick='ask()'>Ask</button></div><blockquote id='ask_out' style='margin-top:10px'>The rules above are the reference. This is only for when one of them is unclear.</blockquote></aside><div class='hint' id='hint'></div><script>
+const BATCH = {"batch": "v2batch_170", "papers": [{"pmcid": "PMC4422415", "items": ["blinded_quantification", "denaturation_time_temp"]}, {"pmcid": "PMC8646857", "items": ["blinded_quantification", "substrate_incubation_time"]}, {"pmcid": "PMC11585898", "items": ["loading_control_validated"]}, {"pmcid": "PMC4915881", "items": ["normalization_stated"]}, {"pmcid": "PMC5867490", "items": ["sample_storage"]}, {"pmcid": "PMC6770778", "items": ["antibody_validation"]}, {"pmcid": "PMC7798341", "items": ["substrate_incubation_time"]}, {"pmcid": "PMC8949535", "items": ["dynamic_range_check"]}]};
+const ENDPOINT = "https://script.google.com/macros/s/AKfycbyGh-3zVfU0yh_nklOLXH03km-7FFzjtqE2J42hj0_pd2rWQmMLXtaROiSQH7I6TSUN/exec";
+const CUES = {"primary_ab_rrid": ["rrid|research resource|\\bab_\\d|identifier", "ab_\\d{4,}|rrid"], "ab_catalog_any": ["antibod|cat(alog(ue)?)?\\s*\\.?\\s*(no|num|#)|product\\s*(no|#)|from\\s+\\w+\\s*\\(", "#\\s*\\d|\\b[a-z]{2,4}-?\\d{3,6}\\b|clone"], "primary_ab_vendor": ["antibod|purchased|obtained|supplied|from\\s+\\w+\\s*\\(", "abcam|cell signal|santa cruz|sigma|thermo|invitrogen|millipore|proteintech|r&d|bd bio|novus|genetex"], "primary_ab_host": ["antibod|anti-", "rabbit|mouse|goat|rat\\b|donkey|monoclonal|polyclonal"], "ab_dilution_any": ["antibod|incubat|dilut|probe", "1\\s*[:/]\\s*\\d"], "secondary_ab_conjugate": ["secondary|conjugat", "hrp|horseradish|alkaline phosphat|irdye|alexa|biotin"], "detection_chemistry": ["detect|visuali[sz]|develop|expos", "chemilumin|\\becl\\b|fluoresc|colorimetric|autoradiograph|film"], "ecl_reagent": ["\\becl\\b|chemilumin|substrate|detect", "supersignal|clarity|luminata|immobilon|femto|pico|dura|amersham|pierce"], "blocking_agent": ["block", "milk|\\bbsa\\b|casein|serum|albumin"], "blocking_percent": ["block", "\\d+\\s*%"], "membrane_type": ["membrane|transfer|blott", "pvdf|nitrocellulose|immobilon"], "membrane_pore_um": ["membrane|pvdf|nitrocellulose|pore", "0?\\.\\d+\\s*[u\u00b5\u03bc]?m|micron|\\d\\.\\d+"], "gel_percentage": ["gel|sds-?page|acrylamide|electrophore|separat|resolv", "\\d+\\s*%|gradient|\\d+\\s*-\\s*\\d+"], "transfer_method": ["transfer|blott", "semi-?dry|wet|tank|iblot|trans-?blot|electro|\\bmini\\b"], "reducing_denaturing": ["sample buffer|loading buffer|laemmli|denatur|boiled|reduc", "\\bdtt\\b|mercaptoethanol|[\u03b2b]-?me\\b|95\\s*\u00b0|100\\s*\u00b0|boil"], "protein_per_lane_ug": ["load|per lane|separat|resolv|subjected", "\\d+\\s*[u\u00b5\u03bcm]g\\b|\\d+\\s*g\\s+(of\\s+)?(total\\s+)?protein|microgram"], "protein_quant_method": ["protein|concentration|quantif|determin", "\\bbca\\b|bradford|lowry|nanodrop|\\bdc\\b|coomassie"], "lysis_buffer": ["lys(is|ed|e )|extract|homogeni|solubili|harvest|isolat|scrap|resuspend|prepar|collect", "ripa|np-?40|triton|laemmli|\\btris\\b|\\bsds\\b|buffer"], "total_protein_stain": ["membrane|normali[sz]|total protein|ponceau|stain-?free|revert|amido", "ponceau|stain-?free|revert|coomassie|amido"], "loading_control_identity": ["loading control|normali[sz]|internal control|reprob|antibod|probe|blot", "gapdh|actin|tubulin|vinculin|hsp\\s?90|lamin|histone|vdac|calnexin"], "quantification_software": ["quantif|densitom|analy[sz]|band intensit|measur", "imagej|fiji|image ?lab|image ?studio|quantity one|imagepro|alphaview|empiria|software"], "acquisition_software": ["captur|acqui|imag(ed|ing)|software", "image ?lab|image ?studio|cs analyzer|software|version"], "imager_instrument": ["imag(ed|ing|er)|captur|develop|expos|scan", "chemidoc|odyssey|amersham|\\blas-?\\d|x-?ray|film|fusion|azure|ibright"], "replicate_n": ["western|immunoblot|\\bblot|densitometr", "\\bn\\s*=\\s*\\d|three|four|five|six|triplicate|duplicate|\\d+\\s*times|each group"], "reducing_agent_named": ["sample buffer|loading buffer|laemmli|\\blys(is|ed|ate|e)\\b|boil|heat|denatur|\\bdtt\\b|dithiothreitol|mercaptoethanol|tcep", "\\bdtt\\b|dithiothreitol|mercaptoethanol|[\u03b2b]-?me\\b|2-me\\b|tcep|reducing agent"], "antibody_diluent": ["antibod|dilut", "dilut\\w*\\s+(in|with)|diluent|\\bbsa\\b|milk|tbst|blocking buffer"], "ab_incubation_conditions": ["antibod|incubat|probe", "overnight|\\d+\\s*(h|hr|hours?|min)\\b|4\\s*\u00b0|room temperature|\\brt\\b"], "exposure_time": ["expos|film|chemilumin|captur|acqui", "\\d+(\\.\\d+)?\\s*(s|sec|seconds?|min)\\b"], "normalization_stated": ["normali[sz]|relative to|ratio|densitom|band intensit", "gapdh|actin|tubulin|vinculin|total|loading control|control group"], "secondary_ab_vendor": ["secondary|conjugat|anti-(rabbit|mouse|goat|rat)", "abcam|cell signal|santa cruz|sigma|thermo|invitrogen|millipore|proteintech|jackson|bio-?rad|li-?cor|beyotime|zsgb|vector|dako|promega"], "uncropped_blots": ["uncropped|full[- ]length blot|full blot|original blot|raw blot|unprocessed|whole blot", "supplementa(ry|l) (fig|figure|material|data|information|file)|figure s\\d|fig\\.? ?s\\d|repository|figshare|zenodo|mendeley data"], "antibody_validation": ["specific|validat|knock|sirna|shrna|peptide|overexpress", "knock-?(down|out)|sirna|shrna|blocking peptide|specificity"], "antibody_lot": ["\\blot\\b|batch no", "\\blot\\s*(no\\.?|number|#)?\\s*:?\\s*[a-z0-9-]{3,}"], "mw_marker": ["\\bmarkers?\\b|ladder|(protein|molecular[- ]weight|mw|size) standards?", "pageruler|precision plus|seeblue|spectra|magicmark|chameleon|prestained|ladder"], "blinded_quantification": ["blind", "densitom|quantif|band|imagej|image analys|blot"], "dynamic_range_check": ["saturat|linear range|dynamic range|linearity|dilution series|serial dilution", "saturat|linear|dynamic range|within the range"], "quantified_band_identified": ["densitom|quantif|band intensit|analy[sz]ed", "\\d+\\s*kda\\b.{0,20}band|band.{0,30}\\d+\\s*kda|(upper|lower|smaller|larger|cleaved|full-length) (band|form)|additional band"], "blocking_duration": ["block", "\\d+(\\.\\d+)?\\s*(h|hr|hours?|min)\\b|overnight|room temperature|\\brt\\b|\\d+\\s*\u00b0"], "wash_conditions": ["wash|rins", "\\d+\\s*(x|\u00d7|times)|\\d+\\s*min|tbs-?t|pbs-?t|tween"], "substrate_incubation_time": ["ecl|substrate|chemilumin|luminol", "\\d+(\\.\\d+)?\\s*(s|sec|seconds?|min)\\b"], "software_version": ["imagej|fiji|image ?lab|image ?studio|quantity one|software", "\\bv(ersion)?\\.?\\s*\\d+(\\.\\d+)+|\\bversion\\s*\\d"], "quantification_procedure": ["densitom|quantif|band intensit|integrated density", "background|rolling|integrated density|area under|peak|subtract"], "ab_clone_id": ["clone|monoclonal", "clone\\s*[:#]?\\s*[a-z0-9][a-z0-9-]{1,}"], "ab_mass_concentration": ["antibod|anti-", "\\d+(\\.\\d+)?\\s*[u\u00b5\u03bcn]g\\s*/\\s*m[lL]"], "ab_immunogen": ["immunogen|raised against|peptide|epitope|residues", "residues?\\s*\\d|peptide|recombinant|immunogen"], "replicate_definition": ["western|immunoblot|\\bblot|densitometr", "independent|biological|technical|separate (cultures|animals|experiments)"], "image_adjustment_disclosed": ["contrast|brightness|adjust|levels", "uniform|entire image|whole image|linear|no (other )?adjust"], "splicing_disclosed": ["splic|rearrang|dividing line|cropped from|non-?contiguous|different (parts|regions) of", "splic|rearrang|line|same (membrane|blot|gel)"], "control_same_blot": ["same (membrane|blot|gel)|reprob|separate (gel|membrane)|parallel gel|cut", "gapdh|actin|tubulin|vinculin|loading control|reprob"], "lysis_buffer_composition": ["lys|ripa|extract|homogeni", "\\d+\\s*m?M\\s+(tris|hepes|nacl|edta)|\\d+(\\.\\d+)?\\s*%\\s*(np-?40|triton|sds|deoxychol)|cat(alog)?\\.?\\s*(no|#)"], "inhibitors_named": ["inhibitor|protease|phosphatase", "complete|phosstop|pmsf|aprotinin|leupeptin|pepstatin|orthovanadate|naf\\b|halt|cocktail"], "sample_buffer_composition": ["sample buffer|loading buffer|laemmli|lds", "\\d+(\\.\\d+)?\\s*%\\s*(sds|glycerol)|lds|nupage|bio-?rad|\\d+\\s*x\\b"], "transfer_buffer_composition": ["transfer", "methanol|tris-?glycine|caps|\\d+\\s*%\\s*methanol|transfer buffer \\("], "gel_running_system": ["gel|sds-?page|electrophore", "bis-?tris|tris-?glycine|tris-?acetate|tricine|mops|mes\\b|nupage|criterion|mini-protean|tgx|precast"], "electrophoresis_conditions": ["electrophore|sds-?page|gel|resolv|separat", "\\d+\\s*(v|ma)\\b|\\d+\\s*(min|h)\\b"], "transfer_conditions": ["transfer", "\\d+\\s*(v|ma|a)\\b|\\d+\\s*(min|h)\\b|4\\s*\u00b0"], "denaturation_time_temp": ["boil|heat|denatur|sample buffer|loading buffer|laemmli", "\\d+\\s*\u00b0\\s*c.{0,20}\\d+\\s*min|\\d+\\s*min.{0,20}\\d+\\s*\u00b0|boil\\w*.{0,20}\\d+\\s*min"], "stripping_reprobing": ["strip|reprob|re-prob", "strip|reprob|re-prob"], "between_blot_normalization": ["between (blots|gels|membranes)|across (blots|gels|membranes)|inter-?blot|reference sample|calibrator", "normali|reference|calibrat|every (gel|blot)"], "sample_layout_across_gels": ["same gel|same membrane|randomi[sz]|across gels|balanced", "group|sample|lane"], "membrane_activation": ["pvdf|membrane", "methanol|activat|pre-?wet|equilibrat"], "ab_isotype": ["antibod|monoclonal|polyclonal|\\bmab\\b|clone|isotype|subclass", "\\big[gmaedy][1-4]?[abc]?\\b|isotype|subclass|immunoglobulin"], "secondary_ab_host": ["secondary|conjugat|hrp|peroxidase|alexa|irdye", "\\b(goat|donkey|rabbit|mouse|horse|sheep|chicken|rat)\\s+anti-?\\s*(rabbit|mouse|goat|rat|human|chicken|sheep|guinea)"], "fraction_purity_shown": ["fraction|nuclear|cytosol|cytoplasm|mitochond|membrane fraction", "purity|contaminat|enrich|marker"], "sample_storage": ["lysate|supernatant|extract|homogenate|protein", "-\\s*80\\s*\u00b0|\u2212\\s*80|-\\s*20\\s*\u00b0|stored at"], "stripping_verified": ["strip", "confirm|verif|check|complete|re-?expos|no (residual )?signal"], "membrane_cut_disclosed": ["membrane|blot", "\\bcut\\b|strips?\\b|sectioned"], "replicate_handling": ["western|immunoblot|\\bblot|densitometr|lanes?\\b|\\bgels?\\b", "(duplicate|triplicate|replicate) lanes|technical (replicate|duplicate|triplicate)|random effect|mixed model|block(ing)? factor"], "loading_control_validated": ["gapdh|actin|tubulin|vinculin|loading control|total protein", "did not (differ|change)|unchanged|not (altered|affected)|constant|stable"], "shortcut_citation": ["western|immunoblot|\\bblot|sds-?page|electrophore", "as (previously )?described|according to (our |the )?previous|as reported|described (previously|elsewhere)"], "secondary_ab_catalog": ["secondary|anti-(rabbit|mouse|goat|rat)|hrp|conjugat", "cat(alog)?\\.?\\s*(no|#)|#\\s*\\d|\\d{3}-\\d{3}-\\d{3}|\\bab\\d{4,}|\\bsc-\\d{3,}|926-\\d{5}"], "protocol_deposited": ["protocol", "protocols\\.io|protocol exchange|bio-?protocol|10\\.17504"], "membrane_source": ["pvdf|nitrocellulose|membrane", "immobilon|hybond|protran|millipore|amersham|bio-?rad|\\bge\\b|pall|whatman|cytiva|thermo"], "blocking_agent_source": ["block", "sigma|bio-?rad|carnation|fraction v|intercept|odyssey|superblock|everyblot|blotting[- ]grade|roth|fisher|amresco|biofroxx"]};
+const DEFS = {"substrate_incubation_time": ["Substrate incubation time", "How long the membrane was incubated in the detection substrate before imaging. An exposure or imaging time does not count. Western blot only.", "Mark the time."], "normalization_stated": ["Normalization stated", "How the blot's band intensities were normalized, with the reference named: to a loading control, to total protein, or phospho to total ('normalized to beta-actin' is enough; the arithmetic need not be spelled out). Expressing values relative to a control group alone does not count, and neither does naming a loading control without saying the bands were normalized to it, a statistics statement that names no assay, or a pooled reference sample used only to compare blots (between-blot normalization). Western blot only.", "Mark the phrase that states the calculation."], "antibody_validation": ["Antibody validation stated", "A statement that an antibody's specificity was checked experimentally: knockdown or knockout, a blocking peptide, overexpression, or a positive and a negative control sample stated as checking the antibody's specificity. Routine assay controls, normal serum or no-primary substitutions, isotype controls, a single band at the expected size, a vendor's claim, or a citation alone does not count. Counts for an antibody used in any assay, not only the blot.", "Mark the statement."], "loading_control_validated": ["Loading control validated", "A statement that the loading control or normalizing signal was checked, shown or tested to be unchanged across the conditions compared. Naming the control, or normalizing to it, alone does not count. Western blot only.", "Mark the statement."], "dynamic_range_check": ["Signal within dynamic range stated", "A statement that the blot's signal was checked to lie within the linear or dynamic range, or to be unsaturated: a loading or dilution series, an unsaturated-exposure check, or the imager's saturation indicator. 'Optimal exposure', or an exposure time alone, does not count. Western blot only.", "Mark the statement."], "sample_storage": ["Lysate storage stated", "How the blot's lysates or protein extracts were stored before loading: a storage temperature, with or without a duration ('lysates were stored at -80 \u00b0C until use'). Storage of tissue, cells, blood or other samples before lysis, and storage of antibodies or reagents, does not count. Western blot only.", "Mark the words that state the storage."], "blinded_quantification": ["Blinded quantification stated", "A statement that the blot's band quantification or image analysis was done blind to group or treatment. Blinding of another assay, of animal allocation, or of the study as a whole without naming the blot analysis does not count. Western blot only.", "Mark the statement."], "denaturation_time_temp": ["Denaturation time and temperature", "The temperature and time at which the blot's samples were heated before loading, both stated; 'boiled' states the temperature, so 'boiled for 5 min' counts. 'Boiled' or 'heated' without a time does not count, and neither does heating in elution buffer. Western blot only.", "Mark the temperature and time together."]};
+const RUBRIC = "A6-defs-v2-2026-09-26";
+const SECTION = true;
+const NOTE = "Western blot means proteins separated on a gel, transferred to a membrane and detected with an antibody. An OxyBlot counts. A dot blot or slot blot, of RNA or of protein, does not; neither does a capillary system such as Wes or Jess, which has no membrane, or a membrane probed only with streptavidin or a lectin, which uses no antibody. Items marked 'Western blot only' do not count the same thing described for another assay in the paper: qPCR, immunofluorescence, IHC, flow cytometry, ELISA, mass spectrometry, or a gel that was stained rather than blotted. Judge the text the page shows, including any figure legend printed in it; a detail found only in a legend or supplement that is not shown is not stated. A method given only by citation ('as previously described [12]') is not stated: mark only what the text itself says. The Shortcut citation item is the exception: it records the citation phrase itself. Some PDFs drop the micro sign or print it as m ('50 g', '25 mg' for micrograms); rule on the intended unit.";
+const KEY = 'trackF_A6_' + RUBRIC + '_' + BATCH.batch;
+const T0 = Date.now();
+
+function total(){ return BATCH.papers.reduce((a,p)=>a+p.items.length,0); }
+function esc(s){ return s.replace(/[&<>]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
+
+/* ---- state ----------------------------------------------------------------
+   ANS[judgement_id] = {answer, spans:[{text,start,end}], more:bool, done:bool}
+
+   Several items are set-valued in the papers themselves. An antibody table gives
+   eight RRIDs, eight catalog numbers and several vendors, and stage 2 emits all
+   of them pipe-joined. A single span could never validate that, so a question
+   accepts as many spans as the paper needs.
+
+   `more` records "there are more of these than I marked". Without it, a reviewer
+   who stopped after five of eight is indistinguishable from a reviewer who found
+   everything, and the three unmarked values would score as extractor errors. */
+const ANS = {};
+
+function answered(){
+  return Object.values(ANS).filter(v=>v.done).length;
+}
+function refresh(){
+  const a = answered(), t = total();
+  document.getElementById('count').textContent = a + ' of ' + t + ' answered';
+  document.getElementById('bar').style.width = (100*a/t) + '%';
+  document.getElementById('send').disabled =
+    (a < t) || !document.getElementById('rev').value.trim();
+  try{
+    localStorage.setItem(KEY, JSON.stringify(
+      {rev: document.getElementById('rev').value, a: ANS}));
+  }catch(e){}
+}
+function restore(){
+  let s; try{ s = JSON.parse(localStorage.getItem(KEY)||'null'); }catch(e){}
+  if (!s) return 0;
+  document.getElementById('rev').value = s.rev || '';
+  let n = 0;
+  Object.entries(s.a||{}).forEach(([q,v])=>{
+    const el = document.querySelector('[data-q="'+CSS.escape(q)+'"]');
+    if (!el) return;
+    ANS[q] = v; paint(el); n++;
+  });
+  return n;
+}
+
+/* ---- sentence segmentation and cue ranking --------------------------------
+   Sentence level, not line level. PDF text wraps at arbitrary columns, so a
+   "line" is a fragment and marking one marks half a clause. */
+function sentences(text){
+  const out = [];
+  let start = 0;
+  const re = /([.!?])(\s|$)/g;
+  let m;
+  while ((m = re.exec(text)) !== null){
+    const end = m.index + 1;
+    if (end - start > 12) { out.push([start, end]); start = re.lastIndex; }
+  }
+  if (text.length - start > 12) out.push([start, text.length]);
+  return out;
+}
+/* A marked span longer than this is not a search aid, it is a wall. Ordinary
+   Methods sentences run 100 to 250 characters. */
+const MAXSEG = 320;
+/* Tuned on the STAR Protocols key-resources table. 70/90 let adjacent windows merge
+   into 300-character blobs; 30/40 was too tight to read a row in context. At 45/55
+   that table marks two separate RRID rows instead of one merged run, and drops from
+   100% of the block marked to about 9%. */
+const WIN_BEFORE = 45, WIN_AFTER = 55;
+
+function snapL(s, i){ const j = s.lastIndexOf(' ', i); return j > i - 25 && j >= 0 ? j + 1 : i; }
+function snapR(s, i){ const j = s.indexOf(' ', i);     return j >= 0 && j < i + 25 ? j : i; }
+
+/* Windows around each value hit inside an over-long block.
+   STAR Protocols and Cell Press papers carry a KEY RESOURCES TABLE that survives PDF
+   extraction as one 2,500-character run with almost no sentence punctuation. Marking
+   the containing "sentence" marked the entire reagent list for a question about one
+   RRID. Requiring a value hit and marking a window around it turns that into two tight
+   marks on the two RRIDs actually present. */
+function windows(text, s, e, valSrc, out){
+  const seg = text.slice(s, e);
+  let re;
+  try{ re = new RegExp(valSrc, 'gi'); }catch(err){ return; }
+  let m, n = 0;
+  while ((m = re.exec(seg)) !== null && n < 6){
+    const a = snapL(seg, Math.max(0, m.index - WIN_BEFORE));
+    const b = snapR(seg, Math.min(seg.length, m.index + m[0].length + WIN_AFTER));
+    out.push({s: s + a, e: s + b, score: 2});
+    n++;
+    if (m.index === re.lastIndex) re.lastIndex++;
+  }
+}
+
+function merge(spans){
+  if (!spans.length) return [];
+  spans.sort((a,b)=> a.s - b.s);
+  const out = [spans[0]];
+  for (let i = 1; i < spans.length; i++){
+    const last = out[out.length-1], cur = spans[i];
+    if (cur.s <= last.e){
+      last.e = Math.max(last.e, cur.e);
+      last.score = Math.max(last.score, cur.score);
+    } else out.push(cur);
+  }
+  return out;
+}
+
+function rank(text, item){
+  const c = CUES[item];
+  if (!c) return [];
+  let ctx;
+  try{ ctx = new RegExp(c[0],'i'); }catch(e){ return []; }
+  const hasVal = seg => { try{ return new RegExp(c[1],'i').test(seg); }catch(e){ return false; } };
+  const segs = sentences(text);
+  let scored = [];
+
+  for (const [s,e] of segs){
+    const seg = text.slice(s,e);
+    if (!ctx.test(seg)) continue;              // context is required, not optional
+    if (e - s <= MAXSEG){ scored.push({s, e, score: 1 + (hasVal(seg) ? 1 : 0)}); continue; }
+    windows(text, s, e, c[1], scored);         // long block: narrow to the value hits
+  }
+
+  // Requiring context is what makes the marking precise, but when a paper phrases
+  // something no context cue anticipated, shading nothing is worse than shading
+  // loosely. Drop to value cues alone rather than leave a blank pane.
+  if (!scored.length){
+    for (const [s,e] of segs){
+      const seg = text.slice(s,e);
+      if (!hasVal(seg)) continue;
+      if (e - s <= MAXSEG) scored.push({s, e, score: 1});
+      else windows(text, s, e, c[1], scored);
+    }
+  }
+
+  scored = merge(scored);
+  scored.sort((a,b)=> b.score - a.score || (a.e - a.s) - (b.e - b.s) || a.s - b.s);
+  const top = scored.slice(0, 8);
+  top.sort((a,b)=> a.s - b.s);
+  return top;
+}
+
+let curBox = null, curMarks = [], curIdx = -1, curSecs = [], secIdx = -1;
+
+/* Western blot section: sentences naming the blot, with gaps of one or two non-blot sentences
+   between blot sentences filled in, merged into blocks. The same for every question on the paper, so it
+   locates the blot methods without pointing at any item's answer. */
+const SECTION_TERMS = /western|immuno-?blot|\bblot(s|ted|ting)?\b|sds[- ]?page|polyacrylamide gel|\bpvdf\b|nitrocellulose|electro-?transfer|chemilumin|\becl\b|densitometr|loading control|ponceau|laemmli/i;
+function sectionBlocks(text){
+  if (!SECTION) return [];
+  const segs = sentences(text);
+  const f = segs.map(([s,e]) => SECTION_TERMS.test(text.slice(s,e)));
+  const hit = f.slice();
+  for (let i = 1; i + 1 < f.length; i++)          // fill gaps of one or two non-blot sentences
+    if (!hit[i] && hit[i-1] && (hit[i+1] || (i + 2 < f.length && !hit[i+1] && hit[i+2]))) f[i] = true;
+  const out = [];
+  segs.forEach(([s,e], i) => {
+    if (!f[i]) return;
+    const last = out[out.length-1];
+    if (last && (i > 0 && f[i-1])) last.e = e; else out.push({s, e});
+  });
+  return out;
+}
+
+function highlight(pmcid, item){
+  const box = document.getElementById('m_' + pmcid);
+  if (!box) return;
+  curBox = box;
+  const raw = box.dataset.raw;
+  const spans = rank(raw, item);
+  const secs = sectionBlocks(raw);
+  // Layer the two kinds of shading: cut the text at every boundary, then wrap each piece.
+  const cuts = new Set([0, raw.length]);
+  spans.forEach(sp => { cuts.add(sp.s); cuts.add(sp.e); });
+  secs.forEach(b => { cuts.add(b.s); cuts.add(b.e); });
+  const pts = [...cuts].sort((a,b) => a - b);
+  let out = '';
+  for (let k = 0; k + 1 < pts.length; k++){
+    const a = pts[k], b = pts[k+1];
+    if (b <= a) continue;
+    let piece = esc(raw.slice(a, b));
+    const ci = spans.findIndex(sp => sp.s <= a && b <= sp.e);
+    const si = secs.findIndex(bl => bl.s <= a && b <= bl.e);
+    if (ci >= 0) piece = '<mark data-c="' + ci + '">' + piece + '</mark>';
+    if (si >= 0) piece = '<span class="sec" data-s="' + si + '">' + piece + '</span>';
+    out += piece;
+  }
+  box.innerHTML = out;
+  curMarks = spans.map((_, i) => [...box.querySelectorAll('mark[data-c="' + i + '"]')]).filter(x => x.length);
+  curSecs = secs.map((_, i) => [...box.querySelectorAll('span.sec[data-s="' + i + '"]')]).filter(x => x.length);
+  curIdx = -1; secIdx = -1;
+  const lab = document.getElementById('hits_' + pmcid);
+  if (lab){
+    const parts = [];
+    if (Object.keys(CUES).length) parts.push(curMarks.length
+      ? curMarks.length + ' likely passage' + (curMarks.length>1?'s':'')
+      : 'no likely passage found');
+    if (SECTION) parts.push(curSecs.length
+      ? 'blot section: ' + curSecs.length + ' block' + (curSecs.length>1?'s':'')
+      : 'no blot section found, read the text');
+    lab.textContent = parts.join(' · ');
+  }
+  if (curMarks.length) jump(1);
+  else if (curSecs.length) jumpSec(1);
+}
+function jump(d){
+  if (!curMarks.length) return;
+  if (curIdx >= 0) curMarks[curIdx].forEach(m => m.classList.remove('cur'));
+  curIdx = (curIdx + d + curMarks.length) % curMarks.length;
+  curMarks[curIdx].forEach(m => m.classList.add('cur'));
+  curMarks[curIdx][0].scrollIntoView({block:'center', behavior:'smooth'});
+}
+function jumpSec(d){
+  if (!curSecs.length) return;
+  if (secIdx >= 0) curSecs[secIdx].forEach(m => m.classList.remove('cursec'));
+  secIdx = (secIdx + d + curSecs.length) % curSecs.length;
+  curSecs[secIdx].forEach(m => m.classList.add('cursec'));
+  curSecs[secIdx][0].scrollIntoView({block:'start', behavior:'smooth'});
+}
+
+/* ---- selection capture -----------------------------------------------------
+   Offsets are computed against the raw text, not the marked-up DOM, so a stored
+   span is comparable to stage 2's own match offsets regardless of highlighting. */
+function textOffset(container, node, off){
+  const w = document.createTreeWalker(container, NodeFilter.SHOW_TEXT);
+  let n, acc = 0;
+  while ((n = w.nextNode())){
+    if (n === node) return acc + off;
+    acc += n.nodeValue.length;
+  }
+  return -1;
+}
+function getSel(box){
+  const s = window.getSelection();
+  if (!s || s.rangeCount === 0 || s.isCollapsed) return null;
+  const r = s.getRangeAt(0);
+  if (!box.contains(r.commonAncestorContainer)) return null;
+  const a = textOffset(box, r.startContainer, r.startOffset);
+  const b = textOffset(box, r.endContainer, r.endOffset);
+  if (a < 0 || b < 0 || b <= a) return null;
+  return {start:a, end:b, text:s.toString()};
+}
+
+/* ---- answering ------------------------------------------------------------ */
+function activeEl(){ return document.querySelector('.q.active'); }
+function activate(el){
+  if (!el) return;
+  document.querySelectorAll('.q.active').forEach(x=>x.classList.remove('active'));
+  el.classList.add('active');
+  highlight(el.dataset.pmcid, el.dataset.item);
+}
+function tidy(s){ return s.replace(/\s+/g,' ').trim(); }
+
+function paint(el){
+  const q = el.dataset.q, v = ANS[q];
+  const tag = el.querySelector('.ans');
+  const grab = el.querySelector('.grab');
+  const list = el.querySelector('.spans');
+  const moreBox = el.querySelector('.morewrap');
+  const doneBtn = el.querySelector('[data-act="done"]');
+
+  if (!v){
+    el.classList.remove('done'); tag.textContent = '';
+    grab.classList.remove('on'); list.innerHTML = '';
+    moreBox.classList.remove('on'); doneBtn.style.display = 'none';
+    return;
+  }
+  if (v.answer === 'marked'){
+    grab.classList.add('on');
+    moreBox.classList.toggle('on', !el.classList.contains('done'));
+    doneBtn.style.display = el.classList.contains('done') ? 'none' : '';
+    list.innerHTML = v.spans.map((s,i)=>
+      '<li><span>' + esc(tidy(s.text)) + '</span>'
+      + '<button type="button" class="quiet x" data-act="drop" data-i="' + i + '">'
+      + 'Remove</button></li>').join('');
+    el.querySelector('.morebox').checked = !!v.more;
+    const n = v.spans.length;
+    tag.textContent = n === 1 ? '\u201C' + tidy(v.spans[0].text).slice(0,52) + '\u201D'
+                              : n + ' marked' + (v.more ? ', more not marked' : '');
+  } else {
+    grab.classList.remove('on'); list.innerHTML = '';
+    moreBox.classList.remove('on'); doneBtn.style.display = 'none';
+    tag.textContent = v.answer === 'not_stated' ? 'Not stated' : 'Unclear';
+  }
+  el.classList.toggle('done', !!v.done);
+}
+function mark(el){
+  const box = document.getElementById('m_' + el.dataset.pmcid);
+  const sel = getSel(box);
+  if (!sel){ flash('Select the words in the Methods text first, then press this.'); return; }
+  const q = el.dataset.q;
+  const v = ANS[q] && ANS[q].answer === 'marked'
+    ? ANS[q] : (ANS[q] = {answer:'marked', spans:[], more:false, done:false});
+  v.answer = 'marked'; v.done = false;
+  const key = tidy(sel.text).toLowerCase();
+  if (!v.spans.some(s=>tidy(s.text).toLowerCase() === key)){
+    v.spans.push({text:sel.text, start:sel.start, end:sel.end});
+  } else {
+    flash('You already marked that one.');
+  }
+  window.getSelection().removeAllRanges();
+  paint(el); refresh();
+}
+function dropSpan(el, i){
+  const v = ANS[el.dataset.q];
+  if (!v) return;
+  v.spans.splice(i, 1);
+  if (!v.spans.length) delete ANS[el.dataset.q];
+  paint(el); refresh();
+}
+function finish(el){
+  const v = ANS[el.dataset.q];
+  if (!v || !v.spans.length) return;
+  v.more = el.querySelector('.morebox').checked;
+  v.done = true;
+  paint(el); refresh(); nextOpen(el);
+}
+function plain(el, a){
+  ANS[el.dataset.q] = {answer:a, spans:[], more:false, done:true};
+  paint(el); refresh(); nextOpen(el);
+}
+function reopen(el){
+  const v = ANS[el.dataset.q];
+  if (v && v.answer === 'marked') v.done = false; else delete ANS[el.dataset.q];
+  paint(el); activate(el); refresh();
+  el.scrollIntoView({block:'center', behavior:'smooth'});
+}
+function nextOpen(from){
+  const all = [...document.querySelectorAll('[data-q]')];
+  for (let k = all.indexOf(from)+1; k < all.length; k++){
+    if (!ANS[all[k].dataset.q]){
+      activate(all[k]);
+      all[k].scrollIntoView({block:'center', behavior:'smooth'});
+      return;
+    }
+  }
+}
+function guide(on, item){
+  document.getElementById('guide').classList.toggle('on', on);
+  document.getElementById('scrim').classList.toggle('on', on);
+  if (on){
+    const el = activeEl();
+    const sel = document.getElementById('ask_item');
+    if (sel) sel.value = item || (el ? el.dataset.item : sel.value);
+  }
+}
+
+/* ---- rules assistant -------------------------------------------------------
+   Definitions only. The paper text is never sent, and a question carrying a long
+   verbatim run from the Methods pane is refused here rather than upstream, because
+   the cheapest place to keep the gold standard clean is before the request leaves
+   the browser. */
+function pastedFromPaper(q){
+  const boxes = [...document.querySelectorAll('.methods')];
+  const s = q.replace(/\s+/g,' ').trim();
+  if (s.length < 60) return false;
+  for (const b of boxes){
+    const hay = (b.dataset.raw || '').replace(/\s+/g,' ');
+    for (let i = 0; i + 60 <= s.length; i += 10){
+      if (hay.indexOf(s.slice(i, i+60)) >= 0) return true;
+    }
+  }
+  return false;
+}
+async function ask(){
+  const out = document.getElementById('ask_out');
+  const q = document.getElementById('ask_q').value.trim();
+  const item = document.getElementById('ask_item').value;
+  if (!q){ out.textContent = 'Type a question about the rule first.'; return; }
+  if (pastedFromPaper(q)){
+    out.textContent = 'That looks like text from the paper. This assistant only '
+      + 'explains the rules, and deciding what a paper says is the job the study is '
+      + 'measuring. Ask what the rule means instead.';
+    return;
+  }
+  if (!ENDPOINT){ out.textContent = 'No endpoint configured, so the assistant is off. '
+      + 'The rules above are the reference.'; return; }
+  const d = DEFS[item] || ['','',''];
+  // Send the page's whole rule set, not just the selected item. Each page carries only its batch's items; all 74 v2 items together are about 6,100 tokens
+  // and it is what lets the assistant answer the questions reviewers actually ask,
+  // which are comparative: how is acquisition software different from
+  // quantification software, does a lot number count as a catalog number.
+  const all = 'Rubric ' + RUBRIC + '. ' + NOTE + '\n' + Object.entries(DEFS)
+    .map(([k,v])=> v[0] + ' :: ' + v[1] + ' :: mark: ' + v[2]).join('\n');
+  out.textContent = 'Thinking...';
+  try{
+    const r = await fetch(ENDPOINT, {method:'POST',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body: JSON.stringify({action:'assist', batch:BATCH.batch,
+        reviewer: document.getElementById('rev').value.trim(),
+        item, item_label:d[0], definition:d[1], rule:d[2],
+        all_rules: all, question:q})});
+    const t = (await r.text()).trim();
+    if (t.indexOf('ASSIST_OK') === 0) out.textContent = t.slice(9).trim();
+    else if (t.indexOf('ASSIST_OFF') === 0) out.textContent =
+      'The assistant is switched off for this study. The rules above are the reference.';
+    else out.textContent = 'The assistant is unavailable. The rules above are the reference.';
+  }catch(e){
+    out.textContent = 'The assistant is unavailable. The rules above are the reference.';
+  }
+}
+let flashT = null;
+function flash(msg){
+  const h = document.getElementById('hint');
+  h.textContent = msg; h.classList.add('on');
+  clearTimeout(flashT);
+  flashT = setTimeout(()=>h.classList.remove('on'), 2600);
+}
+
+/* ---- submit --------------------------------------------------------------- */
+/* One row per span, so a question answered with eight RRIDs is eight rows sharing a
+   judgement_id. n_spans is carried on every row so the scorer can tell a truncated
+   submission from a complete one without regrouping first. */
+function collect(){
+  const rows = [];
+  document.querySelectorAll('[data-q]').forEach(el=>{
+    const v = ANS[el.dataset.q];
+    const base = {judgement_id: el.dataset.q, pmcid: el.dataset.pmcid,
+                  item: el.dataset.item, rubric_version: RUBRIC};
+    if (!v || v.answer !== 'marked'){
+      rows.push(Object.assign({}, base, {answer: v ? v.answer : '', span_index: 0,
+        span_text: '', span_start: -1, span_end: -1, span_len: 0,
+        n_spans: 0, more_unmarked: ''}));
+      return;
+    }
+    v.spans.forEach((s,i)=>{
+      rows.push(Object.assign({}, base, {answer:'marked', span_index: i,
+        span_text: s.text, span_start: s.start, span_end: s.end,
+        span_len: (s.text||'').length, n_spans: v.spans.length,
+        more_unmarked: v.more ? 1 : 0}));
+    });
+  });
+  return {batch: BATCH.batch, rubric_version: RUBRIC,
+          reviewer: document.getElementById('rev').value.trim(),
+          submitted_at: new Date().toISOString(),
+          minutes: Math.round((Date.now()-T0)/60000), rows};
+}
+function download(){
+  const p = collect();
+  const head = 'batch,rubric_version,reviewer,submitted_at,judgement_id,pmcid,item,answer,'
+             + 'span_index,span_text,span_start,span_end,span_len,n_spans,more_unmarked\n';
+  const q = s => '"' + String(s==null?'':s).replace(/"/g,'""') + '"';
+  const body = p.rows.map(r=>[p.batch,p.rubric_version,p.reviewer,p.submitted_at,r.judgement_id,r.pmcid,
+      r.item,r.answer,r.span_index,r.span_text,r.span_start,r.span_end,r.span_len,
+      r.n_spans,r.more_unmarked]
+      .map(q).join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([head+body], {type:'text/csv'}));
+  a.download = 'A6_' + p.batch + '_' + (p.reviewer||'anon').replace(/\W+/g,'_') + '.csv';
+  a.click();
+}
+async function send(){
+  const st = document.getElementById('status');
+  if (!ENDPOINT){ st.innerHTML = '<b>No endpoint set.</b> Use Download CSV.'; return; }
+  st.textContent = 'Sending...';
+  try{
+    const r = await fetch(ENDPOINT, {method:'POST',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body: JSON.stringify(collect())});
+    const t = await r.text();
+    if (t.indexOf('OK') >= 0){
+      st.innerHTML = '<b>Submitted.</b> Thank you, you can close this tab.';
+      document.getElementById('send').disabled = true;
+      try{ localStorage.removeItem(KEY); }catch(e){}
+    } else {
+      st.innerHTML = '<b>Rejected.</b> ' + esc(t.slice(0,140)) + ' Use Download CSV.';
+    }
+  }catch(e){
+    st.innerHTML = '<b>Send failed.</b> Use Download CSV and email the file.';
+  }
+}
+
+/* ---- wiring --------------------------------------------------------------- */
+document.addEventListener('click', e=>{
+  const btn = e.target.closest('button[data-act]');
+  if (btn){
+    const el = btn.closest('[data-q]');
+    const a = btn.dataset.act;
+    if (a === 'mark') mark(el);
+    else if (a === 'done') finish(el);
+    else if (a === 'drop') dropSpan(el, parseInt(btn.dataset.i, 10));
+    else if (a === 'reopen') reopen(el);
+    else plain(el, a);
+    return;
+  }
+  const head = e.target.closest('.q.done .qname');
+  if (head){ reopen(head.closest('[data-q]')); return; }
+  const q = e.target.closest('[data-q]');
+  if (q && !q.classList.contains('done')) activate(q);
+});
+document.addEventListener('input', e=>{ if (e.target.id === 'rev') refresh(); });
+document.addEventListener('keydown', e=>{ if (e.key === 'Escape') guide(false); });
+document.addEventListener('mouseup', ()=>{
+  const el = activeEl();
+  if (!el) return;
+  const box = document.getElementById('m_' + el.dataset.pmcid);
+  if (box && getSel(box)) flash('Press "Use highlighted text" on the open question.');
+});
+window.addEventListener('DOMContentLoaded', ()=>{
+  document.querySelectorAll('.methods').forEach(b=>{ b.dataset.raw = b.textContent; });
+  const n = restore();
+  const first = [...document.querySelectorAll('[data-q]')].find(el=>!ANS[el.dataset.q]);
+  activate(first || document.querySelector('[data-q]'));
+  refresh();
+  if (n) document.getElementById('status').innerHTML =
+    '<b>Restored ' + n + ' saved answer' + (n>1?'s':'') + '</b> from this browser.';
+});
+window.addEventListener('beforeunload', e=>{
+  if (answered() > 0 && !document.getElementById('send').disabled){
+    e.preventDefault(); e.returnValue = '';
+  }
+});
+</script></body></html>

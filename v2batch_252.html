@@ -1,0 +1,2718 @@
+<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Track F methods review, v2batch_252</title><style>
+:root{
+--primary:#533afd; --primary-deep:#4434d4; --primary-press:#2e2b8c;
+--primary-soft:#665efd; --primary-subdued:#b9b9f9; --brand-dark-900:#1c1e54;
+--canvas:#ffffff; --canvas-soft:#f6f9fc; --canvas-cream:#f5e9d4;
+--hairline:#e3e8ee; --hairline-input:#a8c3de;
+--ink:#0d253d; --ink-secondary:#273951; --ink-mute:#64748d; --on-primary:#ffffff;
+--r-xs:4px; --r-sm:6px; --r-md:8px; --r-lg:12px; --r-xl:16px; --r-pill:9999px;
+--sh1:rgba(0,55,112,.08) 0 1px 3px;
+--sh2:rgba(0,55,112,.08) 0 8px 24px, rgba(0,55,112,.04) 0 2px 6px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--canvas);color:var(--ink);
+font-family:Inter,"SF Pro Display",system-ui,-apple-system,"Segoe UI",sans-serif;
+font-weight:300;font-size:15px;line-height:1.4;
+font-feature-settings:"ss01";-webkit-font-smoothing:antialiased}
+.mesh{position:absolute;inset:0 0 auto;height:280px;z-index:0;pointer-events:none;
+background:
+ radial-gradient(60% 120% at 8% 40%, #f5e9d4 0%, rgba(245,233,212,0) 60%),
+ radial-gradient(50% 120% at 30% 30%, #ffd9b0 0%, rgba(255,217,176,0) 62%),
+ radial-gradient(55% 130% at 55% 45%, #cdc4fb 0%, rgba(205,196,251,0) 62%),
+ radial-gradient(50% 120% at 76% 30%, #533afd 0%, rgba(83,58,253,0) 60%),
+ radial-gradient(55% 120% at 96% 55%, #ea2261 0%, rgba(234,34,97,0) 62%);
+opacity:.30;filter:blur(18px)}
+.wrap{max-width:1200px;margin:0 auto;padding:40px 24px 104px;position:relative;z-index:1}
+h1{font-size:32px;font-weight:300;letter-spacing:-.64px;line-height:1.1;margin:0 0 6px}
+h2{font-size:10px;font-weight:400;letter-spacing:.1px;text-transform:uppercase;
+color:var(--ink-mute);margin:0}
+.sub{color:var(--ink-secondary);font-size:15px;margin:0 0 24px;max-width:62ch}
+.card{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--r-lg);
+padding:24px;margin-bottom:14px;box-shadow:var(--sh1)}
+.card.cream{background:var(--canvas-cream);border-color:transparent;box-shadow:none}
+.card h3{font-size:18px;font-weight:300;letter-spacing:0;margin:0 0 10px}
+.note{color:var(--ink-secondary);font-size:15px}
+.note b{font-weight:400}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px}
+.num{font-feature-settings:"tnum","ss01";letter-spacing:-.42px}
+.pill{display:inline-block;background:var(--primary-subdued);color:var(--primary-deep);
+font-size:10px;font-weight:400;letter-spacing:.1px;text-transform:uppercase;
+padding:4px 8px;border-radius:var(--r-pill)}
+.paper-h{display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+flex-wrap:wrap;margin-bottom:4px}
+.split{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:24px;
+align-items:start}
+/* clears the sticky action bar, which is about 60px tall */
+.col-text{position:sticky;top:80px}
+@media (max-width:1023px){.split{grid-template-columns:1fr}.col-text{position:static}}
+.methods{background:var(--canvas-soft);border:1px solid var(--hairline);
+border-radius:var(--r-md);padding:18px 20px;min-height:320px;
+overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;
+font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;line-height:1.7;
+color:var(--ink-secondary);margin:10px 0 0;user-select:text;cursor:text;
+height:calc(100vh - 296px)}
+@media (max-width:1023px){.methods{height:46vh}}
+.methods mark{background:var(--canvas-cream);color:inherit;border-radius:var(--r-xs);
+padding:1px 0}
+.methods mark.cur{background:var(--primary-subdued)}
+.methods .sec{background:rgba(83,58,253,.07);border-radius:var(--r-xs)}
+.methods .sec.cursec{background:rgba(83,58,253,.14)}
+.methods ::selection{background:var(--primary-soft);color:#fff}
+.tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:12px;
+font-size:13px;color:var(--ink-mute);letter-spacing:-.39px}
+.tools .aid{margin-left:auto;font-size:11px;font-weight:300}
+button{font-family:inherit;font-size:14px;font-weight:400;line-height:1;
+padding:8px 16px;border-radius:var(--r-pill);border:1px solid var(--primary);
+background:var(--primary);color:var(--on-primary);cursor:pointer}
+button:hover{background:var(--primary-deep);border-color:var(--primary-deep)}
+button:active{background:var(--primary-press);border-color:var(--primary-press)}
+button.sec{background:var(--canvas);color:var(--primary);border-color:var(--primary)}
+button.sec:hover{background:var(--canvas-soft)}
+button.quiet{background:transparent;color:var(--ink-mute);border-color:var(--hairline)}
+button.quiet:hover{background:var(--canvas-soft);color:var(--ink)}
+button:disabled{opacity:.4;cursor:not-allowed}
+input[type=text]{width:100%;background:var(--canvas);color:var(--ink);
+font-family:inherit;font-size:15px;font-weight:300;padding:8px 12px;
+border-radius:var(--r-sm);border:1px solid var(--hairline-input)}
+input[type=text]:focus{outline:none;border-color:var(--primary)}
+.q{border:1px solid var(--hairline);border-radius:var(--r-lg);padding:18px 20px;
+margin-bottom:10px;background:var(--canvas)}
+.q.active{border-color:var(--primary);box-shadow:var(--sh1)}
+.q.done{padding:12px 16px;background:var(--canvas-soft);box-shadow:none}
+.q.done .qdef,.q.done .qhow,.q.done .acts,.q.done .grab{display:none}
+.q.done .qname{cursor:pointer;margin:0}
+.qname{display:flex;justify-content:space-between;gap:12px;align-items:baseline;
+font-size:18px;font-weight:300;letter-spacing:0;margin-bottom:6px}
+.q.done .qname{font-size:15px;color:var(--ink-secondary)}
+.qname .ans{font-size:13px;color:var(--ink-mute);letter-spacing:-.39px;
+white-space:nowrap;max-width:52%;overflow:hidden;text-overflow:ellipsis;text-align:right}
+.qdef{color:var(--ink-secondary);font-size:15px;margin-bottom:10px}
+.qhow{background:var(--canvas-soft);border-radius:var(--r-md);padding:10px 12px;
+font-size:13px;color:var(--ink-secondary);letter-spacing:-.39px;margin-bottom:12px}
+.qhow b{font-weight:400;color:var(--ink)}
+.qhow .eg{display:block;margin-top:5px;color:var(--ink-mute)}
+.acts{display:flex;gap:8px;flex-wrap:wrap}
+.grab{margin-top:11px;display:none}
+.grab.on{display:block}
+.grab .cap{font-size:10px;text-transform:uppercase;letter-spacing:.1px;
+color:var(--ink-mute);margin-bottom:5px}
+.grab blockquote{margin:0;background:var(--canvas-cream);border-radius:var(--r-md);
+padding:10px 12px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+font-size:13px;color:var(--ink);line-height:1.6}
+/* one row per marked span; an antibody table can produce eight */
+.spans{list-style:decimal;margin:0;padding:0 0 0 22px}
+.spans li{background:var(--canvas-cream);border-radius:var(--r-md);
+padding:7px 10px;margin-bottom:5px;display:flex;gap:10px;align-items:baseline;
+font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;
+color:var(--ink);line-height:1.55}
+.spans li span{flex:1;overflow-wrap:anywhere}
+.spans li .x{padding:2px 9px;font-size:11px;flex:none;font-family:inherit}
+.morewrap{display:none;align-items:center;gap:8px;margin-top:8px;
+font-size:13px;color:var(--ink-secondary);letter-spacing:-.39px;cursor:pointer}
+.morewrap.on{display:flex}
+.morewrap input{accent-color:var(--primary);width:16px;height:16px;cursor:pointer}
+.q.done .spans li .x{display:none}
+/* Action bar pinned to the TOP. Submit lives here rather than at the foot of a
+   30-minute page, so it is reachable without scrolling once a batch is finished. */
+.bar{position:sticky;top:0;z-index:6;background:var(--canvas);
+border-bottom:1px solid var(--hairline);box-shadow:var(--sh1);
+margin:0 -24px 20px;padding:12px 24px;
+display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.bar .grow{flex:1 1 220px;min-width:140px}
+.prog{height:4px;border-radius:var(--r-pill);background:var(--hairline);overflow:hidden}
+.prog i{display:block;height:100%;background:var(--primary);width:0;transition:width .2s}
+.count{font-size:14px;color:var(--ink-secondary);font-feature-settings:"tnum";
+letter-spacing:-.42px;white-space:nowrap}
+.status{font-size:13px;color:var(--ink-mute);letter-spacing:-.39px;flex-basis:100%}
+.status b{color:var(--ink);font-weight:400}
+.hint{position:fixed;z-index:12;background:var(--brand-dark-900);color:#fff;
+font-size:13px;padding:8px 14px;border-radius:var(--r-pill);box-shadow:var(--sh2);
+left:50%;transform:translateX(-50%);bottom:28px;
+pointer-events:none;opacity:0;transition:opacity .15s}
+.hint.on{opacity:1}
+
+/* Guide. The rules are needed on question 40 as much as on question 1, so they
+   live behind a button that is always in reach rather than scrolled past once. */
+.scrim{position:fixed;inset:0;z-index:10;background:rgba(13,37,61,.34);
+display:none}
+.scrim.on{display:block}
+.guide{position:fixed;top:0;right:0;bottom:0;z-index:11;width:min(560px,100%);
+background:var(--canvas);box-shadow:var(--sh2);overflow:auto;
+padding:28px 28px 64px;transform:translateX(100%);transition:transform .18s ease-out}
+.guide.on{transform:none}
+.guide h2{margin-bottom:14px}
+.guide h3{font-size:20px;font-weight:300;letter-spacing:-.2px;margin:26px 0 8px}
+.guide h3:first-of-type{margin-top:10px}
+.guide p{color:var(--ink-secondary);margin:0 0 10px}
+.guide .close{position:absolute;top:20px;right:24px}
+.guide table{border-collapse:collapse;width:100%;margin-top:6px}
+.guide td{border-bottom:1px solid var(--hairline);padding:8px 10px 8px 0;
+vertical-align:top;font-size:13px;color:var(--ink-secondary)}
+.guide td:first-child{color:var(--ink);white-space:nowrap;padding-right:16px}
+.guide blockquote{margin:8px 0 0;padding:10px 12px;background:var(--canvas-cream);
+border-radius:var(--r-md);font-size:13px;color:var(--ink)}
+</style></head><body><div class='mesh'></div><div class='wrap'><div class='bar'><span class='count' id='count'>0 answered</span><span class='grow'><span class='prog'><i id='bar'></i></span></span><button type='button' class='quiet' onclick='guide(true)'>Guide</button><button class='sec' onclick='download()'>Download CSV</button><button id='send' onclick='send()' disabled>Submit</button><span class='status' id='status'></span></div><h1>Western blot methods review</h1><p class='sub'><span class='num'>9</span> papers, <span class='num'>10</span> questions, about <span class='num'>31</span> minutes. For each paper you read one Methods section, then say whether that text states each of a short list of details. You never type a value: you select the words in the text. Press <b>Guide</b> at any point for the rules.</p><div class='card'><h2>Your name or initials</h2><p class='note' style='margin:6px 0 10px'>Only used to tell reviewers apart when two people code the same batch.</p><input type='text' id='rev' placeholder='for example BH' autocomplete='off'></div><div class='card cream'><h3>The three answers</h3><div class='note'><b>Select the words in the Methods text, then press Use highlighted text.</b> The exact words you selected are what gets recorded. If the paper gives several, mark each one and they stack up in a list; press <b>Done, next</b> when the list is complete.<br><b>Not stated.</b> The Methods text does not give this detail.<br><b>Unclear.</b> You cannot tell either way. These are set aside rather than counted, so it is a safe answer when you are stuck.<br><br><b>What counts as a western blot.</b> Western blot means proteins separated on a gel, transferred to a membrane and detected with an antibody. An OxyBlot counts. A dot blot or slot blot, of RNA or of protein, does not; neither does a capillary system such as Wes or Jess, which has no membrane, or a membrane probed only with streptavidin or a lectin, which uses no antibody. Items marked &#x27;Western blot only&#x27; do not count the same thing described for another assay in the paper: qPCR, immunofluorescence, IHC, flow cytometry, ELISA, mass spectrometry, or a gel that was stained rather than blotted. Judge the text the page shows, including any figure legend printed in it; a detail found only in a legend or supplement that is not shown is not stated. A method given only by citation (&#x27;as previously described [12]&#x27;) is not stated: mark only what the text itself says. The Shortcut citation item is the exception: it records the citation phrase itself. Some PDFs drop the micro sign or print it as m (&#x27;50 g&#x27;, &#x27;25 mg&#x27; for micrograms); rule on the intended unit.<br><br>Every question carries its own <b>What to mark</b> rule with a worked example. Follow it rather than your instinct: consistency between reviewers matters more here than any single choice. Full rules under <b>Guide</b>.</div></div><div class='card'><div class='paper-h'><h2>Paper <span class='num'>1</span> of <span class='num'>9</span></h2><span class='pill'>PMC5520679</span></div><div class='note' style='font-size:13px;color:var(--ink-mute);margin-bottom:6px'> · <span class='num'>year unknown</span></div><div class='split'><div class='col-text'><div class='methods' id='m_PMC5520679'>
+Mice. Heterozygous RGS2 (RGS2+/ -) mice on the C57BL/6 background were a
+generous gift from Dr. Ken Blumer (Washington University, School of Medicine, St.
+Louis, MO, USA). RGS2 knockout (RGS2-/ -) and wild-type control (RGS2+/+) mice
+were generated by mating of RGS2+/ -mice as described.11 To be consistent, only
+male mice were used in our study. Animals were maintained under a standard
+12 h :12 h light-dark cycle. Food and water were available ad libitum. All
+experiments were approved by the Institutional Animal Care and Use Committee
+at the Medical University of South Carolina.
+Glucose and insulin tolerance tests. For IPGTT, mice that had been
+fasted overnight received an i.p. injection of 2 mg/g body weight glucose. For insulin
+tolerance test, mice that had been fasted for 5 h received an i.p. injection of
+recombinant human insulin (0.75 U/kg; Humulin, Eli Lily, Indianapolis, IN, USA).
+Blood samples were taken from the tail vein before (0 min) and 15, 30, 60, 90, and
+120 min after glucose or insulin injection. Serum glucose levels were determined
+using an ACCU-CHEK glucometer (LifeScan, Mountain View, CA, USA). Area under
+curves were calculated using standard methods.
+Glucose-stimulated insulin secretion. Mice were fasted overnight and
+then injected with D-glucose (3 mg/g). Blood was collected from the tail vein at 0, 2,
+5, 15, and 30 min post glucose challenge. Serum insulin was measured using a
+Mouse Chemiluminescent Insulin ELISA kit (ALPCO, Salem, NH, USA).
+Deletion or overexpression of RGS2 in βTC3 cells. RGS2 was
+depleted in βTC3 cells by transfection with vector encoding shRNA for RGS2 (Santa
+Cruz Biotechnology, Santa Cruz, CA, USA). The Tet-On inducible pTIPZ lentiviral
+vector (Clontech Laboratories, Mountain View, CA, USA) was used to generate
+lentiviral vector that can used to induce RGS2 expression. The red fluorescence
+Figure 6
+Comparison in pancreatic β-cell mass in RGS2-/ -and wild-type mice. (a) Representative micrographs of immunohistochemical staining of pancreatic islets
+from 1 -day-old (a) RGS2+/+ and (b) RGS2-/ -mice, from 4-week-old (d) RGS2+/+ and (e) RGS2-/ -mice, and from 25-week-old (g) RGS2+/+ and (h) RGS2-/ -mice. Red
+staining indicates insulin+ cells and blue staining indicates nuclei. Scale bar = 50 μM. β-Cell area per pancreas area at 1 day (c), 4 weeks (f), and 25 weeks (i) in RGS2+/+ and
+RGS2-/ -mice. β-Cell mass (g); β-cell mass per gram body weight (k); total number of islets per pancreas area (i) and percentage of large islets within a pancreas
+(m) at 25 weeks of age (n = 4-5 per group). Differences were compared by Student’s t-test. *Po0.05, **Po0.01
+RGS2 and pancreatic β-cell mass
+H Dong et al
+6
+Cell Death and Disease
+ protein (Ds-Red) was inserted downstream of the Tet-PCMV promoter and was
+used as an empty vector control. The RGS2 cDNA (Open Biosystems, Lafayette,
+CO, USA) was inserted downstream of the Ds-Red gene that is separated by the
+T2A sequence to generate a pDIPZ-DsRed-T2A-RGS2 vector. Expression of RGS2
+was induced by treatment with DOX at 600 ng/ml, and was detected by Ds-Red
+fluorescence.
+Cell death analysis. For detection of islet/β-cell death in vitro, cells were
+exposed to hypoxia (1% O2) for 24 or 48 h. Cells were harvested and washed with
+PBS containing 5 mM EDTA. After fixation in 70% ethanol at 4 °C for 2 h, cells were
+collected, re-suspended in PBS containing 250 μg/ml RNase A, and incubated at
+37 °C for 30 min. After propidium iodide staining, 2 × 105 cells per sample were
+analyzed by flow cytometry. The portion of the apoptotic cells was calculated
+according to the apoptotic peak in the cell distribution against the propidium iodide
+fluorescence per cell. Cell death was also measured using a Cell Death Detection
+ELISA Kit and the colorimetric assay in medium using a LDH cytotoxicity detection
+kit (Clontech) as suggested by manufacturer (Roche, Indianapolis, IN, USA). For
+detection of β-cell apoptosis inside the pancreas, pancreatic tissue sections were
+incubated with terminal deoxynucleotidyl transferase in the presence of Biotin-dUTP
+(Roche Diagnostics). TUNEL-positive cells were revealed with Alexa Fluor
+Figure 7
+Characterization of α cells in pancreas. Representative micrographs of β cells (red) and α cells (green) in pancreatic tissue sections from RGS2+/+ (a and b) and
+RGS2-/ -(c and d) islets (identified by anti-insulin and anti-glucagon antibodies). Scale bar = 100 μM. (e) Percentages of α cells within an islet. (f) Percentage of α cells among
+α and β cells within pancreas. At least 50 islets have been counted in three different experiments. *Po0.05, Student’s t-test
+Figure 8
+Metabolic phenotypes of RGS2-/ -and RGS2+/+ mice at 25 weeks of age. Body weights (a), ratio of epididymal adipose weight to body weight (b), serum insulin (c),
+fed (d) and fasting (e) insulin levels, and (f) glucagon levels in serum from 6-month-old RGS2-/ -and RGS2+/+ mice (n = 4 or 5 per group). *Po0.05, Student’s t-test
+RGS2 and pancreatic β-cell mass
+H Dong et al
+7
+Cell Death and Disease
+ 488-Streptavidin. Sections were double stained for insulin to distinguish β cells.
+Images were obtained by confocal microscopy. The numbers and fraction of
+TUNEL+ cells within an islet were calculated.
+Real-time RT-PCR analysis for gene expression. Total RNA was
+extracted from islets/β cells using an RNeasy kit (Qiagen, Valencia, CA, USA).
+Expression of apoptosis-related genes was analyzed using a mouse apoptosis RT2
+profiler PCR array that profiles expression of 84 key genes involved in programmed
+cell death according to the manufacturer’s recommendation (Qiagen).
+SDS-PAGE and western blot. Protein concentration in the lysates was
+determined using the BCA assay (Pierce, Rockford, IL, USA) and adjusted with an
+appropriate volume of Laemmli buffer (Bio-Rad, Hercules, CA, USA). Equal
+amounts of protein were resolved on a 12% SDS-PAGE gel for 1 h at 160 V.
+Samples were transferred to an Immobilon-P membrane (Millipore, Billerica, MA,
+USA) for 1 h at 100 V, 400 mA on ice, and subjected to western blot analysis. The
+membrane was blocked with Tris-buffered saline, 5% (w/v) non-fat dry milk for
+30 min and probed overnight at 4 °C with a rabbit RGS2 antibody (a gift from Dr.
+David Siderovski). The membrane was probed for 1 h with horseradish peroxidase
+(HRP)-conjugated Goat anti-rabbit (A0545; 1 : 10 000, Sigma-Aldrich, St. Louis,
+MO, USA) secondary antibody diluted in TBS-T, 5% (w/v) non-fat dry milk. The
+protein bands were visualized on autoradiography film using the Super Signal West
+Pico chemiluminescent substrate (Pierce, Waltham, MA, USA).
+Quantification of pancreatic β-cell mass. Whole-mouse pancreases
+were embedded in paraffin and cryosections prepared as described.24 Consecutive
+sections 100 μm apart spanning the entire pancreas were collected and stained
+with guinea pig anti-insulin antibody and rabbit anti-glucagon antibodies (Dako,
+Carpinteria, CA, USA). Digital images of each section were obtained using a Carl
+Zeiss M2 microscope (Carl Zeiss, Oberkochen, Germany). Total tissue area and
+β-cell and α-cell areas were determined using Image-Pro Plus software (Media
+Cybernetics, Rockville, MD, USA) by quantification of the cross-sectional β-cell or α-
+cell area divided by the cross-sectional area of total tissue. For islet size and β-cell
+area quantification, the whole area for all sections was imaged. The total insulin-
+positive (β cell) area and the average islet size (calculated from individual islet
+diameter) were calculated from these data for each mouse.
+Statistical analysis. Data are expressed as mean ± standard deviation.
+Differences between groups were compared for statistical significance by Student’s
+t-test and one-way ANOVA with Bonferroni correction; Po0.05 was considered as
+significant.
+</div><div class='tools'><button type='button' class='quiet' onclick='jumpSec(1)'>Blot section</button><button type='button' class='quiet' onclick='jump(-1)'>Prev</button><button type='button' class='quiet' onclick='jump(1)'>Next</button><span id='hits_PMC5520679' class='num'></span><span class='aid'>shading is a search aid, not an answer</span></div></div><div class='col-q'><div class='q' data-q='v2|PMC5520679|total_protein_stain' data-pmcid='PMC5520679' data-item='total_protein_stain'><div class='qname'><span>Total protein stain</span><span class='ans'></span></div><div class='qdef'>A total-protein stain used to normalize or check the blot: Ponceau S or REVERT on the membrane, stain-free imaging used for normalization, or Coomassie stated as the blot's loading or transfer check, including a parallel gel stained and stated as the blot's loading check. A stained gel with no stated link to a blot, or a stain-free gel named only as a product, does not count. Western blot only.</div><div class='qhow'><b>What to mark.</b> Mark the stain name only.<span class='eg'>In <i>confirmed by Ponceau S staining</i> mark <b>Ponceau S</b>. Nothing to mark in <i>run on a 4-15% TGX Stain-Free gel</i> with no normalization stated, in any stain on a purity, expression, preparative, mass-spec or antibody-QC gel, or in a stain on a gel that was never blotted and is not stated as the blot's loading check.</span></div><div class='acts'><button type='button' data-act='mark'>Use highlighted text</button><button type='button' class='sec' data-act='done' style='display:none'>Done, next</button><button type='button' class='sec' data-act='not_stated'>Not stated</button><button type='button' class='quiet' data-act='unclear'>Unclear</button></div><div class='grab'><div class='cap'>Marked so far, add as many as the paper has</div><ol class='spans'></ol><label class='morewrap'><input type='checkbox' class='morebox'>There are more of these than I marked</label></div></div><div class='q' data-q='v2|PMC5520679|transfer_conditions' data-pmcid='PMC5520679' data-item='transfer_conditions'><div class='qname'><span>Transfer conditions</span><span class='ans'></span></div><div class='qdef'>The voltage or current, the time, or the temperature of the transfer. Any one counts. The transfer method alone ('wet transfer') does not. Western blot only.</div><div class='qhow'><b>What to mark.</b> Mark the conditions.<span class='eg'>In <i>transferred at 100 V for 1 h at 4 &deg;C</i> mark the whole phrase.</span></div><div class='acts'><button type='button' data-act='mark'>Use highlighted text</button><button type='button' class='sec' data-act='done' style='display:none'>Done, next</button><button type='button' class='sec' data-act='not_stated'>Not stated</button><button type='button' class='quiet' data-act='unclear'>Unclear</button></div><div class='grab'><div class='cap'>Marked so far, add as many as the paper has</div><ol class='spans'></ol><label class='morewrap'><input type='checkbox' class='morebox'>There are more of these than I marked</label></div></div></div></div></div><div class='card'><div class='paper-h'><h2>Paper <span class='num'>2</span> of <span class='num'>9</span></h2><span class='pill'>PMC10074175</span></div><div class='note' style='font-size:13px;color:var(--ink-mute);margin-bottom:6px'> · <span class='num'>year unknown</span></div><div class='split'><div class='col-text'><div class='methods' id='m_PMC10074175'>
+Adult Xenopus laevis frogs were maintained in environments following IACUC regulations. Embryos were obtained by
+overnight paired breedings with superovulation encouraged by chorionic gonadotropin hormone treatment (Sive et al. 2000).
+Eggs were dejellied in 2% (w/v) cysteine in 20% Steinberg’s solution (Lom and Cohen-Cory 1999) and sorted manually to
+select appropriately developing embryos staged according to Nieuwkoop and Faber (1994). A 10 g/L malathion stock solution
+was prepared in acetone then diluted immediately before treatment in 20% Steinberg’s solution to 0.5 or 2 mg/L. For each
+experiment three groups of typically developing 15 pre-gastrula embryos at stage 8 were placed in 30 mL of 0, 0.5, or 2 mg/L
+malathion and maintained at room temperature (Fig. 1a). The 0 mg/L condition included 0.02% (v/v) acetone as a vehicle
+control to match the solvent present in the 2 mg/L malathion condition. Tadpoles developed for six days until stage 47 and
+were then euthanized by lethal dose anesthesia (0.5% Tricaine-S in 20% Steinberg’s solution). Euthanized tadpoles were
+preserved in RNAprotect tissue reagent (100 μL/tadpole) and stored at 4° C until qPCR analysis. Biological triplicates were
+performed for each condition.
+For qPCR analysis of mRNA expression levels, RNA was extracted from tadpoles following the protocol for Qiagen’s RNeasy
+Mini Kit with on-column DNase treatment. Resulting RNA concentrations were determined using a NanoDrop
+spectrophotometer and cDNA was synthesized using Merck’s ReadyScript® cDNA Synthesis Mix. Real-time qPCR using
+SYBR Green was conducted with previously published primers for prdm12 (500 nM) and the three reference genes GAPDH
+(250 nM), beta-actin (500 nM), and H4 (500 nM). qPCR was conducted on 50 ng cDNA/well using NEB’s Luna Universal
+qPCR Master Mix by an Agilent Mx3000P qPCR System. All assays were conducted with biological triplicates and technical
+duplicates. CT values indicated the number of cycles required for the solution to reach the threshold fluorescence, using the 2-
+∆∆CT method to determine fold changes in expression (Livak and Schmittgen 2001). ∆CT was calculated by measuring the
+difference between the prdm12 and the reference gene CT for each condition. The ∆∆CT was found by comparing the ∆CT of
+0.5 and 2.0 m/L samples with the vehicle control&#x27;s ∆CT. To calculate the gene fold change, 2 was raised to the power of -
+∆∆CT. Three reference genes were used to identify if experimental conditions affected the reference gene expression. ∆∆CT
+values analyzed statistically were means of the ∆∆CT values generated by the use of each different reference gene. An
+ordinary one-way ANOVA with Tukey’s multiple comparisons test was used to compare the three experimental conditions.
+For western blot analysis of Prdm12 protein expression, tadpoles were sacrificed and homogenized, then agitated for two
+hours at 4 °C followed by centrifugation for 20 minutes at 12,000 rpm at 4 °C. The supernatant was collected and protein
+concentrations quantified by a NanoDrop spectrophotometer. Protein lysates were mixed with equal volumes of BioRad’s 2X
+Laemmli buffer then boiled at 100 °C for five min. A stain-free protein gel was loaded with 25 μg/lane protein and run at 150
+V in tris-glycine/SDS running buffer (25 mM tris base, 190 mM glycine, and 0.1% SDS; pH 8.3). For transfer, PVDF
+membranes were activated for one minute in methanol and rinsed with transfer buffer (25 mM tris base, 190 mM glycine; 20%
+methanol) at 40 V for 70 min. The membrane was blocked with blocking buffer (5% nonfat dry milk (NFDM) in 1X TBST
+(20 mM tris base, 150 mM NaCl and 0.1% Tween 20)) for one hour at room temperature on a rotator. Immunostaining was
+conducted as described by Abcam (2020) using a primary anti-PRDM12 antibody (Sigma Aldrich HPA043143) at 1:2,000 in
+blocking buffer, followed by rinses in TBST, a secondary goat anti-rabbit HRP antibody (ThermoFisher 32460) at 1:1,000
+dilution in blocking buffer, and rinses in TBST. The membrane was incubated with SuperSignal West Pico PLUS
+ 
+3/20/2023 - Open Access
+ 
+chemiluminescent substrate one minute at room temperature. Finally, images of membranes were taken with a Bio-Rad Imager
+using chemiluminescence with an exposure of 40 seconds to visualize the protein bands. Protein levels were quantified using
+ImageJ by comparing the mean gray value produced by the protein bands in the protein gel image and the western blot
+membrane image for total protein normalization (TPN; Yadav and Oh 2018). An ordinary one-way ANOVA with Tukey’s
+multiple comparisons test was used to compare the normalized difference between the mean gray values of the protein gel and
+western blot between the three treatments.
+ 
+Reagents
+Reagent
+Source
+Catalog Number/Identifier
+acetone
+Fisher Chemical
+A18-500
+anti-PRDM12 (primary antibody)
+Sigma Aldrich
+HPA043143
+anti-rabbit IgG (secondary antibody)
+ThermoFisher
+32460
+chorionic gonadotropin (hCG)
+Intervet and Sigma Aldrich
+Chorulon and CG10
+cysteine
+Sigma Aldrich
+C7880
+filter paper
+Bio-Rad
+1703958
+glycine
+Thermo Scientific
+A13816.36
+Lamelli buffer (2X)
+Sigma
+S3401
+Luna universal qPCR master mix
+NEB
+M3003S
+malathion
+Sigma Aldrich
+36143
+methanol
+Fisher Chemical
+A452-4
+nonfat dry milk (NFDM)
+Saco Foods
+mix ‘n drink
+primers for X. laevis beta-actin
+Millipore Sigma (KiCqStart
+primer)
+XLAEVIS_148231177_1
+primers for X. laevis GADPH and PRDM12
+IDT
+sequences in Thélie et al. 2015
+primers for X. laevis H4
+IDT
+sequences in Šindelka et al.
+2006
+software (graphing/statistics)
+GraphPad
+Prism 9.3.1
+software (image analysis)
+public domain
+ImageJ 1.52v
+protein gels (stain-free)
+Bio-Rad
+4568096
+ 
+3/20/2023 - Open Access
+ 
+PVDF membrane
+Bio-Rad
+1620177
+ReadyScript cDNA synthesis kit
+Sigma Aldrich
+RDRT
+RNAeasy mini kit
+Quiagen
+74104
+RNAprotect tissue reagent
+Quiagen
+76104
+SuperSignal West Pico PLUS chemiluminescent
+substrate
+Thermo Scientific
+34577
+tricaine methanesulfonate
+Western Chemical
+Tricaine-S
+tris base
+Fisher BioReagents
+BP152
+Tween 20
+Fisher Biotech
+BP337
+</div><div class='tools'><button type='button' class='quiet' onclick='jumpSec(1)'>Blot section</button><button type='button' class='quiet' onclick='jump(-1)'>Prev</button><button type='button' class='quiet' onclick='jump(1)'>Next</button><span id='hits_PMC10074175' class='num'></span><span class='aid'>shading is a search aid, not an answer</span></div></div><div class='col-q'><div class='q' data-q='v2|PMC10074175|exposure_time' data-pmcid='PMC10074175' data-item='exposure_time'><div class='qname'><span>Exposure time</span><span class='ans'></span></div><div class='qdef'>An exposure or acquisition time for the blot's signal, on film or on an imager. 'Auto-exposure', 'different exposure times', 'exposed to film' with no time, or a substrate incubation time ('incubated with ECL for 1 min') does not count, and neither does an antibody or cytokine array, which is not a blot. Western blot only.</div><div class='qhow'><b>What to mark.</b> Mark the time and its unit.<span class='eg'>In <i>bands were imaged with a 30 s exposure on a ChemiDoc</i> mark <b>30 s</b>. Nothing to mark in <i>incubated with ECL for 1 min</i> or <i>cells were exposed to 80 uM drug for 30 min</i>.</span></div><div class='acts'><button type='button' data-act='mark'>Use highlighted text</button><button type='button' class='sec' data-act='done' style='display:none'>Done, next</button><button type='button' class='sec' data-act='not_stated'>Not stated</button><button type='button' class='quiet' data-act='unclear'>Unclear</button></div><div class='grab'><div class='cap'>Marked so far, add as many as the paper has</div><ol class='spans'></ol><label class='morewrap'><input type='checkbox' class='morebox'>There are more of these than I marked</label></div></div></div></div></div><div class='card'><div class='paper-h'><h2>Paper <span class='num'>3</span> of <span class='num'>9</span></h2><span class='pill'>PMC10688412</span></div><div class='note' style='font-size:13px;color:var(--ink-mute);margin-bottom:6px'> · <span class='num'>year unknown</span></div><div class='split'><div class='col-text'><div class='methods' id='m_PMC10688412'>
+Tissue samples and isolation of primary cultures of 
+fibroblasts. Samples of normal skin (human dermal fibro-
+blasts; HDF) were obtained from the Department of Aesthetic 
+Surgery, Third Faculty of Medicine, Charles University and 
+University Hospital Kralovske Vinohrady, (Prague, Czech 
+Republic). Samples of basal cell carcinoma (T1N0M0) [basal 
+cell carcinoma fibroblast (BCCF)] and of squamous cell carci-
+noma of oral cavity (T3N2M0) ([squamous cell carcinoma 
+fibroblast (SCCF)] were obtained from the Department of 
+Otorhinolaryngology, Head and Neck Surgery, First Faculty 
+of Medicine (Prague, Czech Republic). Fibroblasts from a 
+cutaneous metastasis of breast cancer (ductal infiltrating carci-
+noma, T4bN0M1) [breast cancer metastasis fibroblast (BCMF)] 
+were isolated at the Department of Dermatovenereology, First 
+Faculty of Medicine, Charles University (Prague, Czech 
+Republic). Fibroblasts were isolated, cultured and expanded 
+as previously described (27-29). Phenotype characterization of 
+the obtained fibroblasts was evaluated by detection of vimentin 
+(+), fibronectin (+), FAP (+), PDGFR-α/β (+), high molecular 
+weight keratins (-), tyrosinase (-), CD45 (-), and MiTF (-) (not 
+shown). Cells were isolated from tissue samples obtained with 
+informed consents of the patients respecting Declaration of 
+Helsinki approved by Ethical Committee of General University 
+Hospital (approval nos. 8/11, 15/15 and 7/21; Prague, Czech 
+Republic) and Ethical Committee of University Hospital 
+Královské Vinohrady (approval no. 100/1947/2005; Prague, 
+Czech Republic). Written informed consent was provided by 
+all patients.
+Human breast cancer EM-G3 cell line. The EM-G3 
+cell line (23) was isolated from infiltrating ductal breast 
+carcinoma (grade II, pT1cN0M0, ER+, PR+, and HER2+), 
+which was profoundly characterized using the proteomic 
+approach (30,31). Stability of the cell line genome was 
+verified by multicolour fluorescence in situ hybridization 
+(mFISH). The analysis confirmed a stable diploid genome 
+with several genetic changes (Fig. S1). Karyotype was re-eval-
+uated in 15 metaphasesas:44,XX,der(3)t(3;9)(q26;?),der(6)
+ ONCOLOGY REPORTS 51: 3, 2024
+3
+t(6;15)(p21;q12),der(12)t(12;12)(p13.2;q?)dup(12)(q21.2q21.3)
+dup(12)(q21.2q21.3),der(13)t(13;20)(p11;?),-15,-20. The 
+second clone was observed in five metaphases with identical 
+chromosomal aberrations with additional derived chromo-
+some 7 identified as: 45,idem,+der(7)t(7;12)(q11;?).
+Cultivation of fibroblasts and EM-G3 cells. All fibroblasts 
+HDF 2nd passage, BCCF 6th passage, SCCF 5th passage 
+and BCMF 4th passage were stored in liquid nitrogen and 
+cultivated in Dulbecco&#x27;s modified Eagle&#x27;s medium (DMEM; 
+Biochrom, Ltd.) supplemented with 10% fetal bovine serum 
+(FBS; Biochrom, Ltd.) and cultured at 37 ̊C and 5% CO2. 
+EM-G3 28th passage was stored in liquid nitrogen, cells 
+were cultured in keratinocyte medium (keratinocyte culture 
+medium: DMEM and F12 medium 1:1 (Biochrom, Ltd.) with 
+10% FBS enriched with insulin, choleratoxin, hydrocortisone, 
+and epidermal growth factor (32).
+Evaluation of the senescent phenotype of the studied 
+fibroblasts. The senescence-associated phenotype of CAFs 
+appears to stimulate tumor growth and metastasizing (33). 
+Therefore, the senescence of the tested fibroblasts was evaluated 
+by detection of senescence-associated enzyme β-galactosidase 
+(SAβGal) using a Senescence Cells Histochemical Staining 
+kit (cat. no. CS0030; Sigma-Aldrich; Merck KGaA) according 
+to the manufacturer&#x27;s instructions. β-Galactosidase activity is 
+detectable in senescent cells, but not in quiescent, immortal, 
+or tumor cells.
+RNA isolation and genome-wide transcriptome analysis 
+using RNA sequencing. Total RNA was isolated from CAFs 
+and HDF using RNeasy Micro Kit (Qiagen Sciences, Inc.) 
+according to the procedure for animal cells. The quantity of 
+RNA was measured spectrophotometrically in NanoDrop 
+ND-1000 (Thermo Fisher Scientific, Inc.) and Agilent 2100 
+Bioanalyser (Agilent Technologies, Inc.). All further analyzed 
+RNA samples had RIN &gt;8. Illumina HumanHT-v3 Expression 
+BeadChip (Illumina, Inc.) was used for microarray analysis 
+following the standard protocol - 150 ng of total RNA was 
+amplified with Illumina®TotalPrep RNA Amplification kit 
+(cat. No. AMIL1791; Ambion; Thermo Fisher Scientific, Inc.) 
+and 750 ng of amplified RNA was hybridized on the chip 
+according to the manufacturer&#x27;s procedure and scanned using 
+BeadArray Reader (Illumina, Inc.).
+The resulting data were processed using the limma package 
+(version 3.22.0) (34) within the R/Bioconductor environment 
+with probe annotation provided by the HumanHT-12_V3_0_
+R3_11283641_A.bgx manifest file (Illumina, Inc.). The data 
+were background corrected using the normal-exponential 
+mixture method, quantile normalized, and log2-transformed to 
+stabilize variance. The fitted statistical model assumed sample 
+groups according to the cell type (HDF, BCCF, SCCF and 
+BCMF). F-test with residual mean squares moderated between 
+genes was performed to detect differentially expressed genes. 
+Only genes with concordant changes in comparisons between 
+three CAF types and HDF (|log2FC| &gt;0.8) and FDR &lt;0.005 
+were considered differentially expressed (Tables SI and SII).
+Functional enrichment analysis was performed using the 
+Enrichr web server (35) with respect to the Elsevier Pathway 
+Collection of manually annotated pathways. Only pathways 
+with at least three assigned upregulated genes were consid-
+ered, top five pathways are displayed in Table SIII.
+The microarray data are available in MIAME (Minimum 
+Information About a Microarray Experiment) compliant 
+format in the ArrayExpress database under accession 
+E-MTAB-12994 (https://www.ebi.ac.uk/biostudies/arrayex-
+press/studies/E-MTAB-12994) (36).
+ELISA. Concentrations of IL-6 (cat. no. QK206), VEGF-A 
+(cat. no. DVE00) and MFGE8 (cat. no. DFGE80) were 
+measured in conditioned media (CM) (after 24 h culturing) 
+derived from the studied CAFs by enzyme-linked immuno-
+sorbent assay (ELISA, R&amp;D Systems, Inc.) according to the 
+procedure provided by the manufacturer. All experiments 
+were performed in two biological replicates. ELISA kits were 
+used to measure the concentrations of gene products (IL-6, 
+VEGF-A and MFGE8) in the CM of CAFs (Table I).
+Co-cultures of fibroblasts and EM-G3 cells. i) Direct co-culti-
+vation: HDFs, BCCFs, SCCFs and BCMFs were seeded on 
+Table I. Enzyme-linked immunosorbent assay (ELISA) kits used for the evaluation of IL-6, VEGF-A and MFGE8 production by 
+fibroblasts into culture media.
+Recombinant protein 
+ 
+Cat. no. 
+Produced by
+h-recombinant VEGF-A 
+ 
+RBMS277/2R 
+BioVendor R&amp;D
+h-recombinant IL-6 
+ 
+RBMS231/2R 
+BioVendor R&amp;D
+h-recombinant MFGE-8 
+ 
+E91286Hu 
+Wuhan USCN Business Co., Ltd.
+CAFs 
+IL-6 
+VEGF-A 
+MFGE8
+SCCFs 
+11.0±4.0 pg 
+49.3±13.5 pg 
+106.1±24.0 pg
+BCCFs 
+ 6.3±0.7 pg 
+51.8±10.1 pg 
+90.2±1.5 pg
+BCMFs 
+ 7.4±1.6 pg 
+31.1±12.4 pg 
+115.2±36.9 pg
+CAFs, cancer associated fibroblasts; SCCFs, squamous cell carcinoma fibroblasts; BCCFs, basal cell carcinoma fibroblasts; BCMFs, breast 
+cancer metastasis fibroblasts.
+ URBAN et al: FIBROBLAST IN BREAST CANCER: TRANSCRIPTOMIC PROFILING REVEALS THERAPEUTIC POTENTIAL
+4
+coverslip at 1,000 cells/cm2 density together with EM-G3 
+cells at 5,000 cells/cm2 density and cultured in keratinocyte 
+medium for 6 days. Culture medium was changed every second 
+day. The coverslips were then washed three times with PBS, 
+dried, and stored frozen at -20 ̊C for immunocytochemistry. 
+ii) Culture of EM-G3 cells in CM derived from fibroblasts: A 
+total of 15 ml of keratinocyte medium was applied to 75-cm2 
+flasks with confluent growth of fibroblasts (HDFs, BCCFs, 
+SCCFs and BCMFs) and cultured for 24 h at 37 ̊C and 5% 
+CO2. Subsequently, CM was collected, centrifuged (4 ̊C, 
+500 x g, 5 min) and filtered to remove any floating cells. The 
+CM was then either stored at -20 ̊C for ELISA analysis or used 
+fresh for co-culture experiments with EM-G3 cells. EM-G3 
+cells were seeded on the bottom of six-well plates with [used 
+for immunofluorescence (IF)] or without [used for western blot 
+(WB) analysis] coverslips at the density of 5,000 cells/cm2. 
+The next day, the culture medium was changed to CM and 
+replaced every other day. The coverslips with EM-G3 cells 
+were then washed three times with PBS, dried, and stored 
+frozen at -20 ̊C for IF staining. For WB analysis, cells were 
+washed with cold PBS, scratched, and collected into falcon 
+tubes. iii) Culture of EM-G3 cells in media supplemented 
+with human recombinant proteins: Three commercially 
+available human recombinant proteins, IL-6, VEGF-A, and 
+MFGE8 (R&amp;D Systems, Inc.), were (either individually or in 
+combination) added to keratinocyte medium (Table II). The 
+concentration of recombinant proteins was selected and set 
+at 100-fold based on the ELISA test results (Table I) of the 
+CM produced by fibroblasts (0.1 ng/ml for IL-6, 0.5 ng/ml for 
+VEGF-A, and 1 ng/ml for MFGE8). iv) Culture of EM-G3 cells 
+supplemented with blocking antibodies: The activities of IL-6, 
+VEGF-A and MFGE8 (either individually or in combination) 
+in co-cultures were blocked using commercially available 
+antibodies (IL-6, VEGF-A; R&amp;D Systems, Inc. and MFGE8; 
+Exbio Antibodies) used at the following concentrations 
+(1,000-times more than measured by ELISA in CM derived 
+from CAFs): 10 ng/ml of anti-IL-6; 50 ng/ml of anti-VEGF-A; 
+100 ng/ml of anti-MFGE8; (Table II). The specificity of the 
+reaction and exclusion of an effect of interaction of Fc fragment 
+of the antibody with Fc receptors on epithelial cells was tested 
+by using unspecific antibodies as controls (anti-thyroglobulin, 
+rabbit polyclonal, and mouse monoclonal; all Dako; Agilent 
+Technologies, Inc.).
+IF analysis of cultured cells. Cells seeded on glass coverslips 
+were fixed with 2% buffered paraformaldehyde (pH 7.2) at 
+room temperature for 5 min and washed with PBS. Cells were 
+permeabilized by exposure to Triton X-100 (Sigma-Aldrich; 
+Merck KGaA), and sites for the antigen-independent binding 
+of antibodies were blocked by porcine serum albumin at 
+room temperature for 30 min (Dako; Agilent Technologies, 
+Inc.). Commercial antibodies that were used were diluted as 
+recommended by the suppliers mentioned in Table III. Cell 
+nuclei were counterstained with DAPI (0.1 mg/ml) at room 
+temperature for 1 min (Sigma-Aldrich; Merck KGaA). All 
+specimens were mounted to Vectashield (Vector Laboratories, 
+Inc.) and inspected by an Eclipse 90i microscope (Nikon 
+Corp.) equipped with filterblocks for FITC, TRITC and DAPI, 
+and a black and white (colors of each channel, RGB, are 
+artificially added during postprocessing) Cool-1300Q CCD 
+camera (Vosskühler). Data were analyzed using the LUCIA 
+5.1 computer-assisted image analysis system (Laboratory 
+Imaging s.r.o.).
+WB analysis of cultured cells. Protein lysate preparation 
+took place after centrifugation (4 ̊C, 500 x g, 5 min), cell 
+pellets were dissolved in Laemmli sample buffer (100 mM 
+TRIS-HCl, 10% glycerol, 2% SDS, pH~6.8) enriched 
+with inhibitors of proteases and phosphatases (both from 
+Sigma-Aldrich; Merck KGaA). Following sonication 
+(QSonica, 40% amplitude, 15 sec), samples were kept on ice 
+for 20 min and centrifuged (4 ̊C, 10,000 x g, 10 min). Protein 
+lysates were pipetted into fresh Eppendorf tubes and stored 
+at -20 ̊C. To assess protein concentration in the prepared 
+lysates, the BCA protein assay was carried out (PierceTM 
+BCA Protein Assay Kit, Thermo Fisher Scientific, Inc.). WB 
+analysis: samples (10 μg of protein loaded per lane) were 
+quickly boiled (95 ̊C, 5 min) and separated in SDS-PAGE 
+10% Bis-Tris gel. Afterwards, proteins were electroblotted 
+to PVDF membrane using the iBlot 2 dry blotting system 
+(Thermo Fisher Scientific, Inc.). Following quick washing 
+in TBS-T (0.1% Tween in Tris-buffered saline), membranes 
+were blocked for 1 h at room temperature in 5% NFDM/BSA 
+(non-fat dry milk/bovine serum albumin) TBS-T buffer. 
+After overnight incubation with primary antibodies at 4 ̊C, 
+membranes were washed three times with TBS-T and incu-
+bated with appropriate HRP-conjugated secondary antibody 
+for 1 h at room temperature. Finally, chemiluminescent 
+signals from immunoblots were acquired in the iBright 
+FL1500 Imaging System (Thermo Fisher Scientific, Inc.) 
+using ECL (SuperSignal West Pico PLUS chemiluminescent 
+Substrate; Thermo Fisher Scientific, Inc.). β-Actin was used 
+as loading control. The complete list of antibodies used for 
+WB analysis can be found in Table IV.
+Table II. Humanized recombinant proteins and blocking antibodies used in the cell culture experiment.
+Recombinant protein/blocking antibody 
+Cat. no 
+Produced by
+h-recombinant VEGF-A 
+293-VE-050 
+R&amp;D Systems, Inc.
+h-recombinant IL-6 
+206-IL 
+R&amp;D Systems, Inc.
+h-recombinant MFGE8 
+2767-MF-050 
+R&amp;D Systems, Inc.
+anti-VEGF-A 
+MAB-293 
+R&amp;D Systems, Inc.
+anti-IL-6 
+AF-206-NA 
+R&amp;D Systems, Inc.
+anti-MFGE8 
+11-113-C100 
+EXBIO Praha, a.s.
+ ONCOLOGY REPORTS 51: 3, 2024
+5
+</div><div class='tools'><button type='button' class='quiet' onclick='jumpSec(1)'>Blot section</button><button type='button' class='quiet' onclick='jump(-1)'>Prev</button><button type='button' class='quiet' onclick='jump(1)'>Next</button><span id='hits_PMC10688412' class='num'></span><span class='aid'>shading is a search aid, not an answer</span></div></div><div class='col-q'><div class='q' data-q='v2|PMC10688412|sample_storage' data-pmcid='PMC10688412' data-item='sample_storage'><div class='qname'><span>Lysate storage stated</span><span class='ans'></span></div><div class='qdef'>How the blot's lysates or protein extracts were stored before loading: a storage temperature, with or without a duration ('lysates were stored at -80 °C until use'). Storage of tissue, cells, blood or other samples before lysis, and storage of antibodies or reagents, does not count. Western blot only.</div><div class='qhow'><b>What to mark.</b> Mark the words that state the storage.<span class='eg'>In <i>the supernatant was aliquoted and stored at -80 &deg;C</i> mark <b>stored at -80 &deg;C</b>. Nothing to mark in <i>tissues were snap-frozen in liquid nitrogen and stored at -80 &deg;C</i>.</span></div><div class='acts'><button type='button' data-act='mark'>Use highlighted text</button><button type='button' class='sec' data-act='done' style='display:none'>Done, next</button><button type='button' class='sec' data-act='not_stated'>Not stated</button><button type='button' class='quiet' data-act='unclear'>Unclear</button></div><div class='grab'><div class='cap'>Marked so far, add as many as the paper has</div><ol class='spans'></ol><label class='morewrap'><input type='checkbox' class='morebox'>There are more of these than I marked</label></div></div></div></div></div><div class='card'><div class='paper-h'><h2>Paper <span class='num'>4</span> of <span class='num'>9</span></h2><span class='pill'>PMC4382340</span></div><div class='note' style='font-size:13px;color:var(--ink-mute);margin-bottom:6px'> · <span class='num'>year unknown</span></div><div class='split'><div class='col-text'><div class='methods' id='m_PMC4382340'>
+Cell lines, culture conditions and decidualization
+The immortalized human endometrial stromal cell line St-T1 was a generous gift from Profes-
+sor Brosens (University of Warwick, UK), whose group also generated the cell line [33] and ini-
+tially characterized them for functionality and comparability to primary endometrial stromal
+cells [34]. St-T1 with a stable and inducible Sdc-1 kd (KdS1) were generated in our laboratory
+and described before [35]. Cells were maintained at 5% CO2 and 37°C in a mixture of 75% (v/
+v) DMEM and 25% (v/v) MCBD 105 supplemented with 10% (v/v) charcoal-stripped fetal calf
+serum (FCS), 1x penicillin/streptomycin, 40μg/ml gentamycin, 1x sodium pyruvate, 2mM L-
+glutamine, 1mM non-essential amino acids (all Biowest, Nuaillé, France) and 5μg/ml insulin
+(Sigma-Aldrich, Steelze, Germany). Cells were decidualized with 0.5mM 8-bromo-cAMP (Bio-
+log, Bremen, Germany) and 1μM medroxyprogesterone 17-acetate (MPA; Sigma-Aldrich) for
+72h. Decidualization was proven morphologically via bright-field microscope analysis and bio-
+chemically via determination of prolactin (S1 Fig.). Sdc-1 kd of KdS1 was induced applying
+1μg/ml tetracycline (tet) for 48h as described before [35].
+For the experiments cells were treated with 10ng/ml interleukin (IL)-1β, 10ng/ml interferon
+(IFN)-γ, 5ng/ml tumor necrosis factor (TNF)-α, 0.5ng/ml transforming growth factor (TGF)-
+β1 (all Biolegend, San Diego, CA, USA) for 24h alone and in combination (IITT), with 5μg/ml
+anti-human Fas antibody (ab) clone EOS9.1 (F) (Biolegend) for 24h alone and after 24h pre-
+treatment with IITT (IITT+F) as a replacement for the embryos secretome as established in
+our laboratory before [36].
+Active Caspase-3 measurement
+Expression of active Caspase-3 was analyzed applying the Quantikine ELISA (R&amp;D Systems).
+Non-differentiated St-T1 and KdS1 as well as decidualized St-T1 (dSt-T1) and KdS1 (dKdS1)
+grown in 24-well plates were treated as described above (n = 3 each). Cell extract preparation
+and measurement of active Caspase-3 was performed according to the manufacturer’s protocol
+and given as relative amount of active Caspase-3 in ng/ml.
+Western blot analysis of poly (ADP-ribose) polymerase (PARP)
+Non-differentiated St-T1 and KdS1 as well as dSt-T1 and dKdS1 (n = 3 each) were treated with
+IITT+F as described above and protein lysates were prepared using Cell Lysis Buffer (Cell Sig-
+naling Technology, Danvers, MA, USA) according to the manufacturer’s protocol. Briefly,
+ESC Apoptosis via Decidualization and Sdc-1 Kd
+PLOS ONE | DOI:10.1371/journal.pone.0121103
+April 1, 2015
+3 / 18
+ 30μg protein was separated by 12% SDS-PAGE and transferred to a PVDF membrane (Merck
+Millipore). The membrane was blocked with 5% non-fat milk and incubated with antibodies
+against PARP 1:1000 (9542, Cell Signaling Technology) and β-Actin 1:5000 (ab6276, Abcam,
+Cambridge, UK) at 4°C over night, followed by goat anti-rabbit HRP ab 1:2000 (R&amp;D Systems)
+for 1h. Signals were detected using Clarity Western ECL Substrate (Bio-Rad, Hercules, CA;
+USA) and analyzed with the ChemiDoc Imaging System (Bio-Rad) and the corresponding
+Image Lab software.
+Immunfluorescence of Annexin V
+Phosphatidylserine-translocation in apoptotic cells was visualized via FITC Annexin V staining
+of non-differentiated St-T1 and KdS1 as well as dSt-T1 and dKdS1 grown in 35mm dishes
+(n = 3 each), treated with IITT+F as described above and compared to untreated cells. Cells
+were washed with PBS containing 2% (v/v) FCS and 0.09% (v/v) sodium azide twice and
+stained with FITC Annexin V (Bioloegend) diluted 1:20 and 1μg/ml Hoechst 33342 (Sigma-Al-
+drich) in Annexin V Binding Buffer (Biolegend) for 15min and analyzed with a Zeiss Axiovert
+200 microscope and the AxioVision software (Zeiss, Oberkochen, Germany).
+Active Caspase-8 and -9 measurements
+Non-differentiated St-T1 and KdS1 as well as dSt-T1 and dKdS1 were treated with IITT+F as
+described above and compared to non-treated controls (n = 5 each). Enzymatic activity of the
+Caspases-8 and -9 was determined via the corresponding Colorimetric Assay Kit (R&amp;D Sys-
+tems) according to the manufacturer’s manual.
+Profiling of apoptosis-related proteins
+The expression of 35 different apoptosis-related proteins of total protein lysate was analyzed
+via the Proteome Profiler Human Apoptosis Array Kit (R&amp;D Systems). Briefly, non-differenti-
+ated St-T1 and KdS1 as well as dSt-T1 and dKdS1 (n = 4 each) were first analyzed without a
+treatment to identify the baseline expression of apoptosis-related proteins and second after
+treatment with IITT+F as described above. Cell extract preparation for the array with 400μg
+protein was performed according to the manufacturer’s protocol. Dot blots were photographed
+and analyzed with an Alpha Imager Camera and the corresponding AlphaView Software (Bio-
+zym Scientific GmbH, Hessisch Oldendorf, Germany)
+FasR analysis
+Non-differentiated St-T1 and KdS1 as well as dSt-T1 and dKdS1 were treated with IITT 24h
+and compared to non-treated controls (n = 5 each). Induction of FasR after treatment with
+IITT was investigated by real time PCR using the 2^-ΔΔCt method [37]. Primers for FasR were
+for 5’-GGACCCTCCTACCTCTGGTTCTTA-3’ and rev 5’-TTCACCTGGAGGACAGGG
+CTT-3’ (annealing temperature 50°C) and were normalized to the housekeeping gene β-Actin;
+primers were 5’-CGGGACCTGACTGACTACC-3’ and rev 5’-AGGAAGGCTGGAAGAGT
+GC-3’ (annealing temperature 50°C).
+Western blot analysis of Akt, JNK, p65 and IκBα
+Non-differentiated St-T1 and KdS1 as well as dSt-T1 and dKdS1 were treated with IITT for
+15min, F for 15min as well as IITT 24h + F for 15min and compared to untreated controls
+(n = 6 each). Experiments to determine a time dependent expression were performed in our
+laboratory before. Protein lysates were prepared with Cell Lysis Buffer (Cell Signaling
+ESC Apoptosis via Decidualization and Sdc-1 Kd
+PLOS ONE | DOI:10.1371/journal.pone.0121103
+April 1, 2015
+4 / 18
+ Technology) according to the manufacturer`s protocol. 30μg protein was separated by 12%
+SDS-PAGE and transferred to a PVDF membrane (Merck Millipore). The membrane was
+blocked with 5% non-fat milk and incubated with antibodies against Akt (9542), phosphorylat-
+ed (p)Akt (4060), JNK (9258), pJNK (4668), p65 (8242), pp65 (3039) IκBα (4814) all 1:1000
+(all Cell Signaling Technology) and β-Actin (ab6276, Abcam) at 4°C over night, followed by
+goat anti-rabbit or goat anti-mouse HRP ab 1:2000 (R&amp;D Systems) for 1h. Signals were de-
+tected using Clarity Western ECL Substrate (Bio-Rad) and analyzed with the ChemiDoc Imag-
+ing System (Bio-Rad) and the corresponding Image Lab software.
+Statistical analysis
+Two groups each were analyzed applying unpaired 2-tailed Mann-Whitney-U-Tests, and
+ANOVAs with Bonferroni post hoc tests were used for multiple comparisons by using SPSS 22
+(SPSS, Chicago, IL, USA). Values of p&lt;0.05 were considered statistically significant.
+</div><div class='tools'><button type='button' class='quiet' onclick='jumpSec(1)'>Blot section</button><button type='button' class='quiet' onclick='jump(-1)'>Prev</button><button type='button' class='quiet' onclick='jump(1)'>Next</button><span id='hits_PMC4382340' class='num'></span><span class='aid'>shading is a search aid, not an answer</span></div></div><div class='col-q'><div class='q' data-q='v2|PMC4382340|ab_clone_id' data-pmcid='PMC4382340' data-item='ab_clone_id'><div class='qname'><span>Antibody clone</span><span class='ans'></span></div><div class='qdef'>A clone name or number for a monoclonal antibody. A catalog number, or a vendor's epitope code for a polyclonal (Santa Cruz C-20), does not count. Counts for an antibody used in any assay, not only the blot.</div><div class='qhow'><b>What to mark.</b> Mark every distinct clone id.<span class='eg'>In <i>anti-beta-actin (clone AC-15, Sigma)</i> mark <b>AC-15</b>.</span></div><div class='acts'><button type='button' data-act='mark'>Use highlighted text</button><button type='button' class='sec' data-act='done' style='display:none'>Done, next</button><button type='button' class='sec' data-act='not_stated'>Not stated</button><button type='button' class='quiet' data-act='unclear'>Unclear</button></div><div class='grab'><div class='cap'>Marked so far, add as many as the paper has</div><ol class='spans'></ol><label class='morewrap'><input type='checkbox' class='morebox'>There are more of these than I marked</label></div></div></div></div></div><div class='card'><div class='paper-h'><h2>Paper <span class='num'>5</span> of <span class='num'>9</span></h2><span class='pill'>PMC5182043</span></div><div class='note' style='font-size:13px;color:var(--ink-mute);margin-bottom:6px'> · <span class='num'>year unknown</span></div><div class='split'><div class='col-text'><div class='methods' id='m_PMC5182043'>: PLCE1 levels in 20 paired HCC tissues and corresponding para­
+carcinomatous tissues was investigated by quantitative real-time polymerase chain reaction and 
+Western blot assays. In addition, protein levels of PLCE1 in one normal liver epithelial cell and 
+four HCC cell lines were examined using Western blot assay. Moreover, immunohistochemistry 
+was applied to determine the expression of PLCE1 in HCC and corresponding surrounding 
+tissues from 90 patients. Statistical analyses were used to examine the association between 
+PLCE1 levels and clinicopathological features.
+Results: We found that the expression of PLCE1 in tumor tissues was significantly lower 
+than those in paracarcinomatous tissues at both mRNA and protein levels (P,0.05). We also 
+determined that PLCE1 protein expression levels were lower in HCC cell lines than normal 
+liver epithelial cells (P,0.05). Notably, immunohistochemical assay showed that PLCE1 
+expression was significantly low in HCC tissues compared with the adjacent normal liver tis­
+sues (40% vs 18.9%; P,0.05). Besides, PLCE1 levels were negatively correlated with tumor 
+capsulae, vascular invasion, Edmondson grade, alpha-fetoprotein, and tumor-node-metastasis 
+stage (P,0.05). Univariate analysis revealed that lower level expression of PLCE1 was signifi­
+cantly associated with poorer overall survival (OS) rate (P,0.001) and disease-free survival 
+rate (P,0.001). Multivariate analysis revealed that low PLCE1 level was an independent poor 
+prognostic factor of OS and recurrence-free survival (P,0.001 and P=0.003, respectively).
+Conclusion: In brief, our results revealed that decreased PLCE1 expression was associated with 
+tumor progression in HCC and may function as a promising biomarker for HCC prognosis.
+Keywords: PLCE1, hepatocellular carcinoma, prognosis, immunohistochemistry
+Introduction
+Hepatocellular carcinoma (HCC) is the second most cause of cancer-related mortality 
+in males and the sixth lethal among females.1 It has a gloomy prognosis with a 5-year 
+survival rate of 11%.2 One of the most important factors for the low survival rate is 
+that the vast majority of HCC patients are detected at an advanced stage, where radical 
+resections are not feasible because of tumor metastasis. Therefore, the examination 
+of identified biomarkers, especially for early stage cancer, is imperative to improve 
+the prognosis of HCC patients.
+A novel susceptibility locus (rs2274223: A5780G), located at exon 26 of phospho­
+lipase C epsilon-1 (PLCE1) has been reported by three large-scale and independent 
+Correspondence: Wei-Dong Jia
+Department of General Surgery, Affiliated 
+Provincial Hospital, Anhui Medical 
+University, 17 Lujiang Road, Luyang, 
+Hefei, Anhui 230001, People’s Republic 
+of China
+Tel/fax +86 0551 6228 3740
+Email jwd1968@sina.com 
+Number of times this article has been viewed
+This article was published in the following Dove Press journal: 
+OncoTargets and Therapy
+19 December 2016
+ OncoTargets and Therapy 2017:10
+submit your manuscript | www.dovepress.com
+Dovepress 
+Dovepress
+48
+Cheng et al
+genome-wide association studies in the People’s Republic of 
+China (PRC) and is strongly correlated with the risk factor 
+for esophageal and gastric cancers in Chinese population.3-5 
+PLCE1 is located in chromosome 10q23, and it is a unique 
+member of the phospholipase family, which encodes a 
+phospholipase that catalyzes the hydrolysis of phosphatidyl-
+inositol 4,5-bisphosphate to generate two secondary mes­
+sengers: inositol 1,4,5-triphosphate and diacylglycerol; these 
+secondary messengers subsequently regulate cell growth, 
+differentiation, and gene expression.6,7 Recently, increasing 
+studies have reported that PLCE1 may play an essential role 
+in carcinogenesis and progression of numerous human can­
+cers, including cancers of the esophagus, stomach, intestine, 
+head and neck, skin, bladder, and colorectal.8-14 However, less 
+information has been reported about the expression of PLCE1 
+in HCC. In this study, the expression of PLCE1 in HCC and 
+in surrounding nontumor tissue were detected by Western 
+blotting and quantitative real-time polymerase chain reaction 
+(qRT-PCR) assays. In addition, protein levels of PLCE1 
+in one normal liver epithelial cell and four HCC cell lines 
+were examined using Western blot assay. Moreover, immu­
+nohistochemical (IHC) staining of PLCE1 in tumor tissues 
+were performed for 90 patients with HCC, and we explored 
+the association between PLCE1 levels, clinicopathological 
+features, and postoperative survival.
+Materials and methods
+Patients and specimens
+We obtained the tumor tissues and paracarcinomatous 
+specimens from 90 patients with HCC who had undergone 
+curative hepatectomy from 2006 to 2011 at the Affiliated 
+Provincial Hospital of Anhui Medical University, Hefei, 
+PRC. Patients who had undergone preoperative any 
+other anticancer therapy were eliminated from this study. 
+Additionally, we also obtained the tumor and paracar­
+cinomatous tissues from 20 patients for analyzing the 
+expression of PLCE1 by Western blotting and qRT-PCR 
+assays. The clinical data and pathological features, such 
+as age, gender, tumor size, tumor capsula, tumor nodule, 
+vascular invasion, cirrhosis, HBsAg status, Edmondson 
+grade, alpha-fetoprotein (AFP), Child-Pugh grade, and 
+tumor-node-metastasis (TNM) stage, were collected by 
+retrospective medical records. Tumor differentiation was 
+defined according to the Edmondson grading system, and 
+tumor pathological stage were defined according to the 
+seventh edition TNM classification of The American Joint 
+Committee on Cancer;15 we also used Child-Pugh classifi­
+cation to estimate liver function.
+Moreover, overall survival (OS) time was calculated 
+from the surgery date to the death or last observation date. 
+Disease-free survival (DFS) time was defined as the period 
+from the surgery day to the date of first diagnosed recurrence. 
+If recurrence was not verified, the survivors were censored 
+on the death date or the last date of follow-up. Every patient 
+had signed the informed consent for their specimens to be 
+used in this study, and the study protocol was approved by 
+the Research Ethics Committee of Anhui Provincial Hospital, 
+and was in accordance with the Declaration of Helsinki.
+Quantitative real-time PCR
+Total RNA gathered from snap-frozen tissue samples was iso­
+lated using Trizol (Life Technologies) according to the manu­
+facturer’s protocol. We designed specific primers for PLCE1 
+(Primer Designing Tool, NCBI, Bethesda, MD, USA) as fol­
+lows: forward: 5′-GCCACCAACCAATTTACTGATGA-3′ 
+and reverse: 5′-TAGTAACAAGGGTTCCAGTGC-3′. 
+18S RNA was used as the internalized control, and 
+the sequences were shown as follows: forward: 
+5′-CGCTACTACCGATTGGATGG-3′ and reverse: 
+5′-AGTTCGACCGTCTTCTCAGC-3′. PLCE1 level was 
+determined by SYBR Green-based RT-PCR performed on a 
+PikoReal RT-PCR system (Thermo Fisher Scientific) in the 
+following conditions: a first denaturation step with 95°C for 
+10 minutes, followed by 40 amplification cycles involving 
+denaturation for 15 seconds at 95°C, then annealing for 
+30 seconds at 60°C, and finally elongation for 30 seconds at 
+72°C. We performed melting-curve analysis to monitor PCR 
+product purity, and the data of relative gene expression were 
+analyzed using the 2-∆∆Ct method.
+Western blot
+We used radioimmunoprecipitation assay lysis buffer 
+(Beyotime Institute of Biotechnology, Shanghai, PRC) to 
+lyse snap-frozen tumor and corresponding paracarcino­
+matous tissues, and the bicinchoninic acid protein assay 
+was employed to estimate protein concentration. The same 
+amount of protein samples were separated by 10% sodium 
+dodecyl sulfate-polyacrylamide gel electrophoresis and 
+transferred to the polyvinylidene difluoride membranes 
+(Millipore, Billerica, MA, USA). Membranes were incubated 
+overnight at 4°C with rabbit primary antibodies anti-PLCE1 
+(1:300, Abcam PLC, Cambridge, UK) and human antibody of 
+β-actin (1:5,000, Zhongshan Golden Bridge Biotechnology 
+Co Ltd, Beijing, PRC). Following a wash with Tris-buffered 
+saline/0.1% Tween for three times, each time for 5 minutes, 
+we incubated the membranes with secondary antibodies 
+ OncoTargets and Therapy 2017:10
+submit your manuscript | www.dovepress.com
+Dovepress 
+Dovepress
+49
+The correlation between PLCE1 and HCC progression
+at room temperature for 2 hours. The blots were captured 
+and visualized by Alpha-EaseFC imaging system (Alpha 
+Innotech, San Leandro, CA, USA). Using the Alpha-EaseFC 
+software, the integrated density value (IDV) of each band was 
+detected by drawing a rectangle outlining the band. A total 
+IDV by summation of each band IDV was employed when 
+a protein had double bands. Results were normalized to the 
+internal control, β-actin.
+Cell culture
+HCC cell lines SK-Hep1, PLC, HepG2, and Hep3B, as well 
+as the immortalized normal liver epithelial cell THLE3 
+obtained from ATCC were cultured in Dulbecco’s Modified 
+Eagle’s Medium (Gibco, Invitrogen Corporation, Carlsbad, 
+CA, USA), while THLE3 cells were cultured in bronchial 
+epithelial growth medium (Lonza/Clonetics Corporation, 
+Walkersville, MD, USA). The cells were maintained at 37°C 
+with 5% CO2 in a humidified atmosphere.
+Immunohistochemistry
+Serial tissue sections (4 μm thick) were deparaffinized with 
+xylene, then rehydrated through grade alcohols and subjected 
+to autoclave antigen retrieval in ethylenediaminetetraacetic 
+acid buffer (pH 8.0) at 100°C for 5 minutes. Endogenous 
+peroxidase activity was blocked by 3% hydrogen peroxide 
+for 10 minutes. Next, tissue sections were incubated at 
+4°C overnight with anti-PLCE1 rabbit polyclonal antibody 
+(Abcam PLC) at a dilution of 1:100 in phosphate-buffered 
+saline (PBS) with 1% bovine serum albumin, then washed 
+with PBS and incubated with horseradish peroxidase-
+conjugated secondary antibody (Zhongshan Golden Bridge 
+Biotechnology) for 30 minutes. Immunoreactivity was 
+visualized with chromogen 3,3′-diaminobenzidine. Next, 
+all sections were counterstained with hematoxylin and then 
+dehydrated in grade alcohols, and finally mounted with 
+neutral balsam. Under the same conditions, PBS was used as 
+the negative control for the primary antibody, and a known 
+immunopositive section served as the positive control. We 
+consulted a previously reported method to evaluate semi­
+quantitatively tumor expression of PLCE116 as follows: the 
+percentage of staining cell scores: 0, no staining; 1 point, 
+,10%; 2 points, 10%-30%; and 3 points, .30%. The stain­
+ing intensity scores: 0 point, negative; 1 point, weak intensity; 
+2 points, moderate intensity; and 3 points, strong intensity. 
+Sum scores with $3 points were considered positive, whereas 
+sum scores with ,3 points were regarded as negative. All 
+scores were assessed independently by two pathologists, and 
+the variability of the interobserver was ,3%.
+Statistical analysis
+All data analyses were carried out with SPSS 22.0 software 
+(SPSS Inc, Chicago, IL, USA). Data were presented as 
+mean ± standard deviation. Differences of PLCE1 mRNA 
+and protein levels between HCC tissues and corresponding 
+paracarcinomatous tissues samples were examined with 
+the independent Student t-test. Categorical variables were 
+analyzed by the χ2 test or Fisher’s exact test, and the Kaplan-
+Meier method was used to determine survival analysis, 
+whereas the differences among survival rates were evaluated 
+by the log-rank test. Cox proportional hazard model was used 
+to evaluate the prognostic factors, which were significant in 
+univariate analyses. P-values ,0.05 were served as statisti­
+cally significant.
+</div><div class='tools'><button type='button' class='quiet' onclick='jumpSec(1)'>Blot section</button><button type='button' class='quiet' onclick='jump(-1)'>Prev</button><button type='button' class='quiet' onclick='jump(1)'>Next</button><span id='hits_PMC5182043' class='num'></span><span class='aid'>shading is a search aid, not an answer</span></div></div><div class='col-q'><div class='q' data-q='v2|PMC5182043|membrane_source' data-pmcid='PMC5182043' data-item='membrane_source'><div class='qname'><span>Membrane source or grade</span><span class='ans'></span></div><div class='qdef'>The supplier, product name or grade of the blot membrane, such as Immobilon-P (Millipore) or Amersham Hybond. Membrane chemistry or pore size alone does not count, and neither does the supplier of a transfer system or kit that does not name the membrane, or an Immobilon ECL substrate, which is the ECL reagent. Western blot only.</div><div class='qhow'><b>What to mark.</b> Mark the supplier or product words for the membrane.<span class='eg'>In <i>transferred to PVDF membranes (Immobilon-P, Millipore)</i> mark <b>Immobilon-P, Millipore</b>. Nothing to mark in <i>transferred to PVDF membranes</i>.</span></div><div class='acts'><button type='button' data-act='mark'>Use highlighted text</button><button type='button' class='sec' data-act='done' style='display:none'>Done, next</button><button type='button' class='sec' data-act='not_stated'>Not stated</button><button type='button' class='quiet' data-act='unclear'>Unclear</button></div><div class='grab'><div class='cap'>Marked so far, add as many as the paper has</div><ol class='spans'></ol><label class='morewrap'><input type='checkbox' class='morebox'>There are more of these than I marked</label></div></div></div></div></div><div class='card'><div class='paper-h'><h2>Paper <span class='num'>6</span> of <span class='num'>9</span></h2><span class='pill'>PMC6128627</span></div><div class='note' style='font-size:13px;color:var(--ink-mute);margin-bottom:6px'> · <span class='num'>year unknown</span></div><div class='split'><div class='col-text'><div class='methods' id='m_PMC6128627'>
+Expression of VP6 protein in L. lactis
+The generation of L. lactis expressing RV VP6 protein and protein expression optimization
+was previously described by Esteban et al. [37]. Briefly, L. lactis carrying VP6 protein or control
+L. lactis NZ9000 (strain containing no plasmid) were grown in M17 broth (Biokar Diagnostics,
+Beauvais, France) containing 0.5% w/v of sucrose (GM17) with or without chloramphenicol
+10 μg/ml, respectively. Bacteria were cultured overnight (ON) at 30 ̊C without shaking. Then,
+a 1:20 dilution was performed in fresh medium and when an optical density at 600 nm
+(OD600) of 0.5 was reached, nisin (Danisco, Grindsted, Denmark) was added to a final concen-
+tration of 100 ng/ml to induce protein expression. Induced cultures were incubated for two
+hours at 30 ̊C before processing [37].
+Generation of CWDP
+Induced bacteria cells from an 800 ml culture were concentrated by centrifugation at 3840 xg
+in a J-12 Beckmann centrifuge. The pellet was washed twice with SM buffer (Tris 50 mM,
+NaCl 100 mM, Mg2SO4 10 mM; pH 7.5) [38] and resuspended in 25 ml of the same buffer.
+The bacterial suspension was passed five times through a French Press (Thermo Fisher Scien-
+tific, Waltham, MA, USA) at 15,000 psi to induce cell wall disruption. Then, unbroken cells
+were pelleted with a 3840 x g centrifugation at 4 ̊C. The supernatant containing cell wall frag-
+ments was recovered and centrifuged for 15 min at 7520 x g at 4 ̊C. The pellet was washed and
+resuspended in 400 μl of SM buffer and kept at -20 ̊C until used. This concentrated fraction of
+broken cell walls will be referred to in this paper as CWDP.
+L. lactis ́ cell wall-derived particles carrying Rotavirus VP6 protein protects mice from infection
+PLOS ONE | https://doi.org/10.1371/journal.pone.0203700
+September 7, 2018
+3 / 16
+ Characterization of CWDP
+SDS-PAGE, Western blot, and flow cytometry.
+To confirm the presence of VP6 protein
+in the CWDP obtained from the recombinant L. lactis, SDS- PAGE, Western blot, and ELISA
+were performed.
+Briefly, for SDS-PAGE 10% analysis, 20 μl of CWDP sample was mixed with 58 μl of dis-
+tilled water, 2 μl of SDS 20% w/v and 20 μl of PAGE loading buffer and incubated at 100 ̊C for
+10 min. After electrophoresis at 100 V for 2.5 h, gels were Coomassie-blue stained or blotted
+onto a PVDF membrane. Protein Molecular Weight Marker (MWM), PageRulerTMPrestained
+Protein Ladder, 10 to 180 kDa (Thermo Fisher Scientific) was included for size comparison.
+The membrane was incubated ON at 4 ̊C with PBS containing 3% w/v casein. Then, the
+membrane was incubated with a 1/3000 dilution in PBSTC (PBS, 0.2% v/v Tween-20 and 1%
+w/v casein) of an in-house produced mouse polyclonal antibody anti-RRV rotavirus strain for
+1 h at 37 ̊C. After that, the membrane was washed three times with PBST (PBSTC without
+casein) and incubated for 1 h at 37 ̊C with a 1/1000 dilution of HRP-conjugated goat anti-
+mouse IgG (Pierce Biotechnology, Rockford, IL, USA). Antibody detection was performed
+with a chemiluminescent substrate (PBL, Bernal, Buenos Aires, Argentina) following the man-
+ufacturer’s instructions and the x-ray film was exposed until bands were visualized.
+To further confirm the presence of VP6 protein, the CWDP obtained from induced L. lactis
+NZ9000 (control) and recombinant L. lactis expressing VP6 protein were analyzed by flow
+cytometry. For this, CWDP were incubated for 30 min at 37 ̊C with a 1/2000 dilution in
+PBSTC of an in-house produced rabbit polyclonal antibody anti-RRV rotavirus. After three
+washes with PBST, CWDP were incubated for 30 min at 37 ̊C with a 1/1000 dilution in
+PBSTC of a FITC-conjugated goat anti-rabbit IgG antibody (Chemicon, Temecula, CA, USA).
+Then, two washes with PBST were performed, and CWDP were resuspended in PBS buffer for
+flow cytometry analysis. A gate including CWDP was selected on forward scatter and side scat-
+ter dot plots, and 100,000 events were acquired within this gate in a FACScalibur flow cytome-
+ter (Becton Dickinson, Immunocytometry Systems, San Jose, CA, USA). CWDP from L. lactis
+NZ9000 treated as previously described were used to set negative values of fluorescence in
+FL1-H channel with a band-pass filter of 530 nm (515 to 545 nm).
+Light scattering.
+CWDP size was analyzed by dynamic light scattering (DLS) using a
+Zetasizer Nano (Malvern Instruments, Malvern, UK).
+Transmission electron microscopy and immunogold staining.
+CWDP samples were
+placed on collodion-coated copper grids (400 mesh) and stained with 0.5% w/v phosphotungs-
+tic acid for 5 seconds. The grids were examined using a JEM 1200 EX II (JEOL Ltd., Tokio,
+Japan) transmission electron microscope and pictures taken with an Erlangshen ES1000W,
+model 785 (Gatan Inc., Pleasanton, CA, USA) camera at SCME Facultad de Ciencias Veteri-
+narias, UNLP, La Plata, Argentina.
+For immunostaining CWDP were incubated for 30 min at 37 ̊C with a 1/500 dilution in
+PBSTC of a rabbit polyclonal antibody anti-RRV rotavirus. After three washes with PBST,
+CWDP were incubated for 30 min at 37 ̊C with a 1/5 dilution in PBSTC of a goat anti-rabbit
+IgG conjugated to 10 nm gold particles antibody (Sigma-Aldrich, St. Louis, MO, USA). Then,
+two washes with PBST were performed, and CWDP were resuspended in PBS buffer for fur-
+ther microscopy analysis.
+Mice immunization and sample collection
+Adult male BALB/c mice (25 per assay) were obtained from the Bioterio de la Facultad de
+Ciencias Veterinarias de la Universidad Nacional de La Plata (FCV-UNLP). During experi-
+ments, the animals were kept in the Bioterio at the Universidad Nacional de Quilmes (5
+L. lactis ́ cell wall-derived particles carrying Rotavirus VP6 protein protects mice from infection
+PLOS ONE | https://doi.org/10.1371/journal.pone.0203700
+September 7, 2018
+4 / 16
+ animals/cage), with a 12 h light/ 12 h dark cycle at controlled temperature (21 ± 1 ̊C). Water
+and commercial rodent food were administered ad libitum. Mice were monitored during the
+experiment three times a week for their overall health status evaluating indicators like activity,
+normal consumption of food and water, interaction with cage mates, and general appearance.
+All procedures were performed to minimize animal suffering, and at the end of experi-
+ments, animals were sacrificed by a ketamine/ xylazine overdose.
+Groups of 5 BALB/c mice (6 to 8 weeks old) were immunized intranasally or intragastrically
+via gavage (using a 22G-ball tip needle) with CWDP containing 30 μg of VP6 per dose as deter-
+mined by ImageJ densitometry analysis performed on a Coomassie-blue stained SDS-PAGE
+using BSA as mass standard. Intranasal immunization was performed on days 0, 14 and 28;
+and for intragastric administration, three series of three doses each were used on days 0, 1, 2;
+days 14, 15, 16 and days 28, 29 and 30. As a mucosal adjuvant, 10 μg of dmLT was used in
+doses corresponding to days 0, 14 and 28 in both administration routes. A group immunized
+with PBS was included as a control. Mice sera were collected on days 0, 14, 28 and 42 and kept
+at -20 ̊C until used. All procedures involving animals were approved by the IACUC of the Uni-
+versidad Nacional de Quilmes (Approved Protocol N ̊ 003/16).
+Detection of RV specific IgA and IgG antibodies by ELISA
+Detection of specific antibodies against RV was performed by ELISA. For this, 96-well plates were
+coated with concentrated RV (RRV strain) in carbonate buffer pH 9.0, ON at 4 ̊C. Sera were
+tested in a 1/100 or 1/20 dilution for detection of IgG or IgA, respectively, and IgG positive sera
+were titered using threefold dilution series in PBSTC. Plates were incubated for 1 h with a 1/1500
+dilution in PBSTC of HRP-conjugated goat anti-mouse IgG (Fc) antibody (Pierce Biotechnology,
+Rockford, IL, USA). After washing three times with PBST, o-phenylenediamine peroxidase sub-
+strate was added, and after 15 min the reaction was stopped with sulfuric acid, and the optical
+density at 490 nm (OD490) was determined. For RV specific IgA determination in stools samples,
+96-well plates were coated at room temperature for 1 h with a capture rabbit anti-mouse IgA anti-
+body (Thermo Fisher Scientific) diluted 1/200 in carbonate buffer. Then, 10% w/v stool samples
+prepared in TNC buffer (Tris 10 mM, NaCl 140 mM, CaCl2 5 mM) with 0.05% v/v Tween 20
+(TNCT) were diluted 1/5 in PBSTC and incubated for 1 h at 37 ̊C. After that, concentrated RV
+(RRV strain) was added and incubated ON at 4 ̊C. Purified biotinylated goat IgG anti-RRV RV
+was added in a 1/500 dilution in PBSTC and incubated for 1 h at 37 ̊C. Finally, streptavidin-HRP
+(USBiological, Salem, MA, USA) diluted 1/2000 in PBSTC was added and incubated for 30 min at
+37 ̊C. Then, the o-phenylenediamine substrate was added, and after 15 min the reaction was
+stopped with sulfuric acid, and the OD490 was determined. Each incubation step was performed
+in a humidity chamber and was followed by three washes with PBST.
+Virus challenge and determination of viral shedding
+Immunized mice were infected with wild-type RV EC strain 43 days after the first immuniza-
+tion to evaluate RV shedding. For this, 104 shedding doses (SD50) were administered intragas-
+trically, and stool samples were collected for each mouse every day for eight days. Stools were
+stored at -80 ̊C until all samples were collected, and then 10% w/v suspension were prepared
+in TNCT. After completely dissolving the fecal pellets, samples were centrifuged at 500 xg for
+10 min to remove debris. Supernatants were used to determine the presence of RV antigens by
+ELISA as previously described [39]. RV antigens shedding curves were constructed plotting
+the OD490 versus days post-challenge for each mouse within each group. Then, the area under
+the curve (AUC) was calculated for each animal and compared to that of the PBS immunized
+group considered as 100% viral shedding [40].
+L. lactis ́ cell wall-derived particles carrying Rotavirus VP6 protein protects mice from infection
+PLOS ONE | https://doi.org/10.1371/journal.pone.0203700
+September 7, 2018
+5 / 16
+ Statistics
+Statistics were performed with GraphPad Prism software (La Jolla, CA, USA) and the results
+are expressed as mean ± SE. The statistical tests used are mentioned in the figure captions and
+results were considered to be significantly different when P&lt; 0.05.
+</div><div class='tools'><button type='button' class='quiet' onclick='jumpSec(1)'>Blot section</button><button type='button' class='quiet' onclick='jump(-1)'>Prev</button><button type='button' class='quiet' onclick='jump(1)'>Next</button><span id='hits_PMC6128627' class='num'></span><span class='aid'>shading is a search aid, not an answer</span></div></div><div class='col-q'><div class='q' data-q='v2|PMC6128627|ab_isotype' data-pmcid='PMC6128627' data-item='ab_isotype'><div class='qname'><span>Antibody isotype</span><span class='ans'></span></div><div class='qdef'>The immunoglobulin class or subclass stated for an antibody itself, primary or secondary (IgG, IgG1, IgG2a, IgM, IgY), as in 'rabbit polyclonal IgG' or 'mouse monoclonal IgG2a'. An isotype that names what a secondary recognizes ('goat anti-rabbit IgG'), an isotype control, a normal or control IgG, or a serum antibody response does not count. Host species and clonality belong to Primary antibody host or type. Counts for an antibody used in any assay, not only the blot.</div><div class='qhow'><b>What to mark.</b> Mark each distinct isotype once.<span class='eg'>In <i>mouse monoclonal IgG2a anti-GFAP</i> mark <b>IgG2a</b>; in <i>rabbit polyclonal IgG anti-Kif5</i> mark <b>IgG</b>. Nothing to mark in <i>HRP-conjugated goat anti-rabbit IgG</i>.</span></div><div class='acts'><button type='button' data-act='mark'>Use highlighted text</button><button type='button' class='sec' data-act='done' style='display:none'>Done, next</button><button type='button' class='sec' data-act='not_stated'>Not stated</button><button type='button' class='quiet' data-act='unclear'>Unclear</button></div><div class='grab'><div class='cap'>Marked so far, add as many as the paper has</div><ol class='spans'></ol><label class='morewrap'><input type='checkbox' class='morebox'>There are more of these than I marked</label></div></div></div></div></div><div class='card'><div class='paper-h'><h2>Paper <span class='num'>7</span> of <span class='num'>9</span></h2><span class='pill'>PMC7015957</span></div><div class='note' style='font-size:13px;color:var(--ink-mute);margin-bottom:6px'> · <span class='num'>year unknown</span></div><div class='split'><div class='col-text'><div class='methods' id='m_PMC7015957'>
+Reagents
+The substances used to mineralization process: HNO3 (65%)
+and H2O2 (30%) (Suprapur®) were obtained from Merck
+(Darmstadt, Germany). Four-time distilled water with conduc-
+tivity below 1 μS/cm was obtained in HLP 5 apparatus from
+Hydrolab (Straszyn, Poland).
+Additives for mushroom media in the form of copper sul-
+fate (CuSO4) and zinc sulfate (ZnSO4) were purchased from
+the Polish Company of Chemistry (Gliwice, Poland). Zinc
+hydrogen aspartate (C8H12N2O8Zn) and copper gluconate
+(C12H22CuO14) were purchased from Farmapol (Poznań,
+Poland). Selenitriglycerides (Selol)-prepared from Se(IV)
+and sunflower oil-was obtained from the Department of
+Bioanalysis and Drug Analysis at the Medical University of
+Warsaw in the synthesis process as described in Polish patent
+76,530 [14]. Selol was used with a declared Se concentration
+of 5% (w/v).
+The substances used to prepare artificial digestive juices
+were purchased from different companies: CaCl2 and MgCl2
+from Chempur (Kraków, Poland); NaHCO3 from PPH
+Golpharm (Kraków, Poland); NaCl and NH4Cl from Alfa
+Aesar® (Kandel, Germany); bile salts and pepsin from BTL
+(Łódź, Poland); pancreatic extract and HCl Suprapur® from
+Merck (Darmstad, Germany); and KHCO3, C6H8O7,
+Na2HPO4, and K2HPO4 from Polish Company of Chemistry
+(Gliwice, Poland).
+Materials
+Fresh fruiting bodies of L. edodes species of commercial ori-
+gin were used for the experiments and for establishing in vitro
+cultures. The young fruiting bodies were taxonomically iden-
+tified using the MycoKey 4.1 key (http://www.mycokey.
+com). Mycelial fragments were collected from the hymenial
+part of fresh fruiting bodies and were degreased with 70%
+ethyl alcohol. The fragments were then sterilized with 15%
+sodium hypochlorite (NaClO) solution for several minutes.
+After rinsing with redistilled water, sterile fragments of
+fruiting bodies were transferred under laminar flow to
+Oddoux medium solidified with agar [15]. To obtain a large
+amount of biomass, it is necessary that the biomass grown on
+in vitro cultures on solid medium be transferred to a modified
+Oddoux liquid substrate. Therefore, biomass obtained from
+in vitro cultures on solid medium was transferred to
+Erlenmeyer flasks containing 250 mL of liquid medium; the
+initial mass of the inoculum was 0.1 g. The in vitro cultures
+were allowed to grow for 21 days on Oddoux medium at 25 ±
+2 °C, under a photoperiod of 16 h light (900 lx) and 8 h dark,
+on an ALTEL shaker (Poland) at 140 rpm.
+Experimental In Vitro Cultures of L. edodes
+The following materials were prepared for the planned exper-
+iments: biomass of L. edodes (control) was obtained on a
+liquid Oddoux medium and on the same liquid medium with
+the addition of zinc compounds, such as zinc hydrogen aspar-
+tate (C8H12N2O8Zn) at a concentration of 200 mg/L and zinc
+sulfate (ZnSO4) at a concentration of 174.47 mg/L, and copper
+compounds, such as copper gluconate (C12H22CuO14) at a
+concentration of 72.88 mg/L and copper sulfate (CuSO4) at
+a concentration of 33.60 mg/L. In vitro cultures of L. edodes
+were prepared on a medium enriched with Se organic com-
+pounds too by the addition of Selol (Se(IV) 25 and 50 mg/L
+medium). The mycelial cultures were transferred to
+Erlenmeyer flasks and were shaken in order to promote a high
+growth of biomass. After culturing, mycelium was separated
+from the medium, frozen, and lyophilized (Freezone 4.5
+lyophilizator, Labonco; temperature -40 °C) for further ex-
+periments as in previous study [16, 17].
+Analysis of Bioelements in L. edodes Mycelium
+The amount of elements in the fruiting bodies and mycelium
+of L. edodes and extracts obtained by digestion with artificial
+604
+Muszyńska et al.
+ digestive juices was determined using TXRF method. The
+TXRF method was chosen for this study due to several sig-
+nificant aspects, such as high sensitivity, precision, accuracy,
+and repeatability of analyses, as well as possibility to achieve
+faster measurement with a very large number of samples. The
+optimization of mineralization conditions for analysis of sam-
+ples in combination with the TXRF method enabled optimal
+analysis of bioelements in the fruiting bodies, mycelial cul-
+tures, and extracts obtained from L. edodes.
+For this analysis, 0.2 g samples of lyophilized mushroom
+material were weighed, with an accuracy of 0.01 g, and were
+transferred to Teflon vessels, to which 2 mL of H2O2 solution
+(30%) and 4 mL of concentrated HNO3 solution (65%) were
+added. Mineralization was carried out in Magnum II micro-
+wave apparatus (ERTEC) in three stages of 10 min each, at a
+power of 70% and 100%, respectively, maintaining the tem-
+perature of the device at 290 °C. After mineralization, the
+solutions were transferred to quartz evaporators and evaporat-
+ed on a heating plate at 150 °C to remove excess reagents and
+water. The residue obtained after evaporation was quantita-
+tively transferred to 10-mL volumetric flasks with four-time
+distilled water. To analyze the composition of bioelements
+such as K, Ca, Mn, Fe, Cu, Zn, and Se in the prepared test
+samples, 1000 ppm gallium was used as an internal standard.
+The composition of elements was measured using a TXRF
+spectrometer Nanohunter II (Rigaku) equipped with an X-
+ray tube containing a molybdenum anode at 50 kV for 1000 s.
+Artificial Digestive Juice Extraction
+Artificial digestive juices imitating saliva, gastric and intesti-
+nal juices were used in the study to extract the bioelements
+from L. edodes mycelium. These digestive juices were pre-
+pared as follows:
+Artificial Saliva Solutions of 100 mL MgCl2 (1.5 mmol/L),
+100 mL KH2PO4 (25 mmol/L), 100 mL KHCO3
+(150 mmol/L), 100 mL Na2HPO4 (24 mmol/L), 6 mL citric
+acid (25 mmol/L), and 100 mL CaCl2 (15 mmol/L) were pre-
+pared and added successively to a volumetric flask. The vol-
+ume of the solution was made up to 1000 mL with four-time
+distilled water [18].
+Artificial Gastric Juice A total of 3.2 g of pepsin and 2.0 g of
+NaCl were dissolved in four-time distilled water, and then to
+this solution, 80 mL of 1 mol/L HCl was added. The volume
+of the solution was finally made up to 1000 mL with water
+[19].
+Artificial Intestinal Juice A total of 120 mg bile acids, 20 mg
+pancreatic extract, and 8.4 g NaHCO3 were dissolved in four-
+time distilled water, and the volume of the solution was made
+up to 1000 mL with water [20].
+Extracts were obtained from lyophilized biomass from
+fruiting bodies and in vitro cultures of L. edodes and were
+digested in vitro using artificial digestive juices in the
+Gastroel-2014 apparatus as follows [13]. The extraction of
+mushroom material was carried out under conditions imitating
+those prevailing in the human body (temperature 37 °C and
+mixing movements imitating peristaltic movements). About
+0.3 g of mushroom material was transferred to 100-mL
+Erlenmeyer flasks and moistened with 3 mL of artificial saliva
+solution for 1 min. Then, 20 mL of gastric juice was added to
+the flasks. The flasks were sealed and placed in the Gastroel-
+2014 apparatus for the digestion process. The process was
+conducted for 30 and 60 min, respectively. The obtained ex-
+tracts were filtered using of paper filters and syringe mem-
+brane filters. The remaining mushroom material was again
+transferred to Erlenmeyer flasks, and 20 mL of intestinal juice
+was added. Digestion was allowed to proceed for 150 min.
+After digestion, the extracts were filtered to obtain a clear
+solution. Each sample was subjected to three independent rep-
+etitions. The content of elements was also determined by
+TXRF method described above.
+Preparation of Mycelial Extracts for Evaluation
+of Anti-inflammatory Properties
+To prepare methanolic extracts of L. edodes, the lyophilized
+biomass obtained from in vitro cultures was first homogenized
+in a mortar, and 2 g of each homogenate sample was then used
+for extraction. Mycelium was extracted five times with
+100 mL of methanol using ultrasound at a frequency of
+49 kHz for 30 min (Sonic-2, Polsonic, Poland). Following
+extraction, the methanol in the extracts was evaporated to
+dryness. Then, 250 mg of dry extract was dissolved in 96%
+ethanol, filtered through sterile bacteriological syringe filters
+with a pore diameter of 0.2 μm, and transferred quantitatively
+to 5-mL volumetric flasks. The prepared samples were then
+diluted to the desired concentrations by mixing 100 μL with
+900 μL of distilled water. Finally, the extracts were stored at
+4 °C until they were used for analysis of anti-inflammatory
+activity in RAW 264.7 cell lines.
+Cell Cultures
+Mus musculus macrophages RAW 264.7 (American Type Cell
+Culture: TIB-71) were cultured in Dulbecco’s modified
+Eagle’s medium supplemented with 1% antibiotic solution
+(100 IU/mL penicillin, 0.1 μg/mL streptomycin) and 10%
+fetal bovine serum (ATCC, Manassas, VA, USA). The cells
+were maintained in a humidified atmosphere with 5% CO2 in
+air at 37 °C and were finally seeded into a six-well plate
+(Sarstedt AG&amp;Co., Nümbrecht, Germany) at a density of
+5 × 105 cells/well in 2 mL of medium. Before the experiment,
+the morphology of cells was observed with an inverted light
+Lentinula edodes as a Source of Bioelements Released into Artificial Digestive Juices and Potential...
+605
+ microscope (Olympus, Tokyo, Japan), and cell viability was
+assessed by Trypan Blue Exclusion Test. Then, cells were
+activated with LPS (10 ng/mL) and incubated with the pre-
+pared mushroom extracts (100 μL) for 24 h.
+No cytotoxic effects or apoptosis were observed in the
+RAW 264.7 cells activated with LPS and treated with
+L. edodes extracts. Cell viability varied from 100 to 99% fol-
+lowing treatment with the extracts. After incubation, both the
+media and the cells were collected by scrapping.
+Western Blot for Protein Quantification
+Cell lysates were prepared using M-PER (Thermo Fisher
+Scientific, Waltham, MA, USA) buffer with protease inhibitor
+cocktail set III (Merck, Darmstadt, Germany). The contents of
+proteins in the lysates were determined using Bradford reac-
+tion. Samples (40 μg) were solubilized in Laemmli buffer
+added with 2% mercaptoethanol (Bio-Rad, Hercules, CA,
+USA) and were then subjected to 10% SDS (sodium dodecyl
+sulfate)-polyacrylamide gel electrophoresis as described earli-
+er [21]. Following transfer, membranes were blocked for 1 h at
+room temperature in the presence of casein in TBS (tris-buff-
+ered saline)-1% Tween buffer (Bio-Rad) and subsequently
+incubated overnight at 4 °C with the following primary anti-
+bodies: anti-COX-2, anti-Nrf2, anti-FABP4, anti-β-actin
+(GeneTex Inc., Irvine, CA, USA), and anti-PPARγ (Cayman
+Chemical, Ann Arbor, MI, USA), all of which were diluted to
+the ratio of 1:1000. After incubation, the membranes were
+washed and incubated with secondary antibodies (anti-rabbit
+IgG (HRP); Thermo Fisher Scientific, Waltham, MA, USA)
+for 1 h at room temperature. Then, the membranes were
+washed again, and proteins were detected using a Clarity
+Western ECL Luminol Substrate detection kit (Bio-Rad).
+The integrated optical density of the protein bands was quan-
+tified using a Chemi Doc Camera with Image Lab software
+(Bio-Rad).
+Statistical Analysis
+The results are shown as mean ± standard deviation (SD), and
+all experiments were performed six times. Using one-way
+ANOVA with Tukey’s test was used to elaborate the results
+of evaluation of bioelements composition as well as proteins
+level. For all the tests, the value p &lt; 0.05 was accepted as the
+level of statistical significance (GraphPad InStat).
+Results and Discussion
+The amount of biomass obtained from L. edodes mycelium
+cultures grown on control media was 8-9 g d.w. (dry weight)/
+L medium, whereas the amount obtained from media enriched
+with bioelements (Cu, Se, Zn) was 9-9.5 g. The dynamics of
+mycelium growth did not differ from that reported in the ear-
+lier studies [16, 22].
+In the first stage of the study, the content of selected macro-
+(K, Ca) and microelements (Mn, Fe, Cu, Zn, Se) in the fruiting
+bodies of L. edodes of commercial origin was determined, as
+well as those present in the mycelium of L. edodes obtained
+from in vitro cultures grown on modified liquid media, which
+were enriched with Cu, Zn, and Se compounds in inorganic
+(ZnSO4, CuSO4) and organic forms (C8H12N2O8Zn,
+C12H22CuO14, and Selol) (Table 1). It is well known that
+mushroom extracts exhibit anti-inflammatory properties;
+therefore, the bioelements that also exert similar effects were
+chosen for fortification of in vitro cultures [5, 22]. As a result,
+mycelium with the highest possible anti-inflammatory activity
+was obtained.
+Among all the elements, K was found at the highest content
+in the fruiting bodies; its content was 1839.5 mg/100 g d.w.
+The content of Ca was highest in the mycelium cultured on the
+control medium; its content was 684.4 mg/100 g d.w. The
+presented results from the analysis of macroelement content
+in L. edodes mycelium were higher compared to the results
+obtained for fruiting bodies of the same species (K 537.9-
+1031.0 mg/100 g d.w., Ca 17.9-60.7 mg/100 g d.w.)
+[23-26]. The content of Cu was 21.0 mg/100 g d.w. in the
+mycelium obtained on the medium enriched with CuSO4,
+whereas the content of Fe was 14.6 mg/100 g d.w. in the
+mycelium obtained on the medium enriched with
+C12H22CuO14. The highest content of Mn, 18.9 mg/100 g
+d.w., was found in the mycelium obtained from non-
+enriched medium. In the case of Se, an amount of 568.6 mg/
+100 g d.w. was found in the mycelium obtained on the medi-
+um enriched with Selol at a higher concentration (Se(IV)
+50 mg/L medium). A high amount of Zn (231.2 mg/100 g
+d.w.) was found in the mycelium obtained from in vitro cul-
+tures enriched with ZnSO4 (Table 1). Analysis of
+micronutrients showed that obtained L. edodes mycelia were
+characterized by a higher content of these elements than
+fruiting bodies of this mushroom species (Mn 0.2-4.8 mg/
+100 g d.w., Fe 4.4-12.5 mg/100 g d.w., Cu 1.4-18.2 mg/
+100 g d.w., Zn 5.9-28.4 mg/100 g d.w.) [23-26].
+Because Zn, Cu, and Se, which are the elements with a high
+anti-inflammatory potential, were added to the culture medi-
+um, their content in mycelial cultures was analyzed in the next
+stage of the study, with respect to the type of compound and
+concentration used [5].
+It was identified that the amount of Cu was highest
+(21.0 mg/100 g d.w.) in the biomass of L. edodes cultured
+on the medium enriched with inorganic copper salt (CuSO4),
+while a slightly lesser amount was found in the mycelium
+obtained from in vitro cultures grown on the media enriched
+with C12H22CuO14 (20.4 mg/100 g d.w.). A similar trend was
+observed for the content of Zn: the amount of Zn in the bio-
+mass of L. edodes obtained on the medium enriched with
+606
+Muszyńska et al.
+ Table 1
+Content of elements (mg/100 g d.w.) determined in the fruiting bodies and mycelium, as well as in basic media and the ones enriched with Zn, Cu and Se used for in vitro culturing of L. edodes
+L. edodes
+Metals
+K
+Ca
+Mn
+Fe
+Cu
+Zn
+Se
+Ga
+L. edodes (fruiting bodies)
+1839.5 ± 89.1a
+312.2 ± 56.2a
+2.9 ± 0.2a
+14.5 ± 2.6a
+1.6 ± 0.3a
+7.6 ± 0.4a
+0.01 ± 0.00
+50.0 ± 0.0
+L. edodes (control mycelium)
+1035.3 ± 273.6a,b
+684.4 ± 127.1a,b 18.9 ± 3.4a,b
+14.5 ± 2.5b
+-
+17.2 ± 2.4b
+0.01 ± 0.00
+50.0 ± 0.0
+L. edodes (control medium)
+1828.6 ± 7.5b,c
+93.4 ± 5.9a,b,c
+17.5 ± 0.1a,c
+12.9 ± 1.1c
+-
+6.0 ± 0.1b,c
+-
+50.0 ± 0.0
+L. edodes + ZnSO4 (mycelium)
+780.8 ± 51.5a,c,d
+234.5 ± 26.1b,c
+9.8 ± 0.8a,b,c,d
+9.7 ± 1.4a,b,d
+3.2 ± 0.1a,d
+231.2 ± 6.5a,b,c,d
+0.01 ± 0.00
+50.0 ± 0.0
+L. edodes + ZnSO4 (medium)
+391.9 ± 17.4a,b,c,d
+123.4 ± 6.9a,b,e
+-
+9.7 ± 1.3a,b,e
+14.3 ± 0.3a,d
+0.6 ± 0.3b,d,e
+0.01 ± 0.00
+50.0 ± 0.0
+L. edodes + ZnHasp (mycelium)
+1069.4 ± 257.4a,c,d
+295.7 ± 58.6b,c,e 13.9 ± 1.3a,b,c,d 13.2 ± 3.9f
+-
+141.2 ± 13.8a,b,c,d,e,f 0.01 ± 0.00
+50.0 ± 0.0
+L. edodes + ZnHasp (medium)
+5103.9 ± 131.6a,b,c,d 215.6 ± 55.2b,c
+13.5 ± 0.2a,b,c,d 23.1 ± 0.5a,b,c,d,e,f -
+257.3 ± 0.7a,b,c,d,e,f
+-
+50.0 ± 0.0
+L. edodes + CuSO4 (mycelium)
+1002.5 ± 81.8a,c,d
+362.3 ± 52.1b,c,d 15.1 ± 0.8a,b,d
+11.9 ± 2.6d
+21.0 ± 1.8a
+11.1 ± 1.7a,b,c,d
+0.5 ± 0.2a,b
+50.0 ± 0.0
+L. edodes + CuSO4 (medium)
+2650.7 ± 132.6a,d,e
+35.1 ± 5.0a,b,d,e 19.5 ± 0.1a,d,e
+21.7 ± 0.6a,b,c,d,e
+97.0 ± 1.0a,d,e -
+0.4 ± 0.0a,b,e
+50.0 ± 0.0
+L. edodes + CuGlu (mycelium)
+1084.0 ± 103.6a,c,e,f 396.3 ± 118.8b,c 15.4 ± 0.8a,b,e
+14.6 ± 4.4e,f
+20.4 ± 2.3a,e,f 9.4 ± 1.5b,c,f
+0.01 ± 0.0d
+50.0 ± 0.0
+L. edodes + CuGlu (medium)
+391.9 ± 17.4a,b,c,d
+123.4 ± 6.9a,b,d
+-
+9.7 ± 1.3a,b,e,f
+14.3 ± 0.4a,d,e 0.6 ± 0.3a,b,c,d,f
+-
+50.0 ± 0.0
+L. edodes + Se(IV) 25 mg/L medium (myceli-
+um)
+803.6 ± 16.5a,c,d
+420.1 ± 39.6a,b,c 18.7 ± 1.0a,d
+2.71 ± 1.5a,b,c,d
+-
+18.5 ± 1.7a,c,d
+114.3 ± 15.3a,b,c
+50.0 ± 0.0
+L. edodes + Se(IV) 25 mg/L medium (medium) 2602.8 ± 155.2a,b,c
+57.1 ± 4.4a,b,d,e 16.5 ± 0.8a
+8.4 ± 0.1a,b,e,d,f
+28.8 ± 0.2a,b,e 23.6 ± 1.7a,b,c,d,e
+40.3 ± 3.3b,c,d,e
+50.0 ± 0.0
+L. edodes + Se(IV) 50 mg/L medium (myceli-
+um)
+621.8 ± 23.0a,b,c,e,f
+359.7 ± 62.3b,c,e 14.9 ± 1.3a,b,d
+13.5 ± 1.9d,e,f
+7.9 ± 0.5e,f
+15.1 ± 1.6a,c,d,e,f
+568.6 ± 62.5a,b,c,d 50.0 ± 0.0
+L. edodes + Se(IV) 50 mg/L medium (medium) 2599.7 ± 149.2a,b,c,d 56.18 ± 4.2a,b,d
+17.3 ± 1.0.a
+7.3 ± 0.8a,b,c,d,f
+24.0 ± 1.2a,b,f 27.1 ± 1.3a,b,c,d,e
+112 ± 15.1a,b,c,d
+50.0 ± 0.0
+Data are presented as mean ± standard deviation; n = 6 repetitions. Gallium was used as an internal standard. Tukey-Kramer test was used to reveal the differences between paired groups of elements in
+rows compared to fruiting bodies, control mycelium, and control medium; the same letters (a, b, c, d, e, and f) are marked for which the content differences are statistically significant (for p values &lt; 0.05)
+(GraphPad InStat)
+Lentinula edodes as a Source of Bioelements Released into Artificial Digestive Juices and Potential...
+607
+ inorganic salt (ZnSO4) was 231.2 mg/100 g d.w., which was
+almost twice as high as the amount in the mycelium obtained
+from in vitro cultures grown on the medium enriched with
+C8H12N2O8Zn (141.2 mg/100 g d.w.). Selenium was added
+to the medium only in organic form due to its proven benefi-
+cial effect on the human body compared to the classic sodium
+selenite (Na2SO3) with a very narrow therapeutic index [12].
+The highest amount of Se was obtained from the medium
+added with the highest dose of Se (568.6 mg/100 g d.w.).
+Because the elements Cu, Zn, and Se were identified in bio-
+mass obtained from in vitro cultures grown on medium
+enriched with these elements, a particularly valuable property
+of edible mushroom mycelia, i.e., their natural ability to accu-
+mulate elements from the medium on which they grow, was
+confirmed (Table 1) [16, 17, 26]. Therefore, mushroom
+mycelia can be successfully used as a natural source of these
+elements.
+In order to determine the actual bioavailability of Cu, Zn,
+and Se to the human body, the release of these elements from
+the mushroom material into artificial digestive juices was in-
+vestigated. Selenium is an essential micronutrient for human,
+and its deficiency causes harmful effects in living organisms,
+not only the amount of Zn and Cu released from the fruiting
+bodies and mycelium obtained from in vitro cultures grown on
+medium enriched with Zn and Cu salts, but also the amount of
+Se released from mycelium grown on medium enriched with
+Selol was evaluated [12]. The evaluation of the effect of ad-
+dition of Se(IV) compounds on the amount of Cu and Zn
+released from mycelial cultures of L. edodes was also useful
+in the analysis of anti-inflammatory activity.
+It was confirmed from the experiments that the tested
+bioelements were effectively released into artificial digestive
+juices. Thus, these elements may also be bioavailable for the
+human body (Fig. 1a-f). The previous experiments also pre-
+sented that the elements from mushroom materials were re-
+leased effectively [16, 17, 27].
+The study showed that the examined elements were re-
+leased in larger amounts into gastric juice than into intestinal
+juice, and to a small extent, the amount of elements released
+was dependent on the duration of the extraction process. The
+same trends were observed for the Imleria badia mycelium
+[16]. In the case of Zn, the amount released in artificial gastric
+juice from the biomass grown on the medium enriched with
+ZnSO4 was determined to be 22.73 mg/100 g d.w. after 30 min
+of incubation and 32.46 mg/100 g d.w. after 60 min of incu-
+bation. When extracted into intestinal juice, the amounts re-
+leased were lower and equaled to 0.77 and 1.56 mg/100 g
+d.w., respectively. In the case of mycelium enriched with
+C8H12N2O8Zn, the amount of Zn released into gastric juice
+after 30 min was 13.2 mg/100 g d.w. and after 60 min was
+10.3 mg/100 g d.w., and the amount released into intestinal
+juice was about 1 mg/100 g d.w. In the case of mycelium
+grown on the control medium, the amount of Zn released into
+artificial gastric juice was 0.4 mg/100 g d.w. In the case of Zn
+released into artificial intestinal juice, the amounts were found
+to be below the level of quantification (Fig. 1a, d). Thus, the
+results obtained confirmed the ability of the mycelium to ac-
+cumulate Zn from the medium [16, 17]. What is important, the
+amounts of Zn released into the artificial gastric juice were
+higher than those determined in the artificial intestinal juice.
+This is in line with previous experiments where higher
+amounts of elements were released into gastric juice [27].
+Some differences were observed in the results of the analysis
+of copper compounds. This element was more effectively re-
+leased into artificial gastric juice after digestion of biomass
+obtained on the medium enriched with organic copper salt
+(C12H22CuO14). The content of Cu released into artificial gas-
+tric juice was determined to be 11.91 mg/100 g d.w, whereas
+the amount of Cu extracted into artificial intestinal juice was
+only 3 mg/100 g d.w. (Fig. 1b, e). In the case of Se, it was
+found that higher amounts (13.2 mg/100 g d.w.) were extract-
+ed into artificial gastric juice from biomass obtained from
+media enriched with Selol at higher concentration (Se(IV)
+50 mg/L medium) than the amount (5.99 mg/100 g d.w.) ob-
+tained with Selol at lower concentration (Se(IV) 25 mg/L me-
+dium). The same tendency was observed in the analysis of Se
+release into artificial intestinal juice (Fig. 1c, f).
+Thus, the study on the release of Cu, Zn, and Se confirmed
+that the fruiting bodies and mycelium of edible mushrooms
+are the materials from which these elements are released into
+artificial digestive juices and the released elements may po-
+tentially be bioavailable to the human body. The obtained
+results also corroborated that the biomass obtained from
+in vitro cultures of L. edodes enriched with the
+abovementioned microelements is a source of bioelements
+which ensures an average supply of these elements to meet
+the daily needs of the human body [28, 29].
+The study also evaluated the anti-inflammatory activity of
+mushroom extracts obtained from the in vitro cultures of
+L. edodes grown on control media and the ones enriched with
+Zn, Cu, and Se compounds. The results confirmed anti-
+inflammatory activity of mushroom material (inflammation
+was induced with a commonly used agent LPS) which was
+in line with previous studies on edible mushroom species that
+demonstrated their potential anti-inflammatory effect [5,
+30-34].
+Cyclooxygenase-2 (COX-2) is a pro-inflammatory protein,
+and in the light of modern knowledge, searching for natural
+COX-2 agonists is extremely important [32, 35-37]. The re-
+sults of the present study showed statistically the highest level
+of COX-2 in RAW 264.7 cells activated with LPS (p = 0.000).
+A high expression of this protein was also recorded in cells
+incubated with control mycelium extract activated with LPS
+(Fig. 2a). Analysis of COX-2 level in macrophages treated
+with L. edodes extracts from in vitro cultures grown on media
+enriched with Cu, Zn, or Se compounds revealed that the
+608
+Muszyńska et al.
+ expression of this protein was comparable to the control cells
+despite cells activation with LPS. Similar results were ob-
+served in the case of I. badia species, in which addition of
+zinc salt to the medium had a positive effect on the anti-
+inflammatory effect of mycelium compared to the control my-
+celium [31]. In addition, it should be emphasized that the
+mycelium obtained from cultures enriched with bioelements
+(Cu, Zn, and Se) had a protective effect on the cells, reducing
+their level of COX-2 in case of inflammation caused by LPS
+(Fig. 2a). The results observed by other researchers in
+Antrodia camphorata, Inonotus obliquus, A. bisporus,
+Cantharellus cibarius, I. badia, Ganoderma lucidum, and
+Elaphomyces granulates species showed that the signaling
+pathway of COX-2 was inhibited [31, 38-42]. The present
+study also revealed the anti-inflammatory properties of the
+L. edodes extract enriched with vitamin D in C57B1/6 mouse
+0
+10
+20
+30
+40
+Fruiting bodies
+Control
+ZnSO4
+Se250
+Se125
+ZnHasp
+0
+2
+4
+6
+8
+10
+12
+0
+5
+10
+15
+Fruiting bodies
+Control
+Se125
+Se250
+ZnSO4
+ZnHasp
+CuSO4
+CuGlu
+0
+1
+2
+3
+4
+Fruiting bodies
+Control
+ZnSO4
+ZnHasp
+Se125
+Se250
+0
+1
+2
+3
+Fruiting bodies
+Control
+CuSO4
+CuGlu
+Se125
+Se250
+0
+5
+10
+15
+Fruiting bodies
+Control
+Se125
+Se250
+ZnSO4
+ZnHasp
+CuSO4
+CuGlu
+60 min
+30 min
+60 min stomach juice
+30 min stomach juice
+150 min intestinal juice 
+Fruiting bodies
+Control
+CuSO4
+Se250
+Se125
+CuGlu
+Fig. 1 Amount (mg/100 g d.w.) of a Zn, b Cu, and c Se released into
+artificial gastric juice and d Zn, e Cu, and f Se released into artificial
+intestinal juice. Fruiting bodies-L. edodes fruiting bodies; Control-
+L. edodes mycelium; ZnSO4-L. edodes mycelium enriched with
+ZnSO4; ZnHasp-L. edodes mycelium enriched with C8H12N2O8Zn;
+CuSO4-L. edodes mycelium enriched with CuSO4; CuGlu-L. edodes
+mycelium enriched with C12H22CuO14; Se125-L. edodes mycelium
+enriched with Se(IV) 25 mg/L medium; Se250-L. edodes mycelium
+enriched with Se(IV) 50 mg/L medium
+Lentinula edodes as a Source of Bioelements Released into Artificial Digestive Juices and Potential...
+609
+ model with inflammatory liver disease. Supplementation of
+L. edodes extract with vitamin D resulted in a significant re-
+duction of liver damage. In addition, the histopathological
+features were improved and plasma levels of inflammatory
+factors such as aminotransferases and interferon gamma
+(INF-γ) were found to decrease. It was also noted that the
+anti-inflammatory effect of mushroom extract and vitamin D
+was synergistic in nature [6].
+The study also analyzed Nrf2 (nuclear factor erythroid
+2-related factor 2), a protein related to detoxification pro-
+cesses and a transcription factor [43]. Activation of Nrf2
+may lead to induction of phase II enzymes responsible for
+inhibiting the activity of potential carcinogens. There is
+also scientific evidence for the involvement of Nrf2 in
+extinguishing inflammatory processes [35, 36]. In addi-
+tion, a direct relationship between Nrf2 activity and
+reduction of COX-2, which is a pro-inflammatory factor,
+was identified [37]. Obtaining mycelium in laboratory
+conditions, which can increase the activity of Nrf2, may
+contribute to the development of new natural drugs with
+anti-inflammatory potential in the future. Statistically, the
+highest expression of Nrf2 was found in cells incubated
+with control mycelial extracts (p = 0.000), in contrast to
+LPS activated cells, where each enriched mycelial extracts
+exhibited better anti-inflammatory activity (Fig. 2b).
+Especially, high expression of Nrf2 was observed in
+LPS-activated cells treated with mycelial extract enriched
+with CuSO4 and C12H22CuO14 (Fig. 2b). Comparing with
+the results obtained for another species, A. bisporus, it
+was found that this species also showed anti-
+inflammatory activity. The highest expression of Nrf2
+was observed in cells treated with extracts from mycelial
+Fig. 2 An exemplary blot and relative level of COX-2 (a), Nrf2 (b),
+PPARγ (c), and FABP4 (d) in RAW 264.7 cells supplemented with
+L. edodes mycelial extracts and activated with LPS. Vehicle-control
+cells; LPS-cells activated with lipopolysaccharide; L. edodes-cells in-
+cubated with extract from control mycelium; L. edodes+CuSO4-cells
+incubated with extract enriched with CuSO4; L. edodes + CuGlu-cells
+incubated with extract enriched with C12H22CuO14; L. edodes +
+ZnSO4-cells incubated with extract enriched with ZnSO4; L. edodes +
+ZnHasp-cells incubated with extract enriched with C8H12N2O8Zn;
+L. edodes + Se-cells incubated with extract enriched with Se(IV)
+50 mg/L medium. Values are presented as means ± SD. Data are
+expressed as in relation to β-actin. *p &lt; 0.001 relative to vehicle group,
+#p &lt; 0.001 relative to LPS-activated cells
+610
+Muszyńska et al.
+ cultures of A. bisporus enriched with α-linolenic acid.
+This suggests that mushroom extracts enriched with α-
+linolenic acid may also upregulate Nrf2 signaling [44].
+In addition, the results of an in vivo study conducted on
+Antrodia cinnamomea showed the positive effect of this
+mushroom species on the expression of Nrf2 [45].
+However, the present study on L. edodes species showed
+that mainly lentinan present in this species exerted an
+anti-inflammatory effect, causing, inter alia, an increase
+in Nrf2 expression [46].
+In order to confirm the anti-inflammatory effect, the ex-
+pression of the transcription factor peroxisome proliferator-
+activated receptor γ (PPARγ) was also studied. PPARγ plays
+an important role in the differentiation of adipocytes, in car-
+bohydrate and lipid metabolism, and in the regulation of in-
+flammatory processes. It has been proven that specific PPARγ
+agonists can inhibit the development of insulin resistance
+while acting simultaneously as anti-diabetic agents, and also
+have beneficial effects on inflammatory diseases, and even on
+some cancers [47, 48]. The relationship between the presence
+of Zn as an anti-inflammatory agent and PPARγ activity was
+also demonstrated [48]. In the present study, statistically, the
+highest expression of PPARγ was observed in cells treated
+with mushroom extracts enriched with CuSO4 after LPS acti-
+vation (p = 0.000) and in cells treated with extracts enriched
+with Selol without LPS activation (p = 0.01) (Fig. 2c).
+However, it should be emphasized that the addition of each
+mycelium extracts increased the level of PPARγ compared to
+LPS-activated control cells (Fig. 2c). A study proved that diet
+rich in fatty acids (FAs), especially edible mushrooms, may be
+a factor affecting the level of PPARγ [32]. It also proved that
+extracts from C. cibarius containing FAs exerted agonistic
+activity against receptors activated by PPARγ [5]. In our
+study, Western blot analysis of PPARγ level once again con-
+firmed the anti-inflammatory effect of mushroom extracts.
+Taking into account that edible mushrooms, including
+L. edodes, show numerous pro-health activities due to the
+presence of fatty acids (FAs), the expression of FA-binding
+protein 4 (FABP4) was studied [5]. FABP4 is mainly found
+in macrophages and adipose tissues, where it regulates the
+storage of FAs and the lipolysis process. FABP4 is also an
+important mediator of inflammation as well as a factor
+responsible for metabolism [49]. An increase the expres-
+sion of FABP4 was observed in the RAW 264.7 cells treat-
+ed with mushroom extract, compared to macrophages ac-
+tivated with LPS. The highest expression of this protein
+was observed in cells without inflammatory state after
+treatment with mushroom extracts enriched with CuSO4
+again, while the lowest expression was observed in control
+cells after LPS activation (Fig. 2d). Extracts enriched in
+bioelements proved to be more effective than control my-
+celial extracts (Fig. 2d). The following are some of the
+saccharides in mushrooms that regulate FABP4 activity:
+trehalose, β-glucans (e.g. lentinan from L. edodes species),
+and chitosans [5].
+Conclusion
+The experiment joining the accumulation and release of the
+examined bioelements into artificial digestive juices from
+mushroom material, and also the analysis of their anti-
+inflammatory properties, highlighted the potential benefits of
+consumption of L. edodes species in the form of fruiting bod-
+ies and biomass (being a potential dietary supplement). It was
+presented that L. edodes in vitro cultures accumulated Cu, Zn,
+and Se from modified and optimized media and released them
+effectively into artificial digestive juices, which can be direct-
+ly translate into the expected results of digestion process in
+human body. This indicates the possibility and benefits of
+fortification of L. edodes mycelium with specific bioelements.
+It was also demonstrated that the L. edodes species is char-
+acterized by anti-inflammatory properties. From the results of
+Western blot, it was found that addition of Cu, Zn, or Se
+enhanced the anti-inflammatory properties of L. edodes my-
+celial extracts, suggesting that the mycelium of L. edodes may
+be used as a potential component in natural anti-inflammatory
+dietary supplement. Additionally, obtained results could be
+used in commercial production of L. edodes.
+Funding Information This work was supported by the National Science
+Center, Poland (2017/25/N/NZ7/00554).
+Compliance with Ethical Standards
+</div><div class='tools'><button type='button' class='quiet' onclick='jumpSec(1)'>Blot section</button><button type='button' class='quiet' onclick='jump(-1)'>Prev</button><button type='button' class='quiet' onclick='jump(1)'>Next</button><span id='hits_PMC7015957' class='num'></span><span class='aid'>shading is a search aid, not an answer</span></div></div><div class='col-q'><div class='q' data-q='v2|PMC7015957|replicate_definition' data-pmcid='PMC7015957' data-item='replicate_definition'><div class='qname'><span>Replicate definition</span><span class='ans'></span></div><div class='qdef'>What a replicate of the blot was, with the unit named: independent cultures or passages, animals, patients, separate blots, or technical repeats of one lysate. 'Independent experiments' or 'biological replicates' with no unit named does not count, and neither does a count alone. Western blot only.</div><div class='qhow'><b>What to mark.</b> Mark the words that say what was replicated.<span class='eg'>In <i>three independent cell cultures, each blotted once</i> mark the whole phrase. Nothing to mark in <i>representative of three independent experiments</i>.</span></div><div class='acts'><button type='button' data-act='mark'>Use highlighted text</button><button type='button' class='sec' data-act='done' style='display:none'>Done, next</button><button type='button' class='sec' data-act='not_stated'>Not stated</button><button type='button' class='quiet' data-act='unclear'>Unclear</button></div><div class='grab'><div class='cap'>Marked so far, add as many as the paper has</div><ol class='spans'></ol><label class='morewrap'><input type='checkbox' class='morebox'>There are more of these than I marked</label></div></div></div></div></div><div class='card'><div class='paper-h'><h2>Paper <span class='num'>8</span> of <span class='num'>9</span></h2><span class='pill'>PMC8078813</span></div><div class='note' style='font-size:13px;color:var(--ink-mute);margin-bottom:6px'> · <span class='num'>year unknown</span></div><div class='split'><div class='col-text'><div class='methods' id='m_PMC8078813'>
+Cell lines and cultivation of O. tsutsugamushi
+HeLa human cervical epithelial cells (CCL-2; American Type Culture Collection [ATCC],
+Manassas) were maintained in Roswell Park Memorial Institute (RPMI) 1640 medium supple-
+mented with 10% (vol/vol) fetal bovine serum (FBS; Gemini Bio-Products, Sacramento, CA,
+USA) at 37 ̊C in a humidified incubator with 5% CO2 prior to O. tsutsugamushi infection. RF/
+6A rhesus monkey choroidal endothelial cells (ATCC CRL-1780) were cultivated in Dulbec-
+co’s Modified Eagle’s Medium (DMEM; Invitrogen, Carlsbad, CA) supplemented with 10%
+FBS, 2 mM L-glutamine, 1x MEM Non-Essential Amino Acids (Invitrogen), and 15 mM
+HEPES. O. tsutsugamushi str. Ikeda, which was originally isolated from a patient in Japan [23],
+was maintained and propagated every 3 to 4 days in HeLa cells in RPMI 1640 medium supple-
+mented with 1% FBS and 1X Anti-Anti (Thermo Fisher Scientific, Waltham, MA) at 35 ̊C in a
+humidified incubator with 5% CO2. To obtain O. tsutsugamushi for infection studies, highly
+infected HeLa cells were mechanically lysed using glass beads followed by centrifugation at
+200 x g for 5 min to remove cellular debris. The supernatant was centrifuged at 2,739 x g for 10
+min, which yielded a bacterial cell pellet that was resuspended in fresh medium for experimen-
+tal use. To initiate synchronous infection in HeLa or RF/6A cells, medium was removed at 2 to
+4 h after inoculation and replaced with fresh medium. In infection experiments, naïve cells
+were infected with O. tsutsugamushi at a multiplicity of infection (MOI) of 10 unless otherwise
+stated. MOI was confirmed by fixing an aliquot of infected cells per experiment and visualizing
+PLOS NEGLECTED TROPICAL DISEASES
+O. tsutsugamushi stabilizes p105
+PLOS Neglected Tropical Diseases | https://doi.org/10.1371/journal.pntd.0009339
+April 15, 2021
+3 / 17
+ using immunofluorescence microscopy as previously described [22]. In some experiments,
+uninfected or infected O. tsutsugamushi samples were treated with 10 μg ml-1 of oxytetracy-
+cline hydrochloride (Sigma-Aldrich, St. Louis, MO) or vehicle control (70% ethanol) at 4, 24,
+and 48 h post-infection followed by collection of the cells at 72 h. In some cases, uninfected
+and infected cells were treated with TNFα (10 ng/mL) (Life Technologies, Grand Island, NY)
+or vehicle control (0.1% bovine serum albumin [BSA] in H2O) at 72 h post-infection for 30 or
+60 min (to assess p105-induced degradation) or 5 min (to assess and IKKβ-induced Ser932
+phosphorylation). For experiments designed to examine p105-induced phosphorylation, caly-
+culin A (50 nM) (Cell Signaling Technology, Danvers, MA) was added simultaneously with
+TNFα.
+Western blotting, antibodies, and reagents
+Cells were washed with 1X PBS, scraped, centrifuged at 10,000 x g for 10 min, and cell pellets
+were lysed in radioimmunoprecipitation assay buffer (RIPA) containing Halt Protease Phos-
+phatase Inhibitor Cocktail (Thermo Fisher Scientific). After a 45- to 120-min incubation on
+ice, clarified lysates were obtained by centrifugation at 16,000 x g for 10 min followed by reten-
+tion of the supernatant. Protein Assay Reagent (Bio-Rad, Hercules, CA) was used to quantify
+protein concentration. Whole cell lysates and cellular fractions (5-15 μg per lane) were
+resolved by SDS-PAGE in 4 to 20% Mini-Protean gels (Bio-Rad) as described previously [24].
+Blots were probed with antibodies in tris-buffered saline with Tween-20 (TBS-T: 25 mM Tris
+HCl, 137 mM NaCl, 2.7 mM KCl, 0.05% Tween-20; pH 7.4) containing 5% non-fat milk or 5%
+BSA. Western blot analyses were performed using the following primary antibodies: mouse
+anti-glyceraldehyde-3-phosphate dehydrogenase (GAPDH) (catalog number sc-365062, Santa
+Cruz, Dallas, TX) at a 1:750 dilution; rabbit anti-IκBα (9242, Cell Signaling Technology, Dan-
+vers, MA) at a 1:1,000 dilution; rabbit anti-p105 (ab131546, Abcam, Cambridge, UK) at a
+1:750 dilution; rabbit anti-p105/p50 (ab32360, Abcam) at a 1:1,000 dilution; rabbit anti-phos-
+pho-p105 (4806, Cell Signaling Technology) at a 1:1,000 dilution; mouse anti-p65 (sc-8008,
+Santa Cruz) at a 1:250 dilution; rabbit anti-O. tsutsugamushi TSA56 (56-kDa type-specific anti-
+gen) [25] at a 1:1,000 dilution; rabbit anti-Lamin A/C (2032, Cell Signaling Technology) at a
+1:1,000 dilution; rabbit anti-IKKα antibody (2682, Cell Signaling Technology); rabbit anti-
+IKKβ antibody (2370, Cell Signaling Technology); and rabbit anti-TNFR1 (21574-1-AP, Pro-
+teintech) at a 1:500 dilution. Secondary antibodies used to detect bound primary antibodies
+were horseradish-peroxidase-conjugated anti-mouse or anti-rabbit IgG (7076 or 7074, respec-
+tively; Cell Signaling Technology) at 1:10,000 dilution. All blots were incubated with Super-
+Signal West Pico, SuperSignal West Dura, or SuperSignal West Femto chemiluminescent
+substrate (Thermo Fisher Scientific), and visualized using the ChemiDoc Touch Imaging Sys-
+tem (Bio-Rad). Densitometry analysis was determined from at least three separate blots using
+Bio-Rad Image Lab software.
+Immunofluorescence microscopy.
+HeLa cells were seeded onto glass coverslips within
+24-well plates and infected with O. tsutsugamushi at a MOI of 10, 20, or 50. At 48 h, cells were
+fixed and permeabilized with -20 ̊C methanol. All wash steps were performed using PBS. Cov-
+erslips were blocked in 5% (vol/vol) bovine serum albumin (BSA) in PBS for 1 h at room tem-
+perature prior to incubation with rabbit antiserum against TSA56. Coverslips were washed
+three times before incubation with Alexa Fluor 488-conjugated goat anti-rabbit IgG at a
+1:1,000 dilution in 5% BSA for 1 h at room temperature. Samples were incubated with 0.1 μg
+ml-1 4’ 6-diamidino-2-phenylindole (DAPI, Invitrogen) in PBS for 1 min, washed three times,
+and mounted using ProLong Gold Antifade mounting media (Invitrogen). Coverslips were
+imaged with a Zeiss LSM 700 spinning disc confocal microscope using a 63X oil immersion
+PLOS NEGLECTED TROPICAL DISEASES
+O. tsutsugamushi stabilizes p105
+PLOS Neglected Tropical Diseases | https://doi.org/10.1371/journal.pntd.0009339
+April 15, 2021
+4 / 17
+ objective (Zeiss, Oberkochen, Germany). Images were acquired using ZEN Black software
+(Zeiss) and ImageJ macro Fiji [26, 27] was used to analyze the captured images. The percentage
+of infected cells was determined by counting 100 cells per coverslip and determining the mean
++ SD of infected cells for triplicate samples.
+Cytosolic and nuclear fractionation
+HeLa cells (70% confluency) were incubated with O. tsutsugamushi at a MOI of 10 or with
+uninfected HeLa cells as the mock infection control. At 72 h, spent media was removed and
+replaced with fresh media containing TNFα (10 ng/mL) or vehicle control for 30 min or 60
+min. Media was removed and the cells were rinsed with 1X PBS, dislodged by scraping, and
+pelleted by centrifugation at 200 x g for 4 min. The cells were rinsed and subjected to a second
+round of centrifugation. Cytosolic and nuclear fractions were obtained using the Nuclear
+Extraction Kit (Abcam) and analyzed by Western blot.
+RNA isolation and quantitative real-time PCR
+HeLa cells were mock infected or infected with O. tsutsugamushi at a MOI of 10. Samples were
+collected at 24, 48, and 72 h by scraping and centrifugation as described above. Total RNA was
+extracted using the RNeasy minikit (Qiagen, Germantown, MD). Amplification-grade DNase
+(Invitrogen) was added to RNA samples to remove genomic DNA. The iScript Supermix
+cDNA synthesis kit (Bio-Rad) was used to convert 1 μg of each RNA sample into cDNA. PCR
+using human GAPDH gene-specific primers (5’-ACATCATCCCTGCCTCTACTGG-3’ and
+5’-TCCGACGCCTGCTTCACC-3’) was performed to confirm DNA-free RNA samples.
+qRT-PCR was performed using SsoFast EvaGreen supermix (Bio-Rad). Primers targeting
+NFκB1 were 5’-TTCTGGACCGCTTGGGTAAC-3’ and 5’-CGTTGGGGTGGTCAAGAAG
+T-3’. Primers specific for the O. tsutsugamushi 16S rRNA gene were 5’-GTGGAGCATGCGG
+TTTAATTCGATGATC-3’ and 5’- TAAGAATAAGGGTTGCGCTCGTTGC-3’. Relative gene
+expression levels of NFκB1 and the O. tsutsugamushi 16S rRNA gene were normalized to
+human GAPDH transcript levels using the 2-ΔΔCT method [28].
+Statistical analysis
+The Student’s t-test was performed to test for a significant difference among pairs using Prism
+(version 7.0) software package (GraphPad, San Diego, CA). Statistical significance was set to
+P &lt; 0.05.
+</div><div class='tools'><button type='button' class='quiet' onclick='jumpSec(1)'>Blot section</button><button type='button' class='quiet' onclick='jump(-1)'>Prev</button><button type='button' class='quiet' onclick='jump(1)'>Next</button><span id='hits_PMC8078813' class='num'></span><span class='aid'>shading is a search aid, not an answer</span></div></div><div class='col-q'><div class='q' data-q='v2|PMC8078813|replicate_definition' data-pmcid='PMC8078813' data-item='replicate_definition'><div class='qname'><span>Replicate definition</span><span class='ans'></span></div><div class='qdef'>What a replicate of the blot was, with the unit named: independent cultures or passages, animals, patients, separate blots, or technical repeats of one lysate. 'Independent experiments' or 'biological replicates' with no unit named does not count, and neither does a count alone. Western blot only.</div><div class='qhow'><b>What to mark.</b> Mark the words that say what was replicated.<span class='eg'>In <i>three independent cell cultures, each blotted once</i> mark the whole phrase. Nothing to mark in <i>representative of three independent experiments</i>.</span></div><div class='acts'><button type='button' data-act='mark'>Use highlighted text</button><button type='button' class='sec' data-act='done' style='display:none'>Done, next</button><button type='button' class='sec' data-act='not_stated'>Not stated</button><button type='button' class='quiet' data-act='unclear'>Unclear</button></div><div class='grab'><div class='cap'>Marked so far, add as many as the paper has</div><ol class='spans'></ol><label class='morewrap'><input type='checkbox' class='morebox'>There are more of these than I marked</label></div></div></div></div></div><div class='card'><div class='paper-h'><h2>Paper <span class='num'>9</span> of <span class='num'>9</span></h2><span class='pill'>PMC9248752</span></div><div class='note' style='font-size:13px;color:var(--ink-mute);margin-bottom:6px'> · <span class='num'>year unknown</span></div><div class='split'><div class='col-text'><div class='methods' id='m_PMC9248752'>
+Recombination of Adeno-Associated Virus Type 2
+Vector
+An adeno-associated virus type 2 (AAV2) vector (GV478,
+U6-MCS-CAG-EGFP; Shanghai Genechem Co., Ltd., Shang-
+hai, China) containing AAV2-scrambled HspB8 (shHspB8;
+U6-MCS-CAG-EGFP-HspB8-shRNA, targeting sequence 5′-
+CCGGAAGAGCTGATGGTAA) and AAV2-green fluorescent
+protein (GFP; empty GV478 vector without HspB8-shRNA,
+U6-MCS-CAG-EGFP) was constructed as an HspB8 silencing
+vector and negative control, respectively. These two highly
+purified vectors both contain the enhanced green fluores-
+cent protein (EGFP) gene driven by the CAG promoter.
+AAV2-shHspB8 (1.58 × 1012 viral genomes vg/mL) and
+AAV2-GFP (1.95 × 1012 vg/mL) were stocked at -80°C for
+follow-up use.
+Intravitreal Injection
+As previously described,20
+precise intravitreal injection
+was accomplished with a programmable nanoliter injector
+(Nanoject III, Drummond Scientific Company, Broomall, PA,
+USA) and pulled glass micropipettes using a dual-stage glass
+micropipette puller (Narishige Scientific Instrument Lab,
+Setagaya City, Japan). After exposing the superior tempo-
+ral side of anesthetized mice eyes sufficiently while avoid-
+ing blood vessels, a slow injection into the vitreous cavity
+was carefully performed through the sclera 1 to 2 mm
+posterior to the corneoscleral limbus. One minute later, the
+micropipette was withdrawn to prevent leakage, and antibi-
+otic ophthalmic ointment was applied to avoid infection. The
+injection solution (1 μL) was comprised of AAV2-shHspB8
+and AAV2-GFP vectors (1.58 × 1012 vg/mL and 1.95 × 1012
+vg/mL, respectively). We injected 3-methyladenine (3MA;
+1 μL, 50 mM; MedChemExpress, Monmouth Junction, NJ,
+USA) or rapamycin (Rapa; 1 μL, 1 mM, MedChemExpress,
+NJ, USA) right before ONC. The 3MA was dissolved in
+phosphate-buffered saline (PBS); the Rapa was dissolved
+in dimethyl sulfoxide (DMSO) and diluted in 5% Tween
+80 (Sigma-Aldrich, St. Louis, MO, USA), 40% polyethylene
+glycol 400, and 45% 0.9% NaCl. Both drugs were prepared
+just before administration. Four weeks after injection of
+the vector, mice were euthanized for further examinations.
+The doses and timing were selected based on similar stud-
+ies.18,21-23 A timeline of all animal procedures is shown
+in Figure 1.
+Animal Model of ONC
+Male C57BL/6J mice (8 weeks) provided by the Laboratory
+Animal Center of Wuhan University were kept in an air-
+conditioned barrier system with sufficient food and water
+(room temperature, 23° ± 2°C; 12-hour light/dark cycle).
+After 7 days of acclimation, mice were randomly assigned
+to interventions. All animal procedures were conducted in
+accordance with National Institutes of Health guidelines and
+conformed to the ARVO Statement for the Use of Animals in
+Ophthalmic and Vision Research. Mice with lens damage,
+postoperative bleeding, or eye infection were removed.
+After the mice were anesthetized by intraperitoneal injec-
+tion of pentobarbital sodium, an incision was made at the
+temporal side of the mice conjunctiva. By using forceps,
+a blunt dissection of the orbital fat and muscle was made
+toward the back of the eye to expose the retrobulbar ON.
+The ON was crushed with self-closing Dumont Tweezers
+(Electron Microscopy Sciences, Hatfield, PA, USA) at about
+2 mm posterior to the globe for 8 seconds. Special atten-
+tion was paid to avoiding the surrounding blood vessels.
+After the operation, the antibiotic ophthalmic ointment was
+applied to avoid infection, and the animal was resuscitated
+on a warming pad.
+Western Blot
+Retinas were quickly obtained over ice and immersed imme-
+diately in a homogenizer preloaded with radioimmuno-
+precipitation assay lysis buffer containing a 50-mM tris-
+HCl, 150-mM NaCl, 1% NP-40, 0.1% sodium dodecyl sulfate
+(SDS), 0.5% sodium deoxycholate, 1-mM EDTA, and 1-mM
+phenylmethylsulfonyl fluoride (PMSF) protease inhibitor
+cocktail. Supernatants were collected after homogeniza-
+tion and centrifugation, and total protein concentrations
+FIGURE 1.
+Experimental timeline. IF, Immunofluorescent staining; WB, western blot analysis; TEM: transmission electron microscopy.
+ HspB8 Silencing Mitigates Optic Nerve Damage
+IOVS | June 2022 | Vol. 63 | No. 6 | Article 28 | 3
+were measured by a bicinchoninic acid protein assay kit.
+After separation in 12% SDS-polyacrylamide gel, proteins
+were transferred to a polyvinylidene fluoride membrane.
+Later, the membrane was blocked with 5% nonfat milk
+and 0.1% Tween-20 in tris-buffered saline (TBS-T) for
+2 hours at room temperature, then incubated with the
+HspB8 (#3059, rabbit mAb, 1:500; Cell Signaling Technol-
+ogy, Boston, MA, USA), light chain 3B (LC3B; #3868S, rabbit
+mAb, 1:1000; Cell Signaling Technology), p62 (#23214S,
+rabbit mAb, 1:1000; Cell Signaling Technology), and glycer-
+aldehyde 3-phosphate dehydrogenase (GAPDH; #GB11002,
+rabbit mAb, 1:1000; Servicebio, Wuhan, China) overnight
+at 4°C. GAPDH was determined to be the housekeeping
+protein. After washing in TBS-T solution, the membrane was
+incubated with horseradish peroxidase-labeled goat anti-
+rabbit immunoglobulin (IgG; Servicebio) at room temper-
+ature for 2 hours. The immunoreactive bands were devel-
+oped using an enhanced chemiluminescence substrate kit
+(Biosharp, Anhui, China) and observed using the ChemiDoc
+Touch Imaging System (Bio-Rad, Hercules, CA, USA). Protein
+levels were analyzed using ImageJ software (National Insti-
+tutes of Health, Bethesda, MD, USA). To estimate the molecu-
+lar weight of proteins, a prestained marker (Servicebio) was
+used.
+Retinal Flat-Mount Immunofluorescence
+Extracted eyes were fixed in 4% paraformaldehyde for 30
+minutes, then retinas were separated and blocked at 4°C
+overnight with PBS containing 5% bovine serum albumin
+(GoodbioTechnology, Wuhan, China) and 0.5% Triton X-
+100. After the retinas were incubated with Brn3a (#411003,
+rabbit pAb, 1:1000; Synaptic Systems, Göttingen, Germany)
+for 48 hours and gently rinsed in PBS three times, they
+were incubated with Alexa Fluor 594 (#705-585-147; Jackson
+ImmunoResearch Labs, West Grove, PA, USA) for 2 hours.
+Four radial incisions were made to form retinas into a petal
+shape. Three areas of each retinal petal, located 0.5, 1.6,
+and 2.7 mm from the optic disc (Fig. 2C) for a total of
+12 fields, were selected and photographed by a fluores-
+cence microscope (BX51; Olympus, Tokyo, Japan). Surviv-
+ing RGCs were marked using the ImageJ Multi-point Tool
+and counted using ImageJ software. The number of surviv-
+ing RGCs was compared with the control group to determine
+RGCs survival.
+Scotopic Full-Field Flash Electroretinogram
+After being dark-adapted for 12 hours, mice were anes-
+thetized intraperitoneally with pentobarbital sodium under
+dim red light. Phenylephrine HCl (0.5%) and tropicamide
+(0.5%)
+were
+used
+to
+dilate
+pupils,
+and
+1%
+sodium
+hyaluronate was used to lubricate and hydrate the cornea.
+Gold-plated wire loops were gently and vertically placed on
+the center of corneal surfaces as recording electrodes, and
+stainless steel needle electrodes were inserted into the skin
+between the two ears and into the tail to serve as refer-
+ence and ground leads, respectively. After turning off the
+dim red light, a Ganzfeld full-field stimulator and RetiMINER
+visual electrophysiological apparatus (Chongqing IRC Medi-
+cal Equipment Co., Ltd., Chongqing, China) were used to
+record responses of white flashes (with luminance increased
+sequentially: 0.001, 0.003, 0.01, 0.03, 0.10, 0.30, 1.00, 3.00,
+and 10.00 cd·s/m2) in scotopic full-field flash electroretino-
+grams (ff-ERGs). A series of non-erratic high-frequency
+wavelets on the ascending side of the b-wave were recorded
+as oscillatory potentials (OPs). After the mice adapted to
+the green background (25 cd·s/m2) for 8 minutes, they were
+given a green light stimulation (10.0 cd·s/m2); the ampli-
+tudes relative to the baselines of the negative peak following
+the b-wave were measured as photopic negative responses
+(PhNRs). Mice were placed on a heating pad to maintain
+their body temperature during the entire examination. The
+following variables were under strict control when all ERG
+data were collected: depth of anesthesia, room temperature,
+mouse weight, and distance between eyes and the stimula-
+tor.
+Optomotor Response
+Based on previous research,24 mice were placed on the plat-
+form in the center of the device after dark adaptation for
+4 hours, and rotating gratings with constant contrast and
+velocity were displayed on the four screens around the mice.
+When a grating was perceived, the mouse usually stopped
+moving its body and would begin to track the grating with
+reflexive head movements in concert with the rotation. This
+is an image stabilization reflex that compensates for the
+offset of the visual scene. Optomotor responses (OMRs)
+were recorded using MATLAB software (MathWorks, Natick,
+MA, USA) and a virtual optomotor system that we assem-
+bled. When the OMR device is running, the higher the grat-
+ing spatial frequency is the more difficult it is to distinguish
+and thus be followed by mice and produce OMRs afterward.
+The highest grating spatial frequency (cycles/degrees) that
+induced OMRs was used as visual acuity to measure the
+visual function of mice.
+Cryosection Immunofluorescent Staining
+The procedure has been described elsewhere.25 Eyes were
+extracted quickly and fixed in 4% paraformaldehyde for
+1 hour before the anterior segments were removed. After
+they were dehydrated at 4°C in 10%, 20%, and 30% sucrose
+for 2 hours, 2 hours, and 8 hours, respectively, the retinas
+were embedded in optimum cutting temperature compound
+(Sakura Finetek USA, Torrance, CA, USA) and sectioned (14
+°m) using a freezing microtome (Leica, Wetzlar, Germany).
+The retinal slices were blocked at room temperature for
+2 hours with 5% bovine serum albumin and 0.5% Triton
+X-100 in PBS, then immunostained with primary antibod-
+ies as follows: HspB8 (Cell Signaling Technology), anti-
+GFP antibody (ab10145, 1:1000; MilliporeSigma, Burlington,
+MA, USA), LC3B (Cell Signaling Technology), and p62 (Cell
+Signaling Technology). Cryosections were incubated with
+Alexa Fluor 488 (#711-545-152, 1:500; Jackson ImmunoRe-
+search Labs) and Alexa Fluor 594 (Jackson ImmunoRe-
+search Labs). Finally, 4′,6-diamidino-2-phenylindole (DAPI)
+was used to label the cell nucleus of the retina. The sections
+were observed and photographed using an Olympus FV1200
+confocal laser scanning microscope.
+Transmission Electron Microscope
+Blocks of 1-mm3 of retinal tissue were fixed for 4 hours at
+4°C in 3% glutaraldehyde (pH 7.4) and washed with 0.1-M
+phosphate buffer (pH 7.2) for three times, then fixed again
+in osmic acid for 1 hour; after that, tissue was dehydrated by
+acetone and embedded in Epon-Araldite resin (18030, Ted
+Pella Inc., Redding, CA, USA). By using the Leica EM UC6
+Ultramicrotone, semi-thin sections (1 °m) were made into
+ultra-thin sections (70 nm), which were counterstained with
+ HspB8 Silencing Mitigates Optic Nerve Damage
+IOVS | June 2022 | Vol. 63 | No. 6 | Article 28 | 4
+FIGURE 2.
+RGCs loss and HspB8 expression changes after ONC. (A) Immunofluorescent staining of HspB8 (red) in normal retinal slices.
+(B) Western blot revealed that, compared with the control group (0.19 ± 0.02), HspB8/GAPDH increased in the ONC3 group (0.42 ± 0.02,
+P &lt; 0.0001), and there was no significant difference in the ONC7 group (0.23 ± 0.02, P = 0.8998); n = 12. (C) Immunofluorescent staining
+of Brn3a. RGCs survival rates continued to decrease in the ONC3 group (76.62% ± 3.05%, P = 0.0022), ONC5 group (40.93% ± 1.32%,
+P = 0.0022), and ONC7 group (16.00% ± 1.12%, P = 0.0022) compared with the control group (100.00% ± 2.30%). The second areas on
+the retinal flat-mounts of each group were selected as example images (n = 6). All data are presented as mean ± SEM. ONC3, ONC5, and
+ONC7 indicate 3, 5, and 7 days after ONC.
+3% uranyl acetate and 0.3% lead citrate. Observation and
+photography were carried out using a transmission electron
+microscope (JEM-1230; JEOL, Tokyo, Japan).
+TdT-Mediated dUTP Nick-End Labeling Staining
+Assay
+To
+explore
+the
+relationship
+between
+apoptosis
+and
+autophagy, a TdT-mediated dUTP nick-end labeling (TUNEL)
+assay kit (Beyotime Biotechnology, Shanghai, China) was
+used to detect apoptotic cells before retinal sections were
+immunostained by LC3, secondary antibody Alexa Fluor
+647 (ANT032, donkey anti-rabbit IgG, 1:1000; AntGene,
+Wuhan, China) and DAPI as described previously. Slices
+were washed three times in PBS for 10 minutes, perme-
+abilized with 0.5% Triton X-100 in PBS for 5 minutes at
+room temperature, and washed twice in PBS for 10 minutes.
+The slices were incubated in TUNEL detection solution for 1
+hour at 37°C in a dark place and finally washed three times
+in PBS for 10 minutes. The TUNEL detection solution was
+freshly prepared from terminal deoxynucleotidyl transferase
+and a fluorescent marking reagent (1:9, v/v) in a dark place.
+Slices were examined by confocal laser scanning microscope
+(Olympus FV1200).
+Statistics
+Data were analyzed by Prism 8.0 (GraphPad Software, San
+Diego, CA, USA) and expressed as means ± SEM. Differ-
+ HspB8 Silencing Mitigates Optic Nerve Damage
+IOVS | June 2022 | Vol. 63 | No. 6 | Article 28 | 5
+ences between groups were analyzed by Student’s t-test or
+one-way ANOVA followed by Tukey’s post hoc test for multi-
+ple comparisons. P &lt; 0.05 was considered to be significant
+(*P &lt; 0.05, **P &lt; 0.01, ***P &lt; 0.001).
+</div><div class='tools'><button type='button' class='quiet' onclick='jumpSec(1)'>Blot section</button><button type='button' class='quiet' onclick='jump(-1)'>Prev</button><button type='button' class='quiet' onclick='jump(1)'>Next</button><span id='hits_PMC9248752' class='num'></span><span class='aid'>shading is a search aid, not an answer</span></div></div><div class='col-q'><div class='q' data-q='v2|PMC9248752|replicate_n' data-pmcid='PMC9248752' data-item='replicate_n'><div class='qname'><span>Replicate count</span><span class='ans'></span></div><div class='qdef'>A number of replicates stated for the western blot, in the blot's paragraph or a blot figure legend. A group size stated for the blot counts ('six rats from each group' in the Western blot paragraph). A legend-wide count applies to a blot panel only when that panel is quantified. A statistics paragraph that names no assay, or a group size stated elsewhere, does not count. You are not being asked whether they are biological or technical. Western blot only.</div><div class='qhow'><b>What to mark.</b> Mark the number together with the words that make it a replicate count.<span class='eg'>In <i>western blots are representative of three independent experiments</i> mark <b>three independent experiments</b>. Nothing to mark in <i>qPCR reactions were run in triplicate</i> or in <i>data are mean &plusmn; SD of three independent experiments</i> in a statistics paragraph that names no assay.</span></div><div class='acts'><button type='button' data-act='mark'>Use highlighted text</button><button type='button' class='sec' data-act='done' style='display:none'>Done, next</button><button type='button' class='sec' data-act='not_stated'>Not stated</button><button type='button' class='quiet' data-act='unclear'>Unclear</button></div><div class='grab'><div class='cap'>Marked so far, add as many as the paper has</div><ol class='spans'></ol><label class='morewrap'><input type='checkbox' class='morebox'>There are more of these than I marked</label></div></div></div></div></div></div><div class='scrim' id='scrim' onclick='guide(false)'></div><aside class='guide' id='guide'><button type='button' class='quiet close' onclick='guide(false)'>Close</button><h2>Guide</h2><h3>You do not type anything</h3><p>Select the words in the Methods text, then press <b>Use highlighted text</b>. The exact words you selected are what gets recorded.</p><p>Typing is what this design removes. Given a sentence like the one below, one person types RIPA, another types the whole parenthesis, a third types the clause. All three read the paper correctly and disagree in the data. Selecting removes that entirely.</p><blockquote>The cell total protein was isolated using RIPA (Applygen Technologies Inc., Beijing, China). Protease inhibitor (CWBIO, Shanghai, China) was added into the RIPA at a ratio of 1:100.</blockquote><p style='margin-top:10px'>For lysis buffer there, mark just <b>RIPA</b>, the first time it appears.</p><h3>How much to select</h3><p><b>The shortest phrase that states the detail.</b> Not the whole sentence when three words will do, and not the vendor, city or catalog number unless the question asks for them.</p><p>Every question shows a worked example under <b>What to mark</b>. Follow it rather than your instinct.</p><h3>When a paper gives several</h3><p>Many papers list a table of antibodies with eight RRIDs, eight catalog numbers and several vendors. <b>Mark them all.</b> Press <b>Use highlighted text</b> once per value and they stack up in a numbered list. Press <b>Done, next</b> when the list is complete.</p><p>If they sit in a contiguous table or a run-on list, selecting the whole block in one go is fine and much faster. You are marking where the evidence is, not counting.</p><p>The same value repeated does not need marking twice. A paper that uses 1:1000 for six antibodies has one dilution, not six.</p><p><b>If you stop before you have them all, tick 'There are more of these than I marked'.</b> That box matters more than it looks: without it, someone who stopped at five of eight cannot be told apart from someone who found everything, and the three they skipped would count against the extractor as mistakes it did not make.</p><h3>What counts</h3><p><b>Judge only what is written.</b> Not what the authors almost certainly did, and not what is standard practice in the field.</p><p><b>Judge the text shown.</b> The page shows the Methods section, and sometimes figure legends or the full text where no Methods heading was found. A detail in the text shown counts, legend included. A detail found only in a legend or supplementary file that is not shown is <b>Not stated</b>.</p><p><b>Unclear</b> is a real answer. It is set aside rather than counted either way, so use it when you are genuinely stuck rather than guessing.</p><h3>The shaded sentences</h3><p><b>The faint tint marks the western blot section</b>: sentences that name the blot, the gel, the membrane or its detection. It is the same for every question on a paper. <b>Blot section</b> jumps between its blocks. Other assays are left untinted, but an item can still be stated elsewhere, for example in a figure legend.</p><p><b>The warmer marks</b> are the sentences most likely to hold the answer to the open question, and <b>Prev</b> and <b>Next</b> step between them.</p><p>Both are search aids and nothing more. Fixed keyword rules pick them; they are never told the answer, they sometimes shade irrelevant sentences and sometimes miss the right one. Read around them, and judge only the text.</p><h3>Getting through a batch</h3><p>The Methods text stays pinned on the left while questions scroll on the right. Answers collapse to one line and the next question opens automatically. Click any collapsed line to change it.</p><p>Your work is saved in this browser as you go, so closing the tab loses nothing. <b>Submit</b> is at the top of the page and turns on once every question is answered and your initials are filled in.</p><h3>Every question, in one place</h3><table><tr><td>Total protein stain</td><td>A total-protein stain used to normalize or check the blot: Ponceau S or REVERT on the membrane, stain-free imaging used for normalization, or Coomassie stated as the blot's loading or transfer check, including a parallel gel stained and stated as the blot's loading check. A stained gel with no stated link to a blot, or a stain-free gel named only as a product, does not count. Western blot only.<br><b>Mark:</b> Mark the stain name only. In <i>confirmed by Ponceau S staining</i> mark <b>Ponceau S</b>. Nothing to mark in <i>run on a 4-15% TGX Stain-Free gel</i> with no normalization stated, in any stain on a purity, expression, preparative, mass-spec or antibody-QC gel, or in a stain on a gel that was never blotted and is not stated as the blot's loading check.</td></tr><tr><td>Transfer conditions</td><td>The voltage or current, the time, or the temperature of the transfer. Any one counts. The transfer method alone ('wet transfer') does not. Western blot only.<br><b>Mark:</b> Mark the conditions. In <i>transferred at 100 V for 1 h at 4 &deg;C</i> mark the whole phrase.</td></tr><tr><td>Exposure time</td><td>An exposure or acquisition time for the blot's signal, on film or on an imager. 'Auto-exposure', 'different exposure times', 'exposed to film' with no time, or a substrate incubation time ('incubated with ECL for 1 min') does not count, and neither does an antibody or cytokine array, which is not a blot. Western blot only.<br><b>Mark:</b> Mark the time and its unit. In <i>bands were imaged with a 30 s exposure on a ChemiDoc</i> mark <b>30 s</b>. Nothing to mark in <i>incubated with ECL for 1 min</i> or <i>cells were exposed to 80 uM drug for 30 min</i>.</td></tr><tr><td>Lysate storage stated</td><td>How the blot's lysates or protein extracts were stored before loading: a storage temperature, with or without a duration ('lysates were stored at -80 °C until use'). Storage of tissue, cells, blood or other samples before lysis, and storage of antibodies or reagents, does not count. Western blot only.<br><b>Mark:</b> Mark the words that state the storage. In <i>the supernatant was aliquoted and stored at -80 &deg;C</i> mark <b>stored at -80 &deg;C</b>. Nothing to mark in <i>tissues were snap-frozen in liquid nitrogen and stored at -80 &deg;C</i>.</td></tr><tr><td>Antibody clone</td><td>A clone name or number for a monoclonal antibody. A catalog number, or a vendor's epitope code for a polyclonal (Santa Cruz C-20), does not count. Counts for an antibody used in any assay, not only the blot.<br><b>Mark:</b> Mark every distinct clone id. In <i>anti-beta-actin (clone AC-15, Sigma)</i> mark <b>AC-15</b>.</td></tr><tr><td>Membrane source or grade</td><td>The supplier, product name or grade of the blot membrane, such as Immobilon-P (Millipore) or Amersham Hybond. Membrane chemistry or pore size alone does not count, and neither does the supplier of a transfer system or kit that does not name the membrane, or an Immobilon ECL substrate, which is the ECL reagent. Western blot only.<br><b>Mark:</b> Mark the supplier or product words for the membrane. In <i>transferred to PVDF membranes (Immobilon-P, Millipore)</i> mark <b>Immobilon-P, Millipore</b>. Nothing to mark in <i>transferred to PVDF membranes</i>.</td></tr><tr><td>Antibody isotype</td><td>The immunoglobulin class or subclass stated for an antibody itself, primary or secondary (IgG, IgG1, IgG2a, IgM, IgY), as in 'rabbit polyclonal IgG' or 'mouse monoclonal IgG2a'. An isotype that names what a secondary recognizes ('goat anti-rabbit IgG'), an isotype control, a normal or control IgG, or a serum antibody response does not count. Host species and clonality belong to Primary antibody host or type. Counts for an antibody used in any assay, not only the blot.<br><b>Mark:</b> Mark each distinct isotype once. In <i>mouse monoclonal IgG2a anti-GFAP</i> mark <b>IgG2a</b>; in <i>rabbit polyclonal IgG anti-Kif5</i> mark <b>IgG</b>. Nothing to mark in <i>HRP-conjugated goat anti-rabbit IgG</i>.</td></tr><tr><td>Replicate definition</td><td>What a replicate of the blot was, with the unit named: independent cultures or passages, animals, patients, separate blots, or technical repeats of one lysate. 'Independent experiments' or 'biological replicates' with no unit named does not count, and neither does a count alone. Western blot only.<br><b>Mark:</b> Mark the words that say what was replicated. In <i>three independent cell cultures, each blotted once</i> mark the whole phrase. Nothing to mark in <i>representative of three independent experiments</i>.</td></tr><tr><td>Replicate count</td><td>A number of replicates stated for the western blot, in the blot's paragraph or a blot figure legend. A group size stated for the blot counts ('six rats from each group' in the Western blot paragraph). A legend-wide count applies to a blot panel only when that panel is quantified. A statistics paragraph that names no assay, or a group size stated elsewhere, does not count. You are not being asked whether they are biological or technical. Western blot only.<br><b>Mark:</b> Mark the number together with the words that make it a replicate count. In <i>western blots are representative of three independent experiments</i> mark <b>three independent experiments</b>. Nothing to mark in <i>qPCR reactions were run in triplicate</i> or in <i>data are mean &plusmn; SD of three independent experiments</i> in a statistics paragraph that names no assay.</td></tr></table><h3>Ask about a rule</h3><p>This answers questions about <b>what a rule means</b>, nothing else. It is never given the paper, it cannot see what you are reading, and it will refuse if you paste text and ask what the answer is. Deciding what a paper says is the whole job being measured here, so it has to stay yours.</p><p>Questions are logged with your initials, so ask freely and openly.</p><select id='ask_item' style='width:100%;margin-bottom:8px;padding:8px 12px;border-radius:var(--r-sm);border:1px solid var(--hairline-input);font-family:inherit;font-size:15px;font-weight:300;background:var(--canvas);color:var(--ink)'><option value='total_protein_stain'>Total protein stain</option><option value='transfer_conditions'>Transfer conditions</option><option value='exposure_time'>Exposure time</option><option value='sample_storage'>Lysate storage stated</option><option value='ab_clone_id'>Antibody clone</option><option value='membrane_source'>Membrane source or grade</option><option value='ab_isotype'>Antibody isotype</option><option value='replicate_definition'>Replicate definition</option><option value='replicate_n'>Replicate count</option></select><input type='text' id='ask_q' placeholder='for example: does a lot number count as a catalog number?' autocomplete='off'><div style='margin-top:8px'><button type='button' class='sec' onclick='ask()'>Ask</button></div><blockquote id='ask_out' style='margin-top:10px'>The rules above are the reference. This is only for when one of them is unclear.</blockquote></aside><div class='hint' id='hint'></div><script>
+const BATCH = {"batch": "v2batch_252", "papers": [{"pmcid": "PMC5520679", "items": ["total_protein_stain", "transfer_conditions"]}, {"pmcid": "PMC10074175", "items": ["exposure_time"]}, {"pmcid": "PMC10688412", "items": ["sample_storage"]}, {"pmcid": "PMC4382340", "items": ["ab_clone_id"]}, {"pmcid": "PMC5182043", "items": ["membrane_source"]}, {"pmcid": "PMC6128627", "items": ["ab_isotype"]}, {"pmcid": "PMC7015957", "items": ["replicate_definition"]}, {"pmcid": "PMC8078813", "items": ["replicate_definition"]}, {"pmcid": "PMC9248752", "items": ["replicate_n"]}]};
+const ENDPOINT = "https://script.google.com/macros/s/AKfycbyGh-3zVfU0yh_nklOLXH03km-7FFzjtqE2J42hj0_pd2rWQmMLXtaROiSQH7I6TSUN/exec";
+const CUES = {"primary_ab_rrid": ["rrid|research resource|\\bab_\\d|identifier", "ab_\\d{4,}|rrid"], "ab_catalog_any": ["antibod|cat(alog(ue)?)?\\s*\\.?\\s*(no|num|#)|product\\s*(no|#)|from\\s+\\w+\\s*\\(", "#\\s*\\d|\\b[a-z]{2,4}-?\\d{3,6}\\b|clone"], "primary_ab_vendor": ["antibod|purchased|obtained|supplied|from\\s+\\w+\\s*\\(", "abcam|cell signal|santa cruz|sigma|thermo|invitrogen|millipore|proteintech|r&d|bd bio|novus|genetex"], "primary_ab_host": ["antibod|anti-", "rabbit|mouse|goat|rat\\b|donkey|monoclonal|polyclonal"], "ab_dilution_any": ["antibod|incubat|dilut|probe", "1\\s*[:/]\\s*\\d"], "secondary_ab_conjugate": ["secondary|conjugat", "hrp|horseradish|alkaline phosphat|irdye|alexa|biotin"], "detection_chemistry": ["detect|visuali[sz]|develop|expos", "chemilumin|\\becl\\b|fluoresc|colorimetric|autoradiograph|film"], "ecl_reagent": ["\\becl\\b|chemilumin|substrate|detect", "supersignal|clarity|luminata|immobilon|femto|pico|dura|amersham|pierce"], "blocking_agent": ["block", "milk|\\bbsa\\b|casein|serum|albumin"], "blocking_percent": ["block", "\\d+\\s*%"], "membrane_type": ["membrane|transfer|blott", "pvdf|nitrocellulose|immobilon"], "membrane_pore_um": ["membrane|pvdf|nitrocellulose|pore", "0?\\.\\d+\\s*[u\u00b5\u03bc]?m|micron|\\d\\.\\d+"], "gel_percentage": ["gel|sds-?page|acrylamide|electrophore|separat|resolv", "\\d+\\s*%|gradient|\\d+\\s*-\\s*\\d+"], "transfer_method": ["transfer|blott", "semi-?dry|wet|tank|iblot|trans-?blot|electro|\\bmini\\b"], "reducing_denaturing": ["sample buffer|loading buffer|laemmli|denatur|boiled|reduc", "\\bdtt\\b|mercaptoethanol|[\u03b2b]-?me\\b|95\\s*\u00b0|100\\s*\u00b0|boil"], "protein_per_lane_ug": ["load|per lane|separat|resolv|subjected", "\\d+\\s*[u\u00b5\u03bcm]g\\b|\\d+\\s*g\\s+(of\\s+)?(total\\s+)?protein|microgram"], "protein_quant_method": ["protein|concentration|quantif|determin", "\\bbca\\b|bradford|lowry|nanodrop|\\bdc\\b|coomassie"], "lysis_buffer": ["lys(is|ed|e )|extract|homogeni|solubili|harvest|isolat|scrap|resuspend|prepar|collect", "ripa|np-?40|triton|laemmli|\\btris\\b|\\bsds\\b|buffer"], "total_protein_stain": ["membrane|normali[sz]|total protein|ponceau|stain-?free|revert|amido", "ponceau|stain-?free|revert|coomassie|amido"], "loading_control_identity": ["loading control|normali[sz]|internal control|reprob|antibod|probe|blot", "gapdh|actin|tubulin|vinculin|hsp\\s?90|lamin|histone|vdac|calnexin"], "quantification_software": ["quantif|densitom|analy[sz]|band intensit|measur", "imagej|fiji|image ?lab|image ?studio|quantity one|imagepro|alphaview|empiria|software"], "acquisition_software": ["captur|acqui|imag(ed|ing)|software", "image ?lab|image ?studio|cs analyzer|software|version"], "imager_instrument": ["imag(ed|ing|er)|captur|develop|expos|scan", "chemidoc|odyssey|amersham|\\blas-?\\d|x-?ray|film|fusion|azure|ibright"], "replicate_n": ["western|immunoblot|\\bblot|densitometr", "\\bn\\s*=\\s*\\d|three|four|five|six|triplicate|duplicate|\\d+\\s*times|each group"], "reducing_agent_named": ["sample buffer|loading buffer|laemmli|\\blys(is|ed|ate|e)\\b|boil|heat|denatur|\\bdtt\\b|dithiothreitol|mercaptoethanol|tcep", "\\bdtt\\b|dithiothreitol|mercaptoethanol|[\u03b2b]-?me\\b|2-me\\b|tcep|reducing agent"], "antibody_diluent": ["antibod|dilut", "dilut\\w*\\s+(in|with)|diluent|\\bbsa\\b|milk|tbst|blocking buffer"], "ab_incubation_conditions": ["antibod|incubat|probe", "overnight|\\d+\\s*(h|hr|hours?|min)\\b|4\\s*\u00b0|room temperature|\\brt\\b"], "exposure_time": ["expos|film|chemilumin|captur|acqui", "\\d+(\\.\\d+)?\\s*(s|sec|seconds?|min)\\b"], "normalization_stated": ["normali[sz]|relative to|ratio|densitom|band intensit", "gapdh|actin|tubulin|vinculin|total|loading control|control group"], "secondary_ab_vendor": ["secondary|conjugat|anti-(rabbit|mouse|goat|rat)", "abcam|cell signal|santa cruz|sigma|thermo|invitrogen|millipore|proteintech|jackson|bio-?rad|li-?cor|beyotime|zsgb|vector|dako|promega"], "uncropped_blots": ["uncropped|full[- ]length blot|full blot|original blot|raw blot|unprocessed|whole blot", "supplementa(ry|l) (fig|figure|material|data|information|file)|figure s\\d|fig\\.? ?s\\d|repository|figshare|zenodo|mendeley data"], "antibody_validation": ["specific|validat|knock|sirna|shrna|peptide|overexpress", "knock-?(down|out)|sirna|shrna|blocking peptide|specificity"], "antibody_lot": ["\\blot\\b|batch no", "\\blot\\s*(no\\.?|number|#)?\\s*:?\\s*[a-z0-9-]{3,}"], "mw_marker": ["\\bmarkers?\\b|ladder|(protein|molecular[- ]weight|mw|size) standards?", "pageruler|precision plus|seeblue|spectra|magicmark|chameleon|prestained|ladder"], "blinded_quantification": ["blind", "densitom|quantif|band|imagej|image analys|blot"], "dynamic_range_check": ["saturat|linear range|dynamic range|linearity|dilution series|serial dilution", "saturat|linear|dynamic range|within the range"], "quantified_band_identified": ["densitom|quantif|band intensit|analy[sz]ed", "\\d+\\s*kda\\b.{0,20}band|band.{0,30}\\d+\\s*kda|(upper|lower|smaller|larger|cleaved|full-length) (band|form)|additional band"], "blocking_duration": ["block", "\\d+(\\.\\d+)?\\s*(h|hr|hours?|min)\\b|overnight|room temperature|\\brt\\b|\\d+\\s*\u00b0"], "wash_conditions": ["wash|rins", "\\d+\\s*(x|\u00d7|times)|\\d+\\s*min|tbs-?t|pbs-?t|tween"], "substrate_incubation_time": ["ecl|substrate|chemilumin|luminol", "\\d+(\\.\\d+)?\\s*(s|sec|seconds?|min)\\b"], "software_version": ["imagej|fiji|image ?lab|image ?studio|quantity one|software", "\\bv(ersion)?\\.?\\s*\\d+(\\.\\d+)+|\\bversion\\s*\\d"], "quantification_procedure": ["densitom|quantif|band intensit|integrated density", "background|rolling|integrated density|area under|peak|subtract"], "ab_clone_id": ["clone|monoclonal", "clone\\s*[:#]?\\s*[a-z0-9][a-z0-9-]{1,}"], "ab_mass_concentration": ["antibod|anti-", "\\d+(\\.\\d+)?\\s*[u\u00b5\u03bcn]g\\s*/\\s*m[lL]"], "ab_immunogen": ["immunogen|raised against|peptide|epitope|residues", "residues?\\s*\\d|peptide|recombinant|immunogen"], "replicate_definition": ["western|immunoblot|\\bblot|densitometr", "independent|biological|technical|separate (cultures|animals|experiments)"], "image_adjustment_disclosed": ["contrast|brightness|adjust|levels", "uniform|entire image|whole image|linear|no (other )?adjust"], "splicing_disclosed": ["splic|rearrang|dividing line|cropped from|non-?contiguous|different (parts|regions) of", "splic|rearrang|line|same (membrane|blot|gel)"], "control_same_blot": ["same (membrane|blot|gel)|reprob|separate (gel|membrane)|parallel gel|cut", "gapdh|actin|tubulin|vinculin|loading control|reprob"], "lysis_buffer_composition": ["lys|ripa|extract|homogeni", "\\d+\\s*m?M\\s+(tris|hepes|nacl|edta)|\\d+(\\.\\d+)?\\s*%\\s*(np-?40|triton|sds|deoxychol)|cat(alog)?\\.?\\s*(no|#)"], "inhibitors_named": ["inhibitor|protease|phosphatase", "complete|phosstop|pmsf|aprotinin|leupeptin|pepstatin|orthovanadate|naf\\b|halt|cocktail"], "sample_buffer_composition": ["sample buffer|loading buffer|laemmli|lds", "\\d+(\\.\\d+)?\\s*%\\s*(sds|glycerol)|lds|nupage|bio-?rad|\\d+\\s*x\\b"], "transfer_buffer_composition": ["transfer", "methanol|tris-?glycine|caps|\\d+\\s*%\\s*methanol|transfer buffer \\("], "gel_running_system": ["gel|sds-?page|electrophore", "bis-?tris|tris-?glycine|tris-?acetate|tricine|mops|mes\\b|nupage|criterion|mini-protean|tgx|precast"], "electrophoresis_conditions": ["electrophore|sds-?page|gel|resolv|separat", "\\d+\\s*(v|ma)\\b|\\d+\\s*(min|h)\\b"], "transfer_conditions": ["transfer", "\\d+\\s*(v|ma|a)\\b|\\d+\\s*(min|h)\\b|4\\s*\u00b0"], "denaturation_time_temp": ["boil|heat|denatur|sample buffer|loading buffer|laemmli", "\\d+\\s*\u00b0\\s*c.{0,20}\\d+\\s*min|\\d+\\s*min.{0,20}\\d+\\s*\u00b0|boil\\w*.{0,20}\\d+\\s*min"], "stripping_reprobing": ["strip|reprob|re-prob", "strip|reprob|re-prob"], "between_blot_normalization": ["between (blots|gels|membranes)|across (blots|gels|membranes)|inter-?blot|reference sample|calibrator", "normali|reference|calibrat|every (gel|blot)"], "sample_layout_across_gels": ["same gel|same membrane|randomi[sz]|across gels|balanced", "group|sample|lane"], "membrane_activation": ["pvdf|membrane", "methanol|activat|pre-?wet|equilibrat"], "ab_isotype": ["antibod|monoclonal|polyclonal|\\bmab\\b|clone|isotype|subclass", "\\big[gmaedy][1-4]?[abc]?\\b|isotype|subclass|immunoglobulin"], "secondary_ab_host": ["secondary|conjugat|hrp|peroxidase|alexa|irdye", "\\b(goat|donkey|rabbit|mouse|horse|sheep|chicken|rat)\\s+anti-?\\s*(rabbit|mouse|goat|rat|human|chicken|sheep|guinea)"], "fraction_purity_shown": ["fraction|nuclear|cytosol|cytoplasm|mitochond|membrane fraction", "purity|contaminat|enrich|marker"], "sample_storage": ["lysate|supernatant|extract|homogenate|protein", "-\\s*80\\s*\u00b0|\u2212\\s*80|-\\s*20\\s*\u00b0|stored at"], "stripping_verified": ["strip", "confirm|verif|check|complete|re-?expos|no (residual )?signal"], "membrane_cut_disclosed": ["membrane|blot", "\\bcut\\b|strips?\\b|sectioned"], "replicate_handling": ["western|immunoblot|\\bblot|densitometr|lanes?\\b|\\bgels?\\b", "(duplicate|triplicate|replicate) lanes|technical (replicate|duplicate|triplicate)|random effect|mixed model|block(ing)? factor"], "loading_control_validated": ["gapdh|actin|tubulin|vinculin|loading control|total protein", "did not (differ|change)|unchanged|not (altered|affected)|constant|stable"], "shortcut_citation": ["western|immunoblot|\\bblot|sds-?page|electrophore", "as (previously )?described|according to (our |the )?previous|as reported|described (previously|elsewhere)"], "secondary_ab_catalog": ["secondary|anti-(rabbit|mouse|goat|rat)|hrp|conjugat", "cat(alog)?\\.?\\s*(no|#)|#\\s*\\d|\\d{3}-\\d{3}-\\d{3}|\\bab\\d{4,}|\\bsc-\\d{3,}|926-\\d{5}"], "protocol_deposited": ["protocol", "protocols\\.io|protocol exchange|bio-?protocol|10\\.17504"], "membrane_source": ["pvdf|nitrocellulose|membrane", "immobilon|hybond|protran|millipore|amersham|bio-?rad|\\bge\\b|pall|whatman|cytiva|thermo"], "blocking_agent_source": ["block", "sigma|bio-?rad|carnation|fraction v|intercept|odyssey|superblock|everyblot|blotting[- ]grade|roth|fisher|amresco|biofroxx"]};
+const DEFS = {"membrane_source": ["Membrane source or grade", "The supplier, product name or grade of the blot membrane, such as Immobilon-P (Millipore) or Amersham Hybond. Membrane chemistry or pore size alone does not count, and neither does the supplier of a transfer system or kit that does not name the membrane, or an Immobilon ECL substrate, which is the ECL reagent. Western blot only.", "Mark the supplier or product words for the membrane."], "ab_clone_id": ["Antibody clone", "A clone name or number for a monoclonal antibody. A catalog number, or a vendor's epitope code for a polyclonal (Santa Cruz C-20), does not count. Counts for an antibody used in any assay, not only the blot.", "Mark every distinct clone id."], "replicate_definition": ["Replicate definition", "What a replicate of the blot was, with the unit named: independent cultures or passages, animals, patients, separate blots, or technical repeats of one lysate. 'Independent experiments' or 'biological replicates' with no unit named does not count, and neither does a count alone. Western blot only.", "Mark the words that say what was replicated."], "transfer_conditions": ["Transfer conditions", "The voltage or current, the time, or the temperature of the transfer. Any one counts. The transfer method alone ('wet transfer') does not. Western blot only.", "Mark the conditions."], "sample_storage": ["Lysate storage stated", "How the blot's lysates or protein extracts were stored before loading: a storage temperature, with or without a duration ('lysates were stored at -80 \u00b0C until use'). Storage of tissue, cells, blood or other samples before lysis, and storage of antibodies or reagents, does not count. Western blot only.", "Mark the words that state the storage."], "replicate_n": ["Replicate count", "A number of replicates stated for the western blot, in the blot's paragraph or a blot figure legend. A group size stated for the blot counts ('six rats from each group' in the Western blot paragraph). A legend-wide count applies to a blot panel only when that panel is quantified. A statistics paragraph that names no assay, or a group size stated elsewhere, does not count. You are not being asked whether they are biological or technical. Western blot only.", "Mark the number together with the words that make it a replicate count."], "total_protein_stain": ["Total protein stain", "A total-protein stain used to normalize or check the blot: Ponceau S or REVERT on the membrane, stain-free imaging used for normalization, or Coomassie stated as the blot's loading or transfer check, including a parallel gel stained and stated as the blot's loading check. A stained gel with no stated link to a blot, or a stain-free gel named only as a product, does not count. Western blot only.", "Mark the stain name only."], "ab_isotype": ["Antibody isotype", "The immunoglobulin class or subclass stated for an antibody itself, primary or secondary (IgG, IgG1, IgG2a, IgM, IgY), as in 'rabbit polyclonal IgG' or 'mouse monoclonal IgG2a'. An isotype that names what a secondary recognizes ('goat anti-rabbit IgG'), an isotype control, a normal or control IgG, or a serum antibody response does not count. Host species and clonality belong to Primary antibody host or type. Counts for an antibody used in any assay, not only the blot.", "Mark each distinct isotype once."], "exposure_time": ["Exposure time", "An exposure or acquisition time for the blot's signal, on film or on an imager. 'Auto-exposure', 'different exposure times', 'exposed to film' with no time, or a substrate incubation time ('incubated with ECL for 1 min') does not count, and neither does an antibody or cytokine array, which is not a blot. Western blot only.", "Mark the time and its unit."]};
+const RUBRIC = "A6-defs-v2-2026-09-26";
+const SECTION = true;
+const NOTE = "Western blot means proteins separated on a gel, transferred to a membrane and detected with an antibody. An OxyBlot counts. A dot blot or slot blot, of RNA or of protein, does not; neither does a capillary system such as Wes or Jess, which has no membrane, or a membrane probed only with streptavidin or a lectin, which uses no antibody. Items marked 'Western blot only' do not count the same thing described for another assay in the paper: qPCR, immunofluorescence, IHC, flow cytometry, ELISA, mass spectrometry, or a gel that was stained rather than blotted. Judge the text the page shows, including any figure legend printed in it; a detail found only in a legend or supplement that is not shown is not stated. A method given only by citation ('as previously described [12]') is not stated: mark only what the text itself says. The Shortcut citation item is the exception: it records the citation phrase itself. Some PDFs drop the micro sign or print it as m ('50 g', '25 mg' for micrograms); rule on the intended unit.";
+const KEY = 'trackF_A6_' + RUBRIC + '_' + BATCH.batch;
+const T0 = Date.now();
+
+function total(){ return BATCH.papers.reduce((a,p)=>a+p.items.length,0); }
+function esc(s){ return s.replace(/[&<>]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
+
+/* ---- state ----------------------------------------------------------------
+   ANS[judgement_id] = {answer, spans:[{text,start,end}], more:bool, done:bool}
+
+   Several items are set-valued in the papers themselves. An antibody table gives
+   eight RRIDs, eight catalog numbers and several vendors, and stage 2 emits all
+   of them pipe-joined. A single span could never validate that, so a question
+   accepts as many spans as the paper needs.
+
+   `more` records "there are more of these than I marked". Without it, a reviewer
+   who stopped after five of eight is indistinguishable from a reviewer who found
+   everything, and the three unmarked values would score as extractor errors. */
+const ANS = {};
+
+function answered(){
+  return Object.values(ANS).filter(v=>v.done).length;
+}
+function refresh(){
+  const a = answered(), t = total();
+  document.getElementById('count').textContent = a + ' of ' + t + ' answered';
+  document.getElementById('bar').style.width = (100*a/t) + '%';
+  document.getElementById('send').disabled =
+    (a < t) || !document.getElementById('rev').value.trim();
+  try{
+    localStorage.setItem(KEY, JSON.stringify(
+      {rev: document.getElementById('rev').value, a: ANS}));
+  }catch(e){}
+}
+function restore(){
+  let s; try{ s = JSON.parse(localStorage.getItem(KEY)||'null'); }catch(e){}
+  if (!s) return 0;
+  document.getElementById('rev').value = s.rev || '';
+  let n = 0;
+  Object.entries(s.a||{}).forEach(([q,v])=>{
+    const el = document.querySelector('[data-q="'+CSS.escape(q)+'"]');
+    if (!el) return;
+    ANS[q] = v; paint(el); n++;
+  });
+  return n;
+}
+
+/* ---- sentence segmentation and cue ranking --------------------------------
+   Sentence level, not line level. PDF text wraps at arbitrary columns, so a
+   "line" is a fragment and marking one marks half a clause. */
+function sentences(text){
+  const out = [];
+  let start = 0;
+  const re = /([.!?])(\s|$)/g;
+  let m;
+  while ((m = re.exec(text)) !== null){
+    const end = m.index + 1;
+    if (end - start > 12) { out.push([start, end]); start = re.lastIndex; }
+  }
+  if (text.length - start > 12) out.push([start, text.length]);
+  return out;
+}
+/* A marked span longer than this is not a search aid, it is a wall. Ordinary
+   Methods sentences run 100 to 250 characters. */
+const MAXSEG = 320;
+/* Tuned on the STAR Protocols key-resources table. 70/90 let adjacent windows merge
+   into 300-character blobs; 30/40 was too tight to read a row in context. At 45/55
+   that table marks two separate RRID rows instead of one merged run, and drops from
+   100% of the block marked to about 9%. */
+const WIN_BEFORE = 45, WIN_AFTER = 55;
+
+function snapL(s, i){ const j = s.lastIndexOf(' ', i); return j > i - 25 && j >= 0 ? j + 1 : i; }
+function snapR(s, i){ const j = s.indexOf(' ', i);     return j >= 0 && j < i + 25 ? j : i; }
+
+/* Windows around each value hit inside an over-long block.
+   STAR Protocols and Cell Press papers carry a KEY RESOURCES TABLE that survives PDF
+   extraction as one 2,500-character run with almost no sentence punctuation. Marking
+   the containing "sentence" marked the entire reagent list for a question about one
+   RRID. Requiring a value hit and marking a window around it turns that into two tight
+   marks on the two RRIDs actually present. */
+function windows(text, s, e, valSrc, out){
+  const seg = text.slice(s, e);
+  let re;
+  try{ re = new RegExp(valSrc, 'gi'); }catch(err){ return; }
+  let m, n = 0;
+  while ((m = re.exec(seg)) !== null && n < 6){
+    const a = snapL(seg, Math.max(0, m.index - WIN_BEFORE));
+    const b = snapR(seg, Math.min(seg.length, m.index + m[0].length + WIN_AFTER));
+    out.push({s: s + a, e: s + b, score: 2});
+    n++;
+    if (m.index === re.lastIndex) re.lastIndex++;
+  }
+}
+
+function merge(spans){
+  if (!spans.length) return [];
+  spans.sort((a,b)=> a.s - b.s);
+  const out = [spans[0]];
+  for (let i = 1; i < spans.length; i++){
+    const last = out[out.length-1], cur = spans[i];
+    if (cur.s <= last.e){
+      last.e = Math.max(last.e, cur.e);
+      last.score = Math.max(last.score, cur.score);
+    } else out.push(cur);
+  }
+  return out;
+}
+
+function rank(text, item){
+  const c = CUES[item];
+  if (!c) return [];
+  let ctx;
+  try{ ctx = new RegExp(c[0],'i'); }catch(e){ return []; }
+  const hasVal = seg => { try{ return new RegExp(c[1],'i').test(seg); }catch(e){ return false; } };
+  const segs = sentences(text);
+  let scored = [];
+
+  for (const [s,e] of segs){
+    const seg = text.slice(s,e);
+    if (!ctx.test(seg)) continue;              // context is required, not optional
+    if (e - s <= MAXSEG){ scored.push({s, e, score: 1 + (hasVal(seg) ? 1 : 0)}); continue; }
+    windows(text, s, e, c[1], scored);         // long block: narrow to the value hits
+  }
+
+  // Requiring context is what makes the marking precise, but when a paper phrases
+  // something no context cue anticipated, shading nothing is worse than shading
+  // loosely. Drop to value cues alone rather than leave a blank pane.
+  if (!scored.length){
+    for (const [s,e] of segs){
+      const seg = text.slice(s,e);
+      if (!hasVal(seg)) continue;
+      if (e - s <= MAXSEG) scored.push({s, e, score: 1});
+      else windows(text, s, e, c[1], scored);
+    }
+  }
+
+  scored = merge(scored);
+  scored.sort((a,b)=> b.score - a.score || (a.e - a.s) - (b.e - b.s) || a.s - b.s);
+  const top = scored.slice(0, 8);
+  top.sort((a,b)=> a.s - b.s);
+  return top;
+}
+
+let curBox = null, curMarks = [], curIdx = -1, curSecs = [], secIdx = -1;
+
+/* Western blot section: sentences naming the blot, with gaps of one or two non-blot sentences
+   between blot sentences filled in, merged into blocks. The same for every question on the paper, so it
+   locates the blot methods without pointing at any item's answer. */
+const SECTION_TERMS = /western|immuno-?blot|\bblot(s|ted|ting)?\b|sds[- ]?page|polyacrylamide gel|\bpvdf\b|nitrocellulose|electro-?transfer|chemilumin|\becl\b|densitometr|loading control|ponceau|laemmli/i;
+function sectionBlocks(text){
+  if (!SECTION) return [];
+  const segs = sentences(text);
+  const f = segs.map(([s,e]) => SECTION_TERMS.test(text.slice(s,e)));
+  const hit = f.slice();
+  for (let i = 1; i + 1 < f.length; i++)          // fill gaps of one or two non-blot sentences
+    if (!hit[i] && hit[i-1] && (hit[i+1] || (i + 2 < f.length && !hit[i+1] && hit[i+2]))) f[i] = true;
+  const out = [];
+  segs.forEach(([s,e], i) => {
+    if (!f[i]) return;
+    const last = out[out.length-1];
+    if (last && (i > 0 && f[i-1])) last.e = e; else out.push({s, e});
+  });
+  return out;
+}
+
+function highlight(pmcid, item){
+  const box = document.getElementById('m_' + pmcid);
+  if (!box) return;
+  curBox = box;
+  const raw = box.dataset.raw;
+  const spans = rank(raw, item);
+  const secs = sectionBlocks(raw);
+  // Layer the two kinds of shading: cut the text at every boundary, then wrap each piece.
+  const cuts = new Set([0, raw.length]);
+  spans.forEach(sp => { cuts.add(sp.s); cuts.add(sp.e); });
+  secs.forEach(b => { cuts.add(b.s); cuts.add(b.e); });
+  const pts = [...cuts].sort((a,b) => a - b);
+  let out = '';
+  for (let k = 0; k + 1 < pts.length; k++){
+    const a = pts[k], b = pts[k+1];
+    if (b <= a) continue;
+    let piece = esc(raw.slice(a, b));
+    const ci = spans.findIndex(sp => sp.s <= a && b <= sp.e);
+    const si = secs.findIndex(bl => bl.s <= a && b <= bl.e);
+    if (ci >= 0) piece = '<mark data-c="' + ci + '">' + piece + '</mark>';
+    if (si >= 0) piece = '<span class="sec" data-s="' + si + '">' + piece + '</span>';
+    out += piece;
+  }
+  box.innerHTML = out;
+  curMarks = spans.map((_, i) => [...box.querySelectorAll('mark[data-c="' + i + '"]')]).filter(x => x.length);
+  curSecs = secs.map((_, i) => [...box.querySelectorAll('span.sec[data-s="' + i + '"]')]).filter(x => x.length);
+  curIdx = -1; secIdx = -1;
+  const lab = document.getElementById('hits_' + pmcid);
+  if (lab){
+    const parts = [];
+    if (Object.keys(CUES).length) parts.push(curMarks.length
+      ? curMarks.length + ' likely passage' + (curMarks.length>1?'s':'')
+      : 'no likely passage found');
+    if (SECTION) parts.push(curSecs.length
+      ? 'blot section: ' + curSecs.length + ' block' + (curSecs.length>1?'s':'')
+      : 'no blot section found, read the text');
+    lab.textContent = parts.join(' · ');
+  }
+  if (curMarks.length) jump(1);
+  else if (curSecs.length) jumpSec(1);
+}
+function jump(d){
+  if (!curMarks.length) return;
+  if (curIdx >= 0) curMarks[curIdx].forEach(m => m.classList.remove('cur'));
+  curIdx = (curIdx + d + curMarks.length) % curMarks.length;
+  curMarks[curIdx].forEach(m => m.classList.add('cur'));
+  curMarks[curIdx][0].scrollIntoView({block:'center', behavior:'smooth'});
+}
+function jumpSec(d){
+  if (!curSecs.length) return;
+  if (secIdx >= 0) curSecs[secIdx].forEach(m => m.classList.remove('cursec'));
+  secIdx = (secIdx + d + curSecs.length) % curSecs.length;
+  curSecs[secIdx].forEach(m => m.classList.add('cursec'));
+  curSecs[secIdx][0].scrollIntoView({block:'start', behavior:'smooth'});
+}
+
+/* ---- selection capture -----------------------------------------------------
+   Offsets are computed against the raw text, not the marked-up DOM, so a stored
+   span is comparable to stage 2's own match offsets regardless of highlighting. */
+function textOffset(container, node, off){
+  const w = document.createTreeWalker(container, NodeFilter.SHOW_TEXT);
+  let n, acc = 0;
+  while ((n = w.nextNode())){
+    if (n === node) return acc + off;
+    acc += n.nodeValue.length;
+  }
+  return -1;
+}
+function getSel(box){
+  const s = window.getSelection();
+  if (!s || s.rangeCount === 0 || s.isCollapsed) return null;
+  const r = s.getRangeAt(0);
+  if (!box.contains(r.commonAncestorContainer)) return null;
+  const a = textOffset(box, r.startContainer, r.startOffset);
+  const b = textOffset(box, r.endContainer, r.endOffset);
+  if (a < 0 || b < 0 || b <= a) return null;
+  return {start:a, end:b, text:s.toString()};
+}
+
+/* ---- answering ------------------------------------------------------------ */
+function activeEl(){ return document.querySelector('.q.active'); }
+function activate(el){
+  if (!el) return;
+  document.querySelectorAll('.q.active').forEach(x=>x.classList.remove('active'));
+  el.classList.add('active');
+  highlight(el.dataset.pmcid, el.dataset.item);
+}
+function tidy(s){ return s.replace(/\s+/g,' ').trim(); }
+
+function paint(el){
+  const q = el.dataset.q, v = ANS[q];
+  const tag = el.querySelector('.ans');
+  const grab = el.querySelector('.grab');
+  const list = el.querySelector('.spans');
+  const moreBox = el.querySelector('.morewrap');
+  const doneBtn = el.querySelector('[data-act="done"]');
+
+  if (!v){
+    el.classList.remove('done'); tag.textContent = '';
+    grab.classList.remove('on'); list.innerHTML = '';
+    moreBox.classList.remove('on'); doneBtn.style.display = 'none';
+    return;
+  }
+  if (v.answer === 'marked'){
+    grab.classList.add('on');
+    moreBox.classList.toggle('on', !el.classList.contains('done'));
+    doneBtn.style.display = el.classList.contains('done') ? 'none' : '';
+    list.innerHTML = v.spans.map((s,i)=>
+      '<li><span>' + esc(tidy(s.text)) + '</span>'
+      + '<button type="button" class="quiet x" data-act="drop" data-i="' + i + '">'
+      + 'Remove</button></li>').join('');
+    el.querySelector('.morebox').checked = !!v.more;
+    const n = v.spans.length;
+    tag.textContent = n === 1 ? '\u201C' + tidy(v.spans[0].text).slice(0,52) + '\u201D'
+                              : n + ' marked' + (v.more ? ', more not marked' : '');
+  } else {
+    grab.classList.remove('on'); list.innerHTML = '';
+    moreBox.classList.remove('on'); doneBtn.style.display = 'none';
+    tag.textContent = v.answer === 'not_stated' ? 'Not stated' : 'Unclear';
+  }
+  el.classList.toggle('done', !!v.done);
+}
+function mark(el){
+  const box = document.getElementById('m_' + el.dataset.pmcid);
+  const sel = getSel(box);
+  if (!sel){ flash('Select the words in the Methods text first, then press this.'); return; }
+  const q = el.dataset.q;
+  const v = ANS[q] && ANS[q].answer === 'marked'
+    ? ANS[q] : (ANS[q] = {answer:'marked', spans:[], more:false, done:false});
+  v.answer = 'marked'; v.done = false;
+  const key = tidy(sel.text).toLowerCase();
+  if (!v.spans.some(s=>tidy(s.text).toLowerCase() === key)){
+    v.spans.push({text:sel.text, start:sel.start, end:sel.end});
+  } else {
+    flash('You already marked that one.');
+  }
+  window.getSelection().removeAllRanges();
+  paint(el); refresh();
+}
+function dropSpan(el, i){
+  const v = ANS[el.dataset.q];
+  if (!v) return;
+  v.spans.splice(i, 1);
+  if (!v.spans.length) delete ANS[el.dataset.q];
+  paint(el); refresh();
+}
+function finish(el){
+  const v = ANS[el.dataset.q];
+  if (!v || !v.spans.length) return;
+  v.more = el.querySelector('.morebox').checked;
+  v.done = true;
+  paint(el); refresh(); nextOpen(el);
+}
+function plain(el, a){
+  ANS[el.dataset.q] = {answer:a, spans:[], more:false, done:true};
+  paint(el); refresh(); nextOpen(el);
+}
+function reopen(el){
+  const v = ANS[el.dataset.q];
+  if (v && v.answer === 'marked') v.done = false; else delete ANS[el.dataset.q];
+  paint(el); activate(el); refresh();
+  el.scrollIntoView({block:'center', behavior:'smooth'});
+}
+function nextOpen(from){
+  const all = [...document.querySelectorAll('[data-q]')];
+  for (let k = all.indexOf(from)+1; k < all.length; k++){
+    if (!ANS[all[k].dataset.q]){
+      activate(all[k]);
+      all[k].scrollIntoView({block:'center', behavior:'smooth'});
+      return;
+    }
+  }
+}
+function guide(on, item){
+  document.getElementById('guide').classList.toggle('on', on);
+  document.getElementById('scrim').classList.toggle('on', on);
+  if (on){
+    const el = activeEl();
+    const sel = document.getElementById('ask_item');
+    if (sel) sel.value = item || (el ? el.dataset.item : sel.value);
+  }
+}
+
+/* ---- rules assistant -------------------------------------------------------
+   Definitions only. The paper text is never sent, and a question carrying a long
+   verbatim run from the Methods pane is refused here rather than upstream, because
+   the cheapest place to keep the gold standard clean is before the request leaves
+   the browser. */
+function pastedFromPaper(q){
+  const boxes = [...document.querySelectorAll('.methods')];
+  const s = q.replace(/\s+/g,' ').trim();
+  if (s.length < 60) return false;
+  for (const b of boxes){
+    const hay = (b.dataset.raw || '').replace(/\s+/g,' ');
+    for (let i = 0; i + 60 <= s.length; i += 10){
+      if (hay.indexOf(s.slice(i, i+60)) >= 0) return true;
+    }
+  }
+  return false;
+}
+async function ask(){
+  const out = document.getElementById('ask_out');
+  const q = document.getElementById('ask_q').value.trim();
+  const item = document.getElementById('ask_item').value;
+  if (!q){ out.textContent = 'Type a question about the rule first.'; return; }
+  if (pastedFromPaper(q)){
+    out.textContent = 'That looks like text from the paper. This assistant only '
+      + 'explains the rules, and deciding what a paper says is the job the study is '
+      + 'measuring. Ask what the rule means instead.';
+    return;
+  }
+  if (!ENDPOINT){ out.textContent = 'No endpoint configured, so the assistant is off. '
+      + 'The rules above are the reference.'; return; }
+  const d = DEFS[item] || ['','',''];
+  // Send the page's whole rule set, not just the selected item. Each page carries only its batch's items; all 74 v2 items together are about 6,100 tokens
+  // and it is what lets the assistant answer the questions reviewers actually ask,
+  // which are comparative: how is acquisition software different from
+  // quantification software, does a lot number count as a catalog number.
+  const all = 'Rubric ' + RUBRIC + '. ' + NOTE + '\n' + Object.entries(DEFS)
+    .map(([k,v])=> v[0] + ' :: ' + v[1] + ' :: mark: ' + v[2]).join('\n');
+  out.textContent = 'Thinking...';
+  try{
+    const r = await fetch(ENDPOINT, {method:'POST',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body: JSON.stringify({action:'assist', batch:BATCH.batch,
+        reviewer: document.getElementById('rev').value.trim(),
+        item, item_label:d[0], definition:d[1], rule:d[2],
+        all_rules: all, question:q})});
+    const t = (await r.text()).trim();
+    if (t.indexOf('ASSIST_OK') === 0) out.textContent = t.slice(9).trim();
+    else if (t.indexOf('ASSIST_OFF') === 0) out.textContent =
+      'The assistant is switched off for this study. The rules above are the reference.';
+    else out.textContent = 'The assistant is unavailable. The rules above are the reference.';
+  }catch(e){
+    out.textContent = 'The assistant is unavailable. The rules above are the reference.';
+  }
+}
+let flashT = null;
+function flash(msg){
+  const h = document.getElementById('hint');
+  h.textContent = msg; h.classList.add('on');
+  clearTimeout(flashT);
+  flashT = setTimeout(()=>h.classList.remove('on'), 2600);
+}
+
+/* ---- submit --------------------------------------------------------------- */
+/* One row per span, so a question answered with eight RRIDs is eight rows sharing a
+   judgement_id. n_spans is carried on every row so the scorer can tell a truncated
+   submission from a complete one without regrouping first. */
+function collect(){
+  const rows = [];
+  document.querySelectorAll('[data-q]').forEach(el=>{
+    const v = ANS[el.dataset.q];
+    const base = {judgement_id: el.dataset.q, pmcid: el.dataset.pmcid,
+                  item: el.dataset.item, rubric_version: RUBRIC};
+    if (!v || v.answer !== 'marked'){
+      rows.push(Object.assign({}, base, {answer: v ? v.answer : '', span_index: 0,
+        span_text: '', span_start: -1, span_end: -1, span_len: 0,
+        n_spans: 0, more_unmarked: ''}));
+      return;
+    }
+    v.spans.forEach((s,i)=>{
+      rows.push(Object.assign({}, base, {answer:'marked', span_index: i,
+        span_text: s.text, span_start: s.start, span_end: s.end,
+        span_len: (s.text||'').length, n_spans: v.spans.length,
+        more_unmarked: v.more ? 1 : 0}));
+    });
+  });
+  return {batch: BATCH.batch, rubric_version: RUBRIC,
+          reviewer: document.getElementById('rev').value.trim(),
+          submitted_at: new Date().toISOString(),
+          minutes: Math.round((Date.now()-T0)/60000), rows};
+}
+function download(){
+  const p = collect();
+  const head = 'batch,rubric_version,reviewer,submitted_at,judgement_id,pmcid,item,answer,'
+             + 'span_index,span_text,span_start,span_end,span_len,n_spans,more_unmarked\n';
+  const q = s => '"' + String(s==null?'':s).replace(/"/g,'""') + '"';
+  const body = p.rows.map(r=>[p.batch,p.rubric_version,p.reviewer,p.submitted_at,r.judgement_id,r.pmcid,
+      r.item,r.answer,r.span_index,r.span_text,r.span_start,r.span_end,r.span_len,
+      r.n_spans,r.more_unmarked]
+      .map(q).join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([head+body], {type:'text/csv'}));
+  a.download = 'A6_' + p.batch + '_' + (p.reviewer||'anon').replace(/\W+/g,'_') + '.csv';
+  a.click();
+}
+async function send(){
+  const st = document.getElementById('status');
+  if (!ENDPOINT){ st.innerHTML = '<b>No endpoint set.</b> Use Download CSV.'; return; }
+  st.textContent = 'Sending...';
+  try{
+    const r = await fetch(ENDPOINT, {method:'POST',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body: JSON.stringify(collect())});
+    const t = await r.text();
+    if (t.indexOf('OK') >= 0){
+      st.innerHTML = '<b>Submitted.</b> Thank you, you can close this tab.';
+      document.getElementById('send').disabled = true;
+      try{ localStorage.removeItem(KEY); }catch(e){}
+    } else {
+      st.innerHTML = '<b>Rejected.</b> ' + esc(t.slice(0,140)) + ' Use Download CSV.';
+    }
+  }catch(e){
+    st.innerHTML = '<b>Send failed.</b> Use Download CSV and email the file.';
+  }
+}
+
+/* ---- wiring --------------------------------------------------------------- */
+document.addEventListener('click', e=>{
+  const btn = e.target.closest('button[data-act]');
+  if (btn){
+    const el = btn.closest('[data-q]');
+    const a = btn.dataset.act;
+    if (a === 'mark') mark(el);
+    else if (a === 'done') finish(el);
+    else if (a === 'drop') dropSpan(el, parseInt(btn.dataset.i, 10));
+    else if (a === 'reopen') reopen(el);
+    else plain(el, a);
+    return;
+  }
+  const head = e.target.closest('.q.done .qname');
+  if (head){ reopen(head.closest('[data-q]')); return; }
+  const q = e.target.closest('[data-q]');
+  if (q && !q.classList.contains('done')) activate(q);
+});
+document.addEventListener('input', e=>{ if (e.target.id === 'rev') refresh(); });
+document.addEventListener('keydown', e=>{ if (e.key === 'Escape') guide(false); });
+document.addEventListener('mouseup', ()=>{
+  const el = activeEl();
+  if (!el) return;
+  const box = document.getElementById('m_' + el.dataset.pmcid);
+  if (box && getSel(box)) flash('Press "Use highlighted text" on the open question.');
+});
+window.addEventListener('DOMContentLoaded', ()=>{
+  document.querySelectorAll('.methods').forEach(b=>{ b.dataset.raw = b.textContent; });
+  const n = restore();
+  const first = [...document.querySelectorAll('[data-q]')].find(el=>!ANS[el.dataset.q]);
+  activate(first || document.querySelector('[data-q]'));
+  refresh();
+  if (n) document.getElementById('status').innerHTML =
+    '<b>Restored ' + n + ' saved answer' + (n>1?'s':'') + '</b> from this browser.';
+});
+window.addEventListener('beforeunload', e=>{
+  if (answered() > 0 && !document.getElementById('send').disabled){
+    e.preventDefault(); e.returnValue = '';
+  }
+});
+</script></body></html>
